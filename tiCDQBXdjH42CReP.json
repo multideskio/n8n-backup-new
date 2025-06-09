@@ -1,0 +1,881 @@
+{
+  "createdAt": "2025-04-13T16:19:39.448Z",
+  "updatedAt": "2025-04-14T23:25:54.907Z",
+  "id": "tiCDQBXdjH42CReP",
+  "name": "MCP CLIENT",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1900,
+        520
+      ],
+      "id": "7b871fb3-36b1-42e8-9ad1-702f40316fe4",
+      "name": "When chat message received",
+      "webhookId": "b3281e4c-789b-4a63-8f5f-47d3af6fd2b5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Atendente de restaurante"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -1680,
+        520
+      ],
+      "id": "e00f20db-7bd3-40c4-a451-e821e95ff68d",
+      "name": "AI Agent",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1660,
+        740
+      ],
+      "id": "59fbd4b5-720d-4c9a-83d5-42560d531379",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "BFWaDuwRQfGru8wL",
+          "name": "TESTES PH"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1540,
+        740
+      ],
+      "id": "1f208395-8e71-4d49-bad7-955117386c1a",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://hook.multidesk.io/mcp/9f1cf6e4-b7a5-4b36-8abf-db6ee52d7df3/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        -280
+      ],
+      "id": "2579bd50-3feb-406e-93f3-b9f039ee7884",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1920,
+        -650
+      ],
+      "id": "a9021239-c5fd-4b5e-bc94-b0a224dc206b",
+      "name": "WhatsApp Trigger",
+      "webhookId": "eb23b8ce-a240-474c-83ce-a2bbfee790fc",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "1s5U79wZq7nCF7H6",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "8a765e57-8e39-4547-a99a-0458df2b75f4",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.messages[0] }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "looseTypeValidation": true
+        }
+      },
+      "id": "31dabfda-a1cb-43ae-be5d-bffd9994df73",
+      "name": "Is message?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -1700,
+        -650
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Is message?').item.json.contacts[0].wa_id }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -1140,
+        -280
+      ],
+      "id": "64264582-7383-41b0-a5a6-4026533b780d",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Is message?').item.json.metadata.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $('Is message?').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        -500
+      ],
+      "id": "cad84428-4044-40a0-a9e3-e9dd73616e4a",
+      "name": "WhatsApp Business Cloud1",
+      "webhookId": "571318e8-35ae-4a53-80d8-59b6a5649ae9",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "fsDXKfeMv1tVvrBU",
+          "name": "PH-PROD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use formatação para whatsapp e sms\n\nMensagem: {{ $json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=**🟢 MENSAGEM INICIAL**\n\nOlá {{ $json.contacts[0].profile.name }}! 👋  \nSeja bem-vindo(a) à **GOLD CRED COHAB**.  \nEu sou o assistente virtual e vou te ajudar com informações sobre **empréstimos com cartão de crédito**.\n\nPosso te fazer algumas perguntas rápidas pra começar?\n\n*Responda com:*  \n**SIM** – Para continuar\n\n---\n\n🟨 **SE NÃO RESPONDER \"SIM\"**:\n\n> Para te ajudar melhor, preciso que você digite **SIM** para continuar 😊\n\n---\n\n**📌 PERGUNTA 1 – Como você ficou sabendo da gente?**\n\nEscolha uma opção e digite o número correspondente:\n\n1. TV  \n2. Panfleto  \n3. Publicidade no poste  \n4. Faixa no poste  \n5. Banner  \n6. SMS  \n7. Indicação  \n8. Instagram  \n9. Cartaz\n\n---\n\n**📌 PERGUNTA 2 – Qual o seu nome completo?**\n\n> Por gentileza, digite seu nome completo pra seguirmos com o atendimento.\n\n---\n\n**📌 PERGUNTA 3 – Sobre o empréstimo**\n\nAqui funciona assim:\n\n✅ Você usa o **limite do cartão de crédito**  \n💸 Recebe o valor em **até 40 minutos na conta**  \n📆 Pode parcelar em até **18x**\n\nDeseja continuar com mais informações?\n\n*Responda com:*  \n**1 - Sim, quero saber mais**  \n**2 - Não tenho interesse**\n\n---\n\n**📌 PERGUNTA 4 – Atendimento presencial**\n\n⚠️ A contratação é feita **somente presencialmente na loja**.\n\nVocê consegue vir até a loja?\n\n*Responda com:*  \n**1 - Sim, posso ir até a loja**  \n**2 - Não consigo ir**\n\n---\n\n**📌 PERGUNTA 5 – Documentos necessários**\n\nSe decidir seguir com a contratação, leve:\n\n- Documento de identidade (do titular do cartão)  \n- Cartão de crédito  \n- Conta bancária (qualquer banco)\n\nVocê está com esses documentos em mãos?\n\n*Responda com:*  \n**1 - Sim, tenho todos os documentos**  \n**2 - Ainda não tenho tudo**\n\n---\n\n📞 *Telefone do cliente:* {{ $json.contacts[0].wa_id }}  \n📅 *Data atual:* {{ $now }}\n\n---\n\n## ⚠️ Regras e condutas para o bot:\n\n- Sempre aguarde a resposta do cliente antes de seguir.\n- Se o cliente fugir do assunto, diga:\n\n> Vamos por etapas 😊  \n> Pra continuar, preciso da resposta à pergunta anterior.\n\n- Nunca envie mensagens genéricas como “Como posso te ajudar hoje?”\n- Use sempre linguagem clara, amigável e direta.\n\n---\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -1220,
+        -500
+      ],
+      "id": "bd7f27cd-3806-439d-b506-527bfe6934e2",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1260,
+        -280
+      ],
+      "id": "7fddcf1b-5027-40d0-9dcc-e7c19eea1ec3",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "E2kIPBw3otjaqfbR",
+          "name": "VALIDACAO_PABLO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3e9ce9d4-375d-4701-a62c-59e1e36644b7",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1960,
+        -100
+      ],
+      "id": "1d109f29-97c1-449e-8708-5086239e4519",
+      "name": "Webhook",
+      "webhookId": "3e9ce9d4-375d-4701-a62c-59e1e36644b7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e7f6e3a-421b-4b3e-8a40-5c389bbda36f",
+              "name": "telefone",
+              "value": "={{ $json.body.conversation.meta.sender.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "84caea22-aa21-4d47-a660-5b041741feb6",
+              "name": "nome",
+              "value": "={{ $json.body.conversation.meta.sender.name }}",
+              "type": "string"
+            },
+            {
+              "id": "f190ab70-72c9-4268-b93e-8bf373295566",
+              "name": "mensagem",
+              "value": "={{ $json.body.content }}",
+              "type": "string"
+            },
+            {
+              "id": "3022de55-71fc-4528-a653-e4e47f0c848c",
+              "name": "conversa_id",
+              "value": "={{ $json.body.conversation.id }}",
+              "type": "string"
+            },
+            {
+              "id": "c09af6e4-f311-4017-80fe-be152b1d663d",
+              "name": "caixa",
+              "value": "={{ $json.body.inbox.name }}",
+              "type": "string"
+            },
+            {
+              "id": "443ddbb2-c59e-4804-99a8-284f65e9e179",
+              "name": "tipo",
+              "value": "={{ $json.body.message_type }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1740,
+        -100
+      ],
+      "id": "a386c167-5a11-4b1e-9ab3-56bb023da26f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "messages",
+          "mode": "list",
+          "cachedResultName": "messages"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "nome",
+              "value": "={{ $json.nome }}"
+            },
+            {
+              "column": "telefone",
+              "value": "={{ $json.telefone }}"
+            },
+            {
+              "column": "mensagem",
+              "value": "={{ $json.mensagem }}"
+            },
+            {
+              "column": "conversa_id",
+              "value": "={{ $json.conversa_id }}"
+            },
+            {
+              "column": "caixa",
+              "value": "={{ $json.caixa }}"
+            },
+            {
+              "column": "tipo",
+              "value": "={{ $json.tipo }}"
+            },
+            {
+              "column": "payload",
+              "value": "={{ $('Webhook').item.json.body.toJsonString() }}"
+            },
+            {
+              "column": "created_at",
+              "value": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        -1520,
+        -100
+      ],
+      "id": "6af4cc8d-d715-423e-a6c7-fc2a4b7d018f",
+      "name": "MySQL",
+      "credentials": {
+        "mySql": {
+          "id": "WrifggfL0NZ8reko",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a905eebd-3383-48dc-9096-6c5a118c7ac8",
+              "leftValue": "#esquecer",
+              "rightValue": "={{ $json.messages[0].text.body }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1480,
+        -650
+      ],
+      "id": "57343975-9f91-4a87-aba4-25048f56ac3b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Is message?').item.json.contacts[0].wa_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        -800
+      ],
+      "id": "7ba27866-9c1e-40c5-922f-32dddfa4ba0d",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Is message?').item.json.metadata.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $('Is message?').item.json.contacts[0].wa_id }}",
+        "textBody": "=Conversa reiniciada",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        -800
+      ],
+      "id": "ff6da997-6262-4a6e-b832-48bb8228b1e8",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "571318e8-35ae-4a53-80d8-59b6a5649ae9",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "fsDXKfeMv1tVvrBU",
+          "name": "PH-PROD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "84fe7b60-7a45-46b7-9983-3659724cadeb",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2300,
+        180
+      ],
+      "id": "37df6377-f2c8-41b8-813a-2c8d3a87bcc2",
+      "name": "Webhook1",
+      "webhookId": "84fe7b60-7a45-46b7-9983-3659724cadeb"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04be5e01-5889-4469-8d15-ae1159ddbb57",
+              "name": "number",
+              "value": "+556499526870",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2100,
+        180
+      ],
+      "id": "bd6cb546-7744-427d-999f-b0c0ea57ec69",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "messages",
+          "mode": "list",
+          "cachedResultName": "messages"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "telefone",
+              "condition": "LIKE",
+              "value": "={{ $json.number }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        -1900,
+        180
+      ],
+      "id": "f23894ac-4596-4d5e-9c91-58fe5d57eafc",
+      "name": "MySQL1",
+      "credentials": {
+        "mySql": {
+          "id": "WrifggfL0NZ8reko",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        40
+      ],
+      "id": "9967329f-9552-4cbb-af77-e4483d37ca8b",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.data.toJsonString() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -940,
+        40
+      ],
+      "id": "4900b369-d0e8-4e7f-831e-2ecd534ae68c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "de12777b-0946-4538-b988-8efe963e8792",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "7ac0c708-f358-4bb8-8c89-a9fc10d51f5e",
+              "name": "message",
+              "value": "={{ $json.mensagem }}",
+              "type": "string"
+            },
+            {
+              "id": "a5d40cc1-b50a-423c-b497-f2a01d9b095b",
+              "name": "tipo",
+              "value": "={{ $json.tipo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1660,
+        180
+      ],
+      "id": "d28a4d84-738f-4644-bb93-0e919686eb48",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4b8f91e2-baa3-4fcd-8307-faa2b9a2e1c5",
+              "leftValue": "={{ $json.message }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1380,
+        180
+      ],
+      "id": "c47191dd-2d01-4ce2-b935-cf58cb43bcb3",
+      "name": "If1"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Is message?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is message?": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "MySQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "MySQL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "WhatsApp Trigger": [
+      {
+        "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "556136866201",
+            "phone_number_id": "662809173574386"
+          },
+          "contacts": [
+            {
+              "profile": {
+                "name": "PH"
+              },
+              "wa_id": "556281154120"
+            }
+          ],
+          "messages": [
+            {
+              "from": "556281154120",
+              "id": "wamid.HBgMNTU2MjgxMTU0MTIwFQIAEhgWM0VCMDZEQ0Q3QkRFQ0NGQTI1RjZBNgA=",
+              "timestamp": "1744669999",
+              "text": {
+                "body": "oi"
+              },
+              "type": "text"
+            }
+          ],
+          "field": "messages"
+        }
+      }
+    ]
+  },
+  "versionId": "06204871-8194-44b6-b92f-e8ab5f69a0a9",
+  "triggerCount": 3,
+  "tags": []
+}
