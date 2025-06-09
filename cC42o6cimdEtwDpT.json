@@ -1,22 +1,11 @@
 {
   "createdAt": "2025-06-09T22:14:39.176Z",
-  "updatedAt": "2025-06-09T22:31:58.560Z",
+  "updatedAt": "2025-06-09T22:36:09.712Z",
   "id": "cC42o6cimdEtwDpT",
   "name": "DELETA FLOWS SEM PAI",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -1360,
-        100
-      ],
-      "name": "Manual Trigger",
-      "id": "42a6b9de-2241-4a00-abc6-07c6a6fa829a"
-    },
     {
       "parameters": {
         "filters": {},
@@ -25,7 +14,7 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        -1040,
+        -920,
         200
       ],
       "name": "Listar Workflows n8n",
@@ -58,8 +47,8 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        -1060,
-        20
+        -1140,
+        0
       ],
       "name": "Listar Arquivos GitHub",
       "id": "39f8c58f-5cdf-4a09-a03c-231dd35d8a8a",
@@ -87,8 +76,8 @@
       "type": "n8n-nodes-base.compareDatasets",
       "typeVersion": 2.3,
       "position": [
-        -640,
-        140
+        -700,
+        79
       ],
       "id": "2e08262c-5d33-41df-af8b-9a1466c66979",
       "name": "Compare Datasets"
@@ -101,8 +90,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -860,
-        20
+        -920,
+        0
       ],
       "id": "59a25a79-9f2e-478a-b097-7a6965864d85"
     },
@@ -129,8 +118,8 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        -340,
-        80
+        -420,
+        -60
       ],
       "id": "e448f16b-d6da-49a5-8710-9e2bcba297b3",
       "name": "GitHub",
@@ -141,25 +130,33 @@
           "name": "GitHub account"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 9,
+              "triggerAtMinute": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1360,
+        100
+      ],
+      "id": "8d0e6b94-b09f-42d9-bc2e-6edfb88e4c5b",
+      "name": "Schedule Trigger"
     }
   ],
   "connections": {
-    "Manual Trigger": {
-      "main": [
-        [
-          {
-            "node": "Listar Arquivos GitHub",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Listar Workflows n8n",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Listar Arquivos GitHub": {
       "main": [
         [
@@ -203,17 +200,37 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Listar Arquivos GitHub",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Listar Workflows n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "1edf274f-78b4-4838-a862-c0b7e8c152d4",
-  "triggerCount": 0,
+  "versionId": "8cceaa7f-d51c-45cd-95cd-89c89ead8355",
+  "triggerCount": 1,
   "tags": []
 }
