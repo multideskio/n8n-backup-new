@@ -1,19 +1,1032 @@
 {
   "createdAt": "2025-04-28T20:06:50.812Z",
-  "updatedAt": "2025-04-28T20:06:50.812Z",
+  "updatedAt": "2025-06-09T22:51:54.543Z",
   "id": "BBWBmSGWBHe1Vt9I",
   "name": "h7Contabil - Prorrogação/Contratação",
-  "active": false,
+  "active": true,
   "isArchived": false,
-  "nodes": [],
-  "connections": {},
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 9
+            },
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 13
+            },
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "id": "0fdb2c3f-544f-461c-b26e-ad091e46aed1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1780,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5a5e345-1595-4869-bb9f-8c990393d5d4",
+              "name": "urlApi",
+              "value": "https://evo-evolution-api.vs1kre.easypanel.host",
+              "type": "string"
+            },
+            {
+              "id": "a56e6ebe-939f-4c94-b158-3c33ad260fa2",
+              "name": "instance",
+              "value": "h7Contabil001",
+              "type": "string"
+            },
+            {
+              "id": "1fd96c3a-b475-46a2-94a2-8e0c50cb1a90",
+              "name": "apikey",
+              "value": "0F08CAA4-26FE-497D-AB0C-99EE8D260DD3",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f95fd970-bef6-4f63-89b9-cbbdfdfbdfbb",
+      "name": "Dados Api WA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -1560,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A",
+          "mode": "list",
+          "cachedResultName": "AUTOMAÇÃO - H7 CONTÁBIL (CS) ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1499243858,
+          "mode": "list",
+          "cachedResultName": "AVISOS DE VENCIMENTO - DP",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit#gid=1499243858"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status"
+            }
+          ]
+        },
+        "options": {
+          "returnAllMatches": "returnAllMatches"
+        }
+      },
+      "id": "c3199570-dcb2-4410-8008-1cadbae8be16",
+      "name": "Busca todos os registros",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        -1400,
+        320
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "67a8cf1e-4aff-457a-8bd4-6f4a37ef894d",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1200,
+        320
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {},
+      "id": "46ad1be2-943d-4c6c-b163-61e1cdb29214",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "ee8168cb-ba1a-4467-9d4f-8be2eb23c8e5",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "16467df7-f80e-4fd4-bb64-46250222738f",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A",
+          "mode": "list",
+          "cachedResultName": "TESTE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1499243858,
+          "mode": "list",
+          "cachedResultName": "Pagina1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit#gid=1499243858"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Loop Over Items').item.json.row_number }}",
+            "status": "enviado"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Código",
+              "displayName": "Código",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Empresa",
+              "displayName": "Empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Cód. Empregado",
+              "displayName": "Cód. Empregado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Admissão",
+              "displayName": "Admissão",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1ª Prorrogação",
+              "displayName": "1ª Prorrogação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2ª Prorrogação",
+              "displayName": "2ª Prorrogação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Cargo",
+              "displayName": "Cargo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Centro de Custo",
+              "displayName": "Centro de Custo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c17f933b-cd3b-47df-9199-2e3b54258471",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        260,
+        400
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "=20"
+      },
+      "id": "7b6b839d-46de-4389-a8a6-b60ee04e4ea3",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -340,
+        760
+      ],
+      "webhookId": "d34ae442-8f2b-4a23-ac43-8f1c91a58313"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados Api WA').item.json.urlApi }}/chat/whatsappNumbers/{{ $('Dados Api WA').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados Api WA').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"numbers\":[\"{{ $json.Telefone }}\"]}",
+        "options": {}
+      },
+      "id": "cd36fb1a-f3c9-405e-ad99-a286cd0e66ab",
+      "name": "Verifica se tem whatsapp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -820,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "d8dc9e9d-8419-44e1-92ea-03c8552920ad",
+              "leftValue": "={{ $json.exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "50c5600c-974e-4c93-bb61-90b543863e88",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -600,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A",
+          "mode": "list",
+          "cachedResultName": "TESTE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1499243858,
+          "mode": "list",
+          "cachedResultName": "Pagina1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit#gid=1499243858"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Loop Over Items').item.json.row_number }}",
+            "status": "Erro ao enviar"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Código",
+              "displayName": "Código",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Empresa",
+              "displayName": "Empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Cód. Empregado",
+              "displayName": "Cód. Empregado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Admissão",
+              "displayName": "Admissão",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1ª Prorrogação",
+              "displayName": "1ª Prorrogação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2ª Prorrogação",
+              "displayName": "2ª Prorrogação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Cargo",
+              "displayName": "Cargo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Centro de Custo",
+              "displayName": "Centro de Custo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ab940fac-db6d-464d-8b4c-0fdbb9a6311e",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        -640,
+        620
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados Api WA').item.json.urlApi }}/message/sendText/{{ $('Dados Api WA').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados Api WA').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('If1').item.json[\"jid\"] }}\",\n  \"text\": \"{{ $json[\"message\"].replace(/\\r?\\n/g, '\\\\n')}}\"\n}",
+        "options": {}
+      },
+      "id": "3042e27e-e6f6-4581-9206-6610843248a3",
+      "name": "Envia mensagem para o admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4c1c3a5d-0539-4321-907d-7a8a94675c65",
+              "name": "message",
+              "value": "=[MENSAGEM AUTOMÁTICA – VENCIMENTO DE PERÍODO]\n\n🗣️ Comunicado:\n\nO Prazo final do contrato do(a) empregado(a) {{ $('If').item.json[\"Nome\"] }} da empresa {{ $('If').item.json[\"Empresa\"] }} está previsto para vencer em {{ $('If').item.json[\"2ª Prorrogação\"] }}.\n\nÉ obrigatório que a informação seja enviada pelo Onvio, comunicando se haverá efetivação do contrato ou encerramento do mesmo por fim de período de experiência.\n\nA solicitação deve ser formalizada em período de Expediente da Contabilidade e de maneira antecipada ao dia do vencimento. Caso não recebamos uma resposta até o prazo informado, o contrato do colaborador será automaticamente efetivado por prazo indeterminado.\n\nEssa mensagem é exclusivamente automática, caso haja necessidade de falar com um analista, entre em contato pelo nosso Nr Oficial 62 8311-0573",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "369b37a7-7451-429e-8cee-3172f1c59d9f",
+      "name": "Prorrogação 2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -160,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4c1c3a5d-0539-4321-907d-7a8a94675c65",
+              "name": "message",
+              "value": "=[MENSAGEM AUTOMÁTICA - PRORROGAÇÃO DE CONTRATO EXPERIÊNCIA]\n\n🗣️ Comunicado:\n\nA primeira prorrogação do contrato do(a) empregado(a) {{ $('If').item.json[\"Nome\"] }} da empresa {{ $('If').item.json[\"Empresa\"] }} está previsto para vencer em {{ $('If').item.json[\"1ª Prorrogação\"] }}.\n\nÉ obrigatório que a informação seja enviada pelo Onvio, comunicando se haverá Prorrogação do Contrato, encerramento do mesmo ou efetivação do empregado\n\nA solicitação deve ser formalizada em período de Expediente da Contabilidade e de maneira antecipada ao dia do vencimento. Caso não recebamos uma resposta até o prazo informado, o contrato do colaborador será automaticamente efetivado por prazo indeterminado.\n\n_Essa mensagem é exclusivamente automática, caso haja necessidade de falar com um analista, entre em contato pelo nosso Nr Oficial 62 8311-0573_",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "20d0dfc9-007f-42f9-96b3-4d72d02b9543",
+      "name": "Prorrogação 1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -160,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "path": "h7contabil-prorrogacao-contratacao",
+        "authentication": "basicAuth",
+        "options": {
+          "responseData": "Executando..."
+        }
+      },
+      "id": "9680e467-fe1f-405c-ac71-b02901dd2a7b",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1800,
+        520
+      ],
+      "webhookId": "2441bf7b-d3c5-416e-ad00-025798f463eb",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "A614HcbPPzc4YEjF",
+          "name": "SINCRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('If').item.json['2ª Prorrogação'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "db0919bb-1a11-4d65-83f2-bbd09754fe32",
+                    "leftValue": "={{ $('If').item.json['1ª Prorrogação'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8e716ca7-4624-4bc8-8c50-6723b16965ea",
+                    "leftValue": "={{ $('If').item.json['Admissão'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0d36f6a9-a827-4574-ba3f-fb7083a21c6f",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -400,
+        160
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Dados Api WA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Api WA": {
+      "main": [
+        [
+          {
+            "node": "Busca todos os registros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca todos os registros": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Verifica se tem whatsapp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se tem whatsapp": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagem para o admin": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prorrogação 2": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagem para o admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prorrogação 1": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagem para o admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados Api WA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Prorrogação 2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prorrogação 1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
-  "meta": null,
-  "pinData": {},
-  "versionId": "30b939ca-325f-460e-b7ea-f5a22dfb0d96",
-  "triggerCount": 0,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowh.conect.app",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "authorization": "Basic aDdjb250YWJpbDoxMjMxMjMxMjM=",
+            "if-none-match": "W/\"d-Rsbc25ntDSi9L4gSUQzJE06dcnk\"",
+            "priority": "u=0, i",
+            "sec-ch-ua": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "none",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "186.192.106.67",
+            "x-forwarded-host": "autowh.conect.app",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7a32980552eb",
+            "x-real-ip": "186.192.106.67"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://autowh.conect.app/webhook/h7contabil-prorrogacao-contratacao",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "e57e3a49-fc34-4ed7-935c-bc5f22301499",
+  "triggerCount": 2,
   "tags": []
 }
