@@ -1,0 +1,993 @@
+{
+  "createdAt": "2025-05-26T12:55:26.546Z",
+  "updatedAt": "2025-06-09T21:42:32.740Z",
+  "id": "fgPqEtwIAZh62fvf",
+  "name": "NOTIFICAÇÃO ABSOLUTE",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "b716abdd-bd8a-4cd1-bc6f-17f673066623",
+              "leftValue": "=cart.reminder",
+              "rightValue": "={{ $('Webhook').item.json.body.event }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6945f561-7c2b-41c1-bb06-4e94b8a05dce",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        420,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "abfdfead-079f-4be6-bc80-50403688a138",
+              "name": "apikey",
+              "value": "093A7B9574FA-438E-94D7-D7421610A654",
+              "type": "string"
+            },
+            {
+              "id": "b1ade5ad-a142-44f0-aa45-4e8e9cf0ac41",
+              "name": "cliente",
+              "value": "={{$('Webhook').item.json[\"body\"][\"resource\"][\"tracking_data\"][\"name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "dd828f2e-8cfa-42fa-bb02-67aac9a4092c",
+              "name": "link",
+              "value": "={{ $('Webhook').item.json[\"body\"][\"resource\"][\"customer\"][\"data\"][\"login_url\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "f299646d-8c71-4443-a990-fd318baece5c",
+              "name": "cupom",
+              "value": "ABS20",
+              "type": "string"
+            },
+            {
+              "id": "7bf96da5-1792-49d3-9681-e2267b68af1a",
+              "name": "baseApi",
+              "value": "https://easyevo.multidesk.io/",
+              "type": "string"
+            },
+            {
+              "id": "2e9b8e26-9129-4961-804c-498c39fee353",
+              "name": "instance",
+              "value": "absolute",
+              "type": "string"
+            },
+            {
+              "id": "1624e88d-da94-4030-91e3-2d2e3bb212e3",
+              "name": "whatsappCliente",
+              "value": "={{ $('Webhook').item.json[\"body\"][\"resource\"][\"customer\"][\"data\"][\"phone\"][\"whatsapp_link\"].split(\"=\")[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "1d336a9b-f93e-482a-b03d-a4693c892e93",
+              "name": "whatsappTeste",
+              "value": "5562981154120",
+              "type": "string"
+            },
+            {
+              "id": "c929171a-7318-4e11-8dd8-55d8d6dfb0b3",
+              "name": "message",
+              "value": "=Olá *{{ $('Webhook').item.json[\"body\"][\"resource\"][\"customer\"][\"data\"][\"first_name\"] }}*, tudo bem? 🌟\n\nNotamos que você passou em nosso site, *Absolut Nutrition*, e parece que alguns itens ficaram esquecidos no seu carrinho. Não se preocupe, estamos aqui para te ajudar! Conclua sua compra com um desconto especial de *20%*  no valor total do seu pedido🎁.\nÉ muito simples, basta usar o código *ABS20* no checkout e aproveitar essa oferta incrível. Não perca tempo, aproveite para garantir seus produtos favoritos com um preço ainda mais especial. ✨ 🛒\n\nComo resgatar seu cupom e garantir o desconto:\n\n1️⃣ - Volte ao seu carrinho de compras, utilizando link abaixo;\n2️⃣ - Insira o código *ABS20* no campo apropriado durante o checkout;\n3️⃣ - Veja instantaneamente o preço diminuir e finalize sua compra com um sorriso! 😊\n\nLembre-se, o cupom é por tempo limitado, não perca essa oportunidade! ⏰\n\n{{ $('Webhook').item.json[\"body\"][\"resource\"][\"spreadsheet\"][\"data\"][\"purchase_url\"].replaceAll(\" \", \"+\") }}\n\n🚨 Digite qualquer coisa para ativar o link.\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d9270377-8f9d-4617-a1ae-c5405fb45ca5",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1300,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "57ed1bac-dc1a-4a04-9621-3af195acc010",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        1060
+      ],
+      "webhookId": "4231c038-8151-4bbc-b636-7ec3912afda9"
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "=abs_{{ $json.body.resource.tracking_data.email }}"
+      },
+      "id": "aba0a295-b0a3-4581-8712-54e01850c27d",
+      "name": "Redis2",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        640,
+        960
+      ],
+      "credentials": {
+        "redis": {
+          "id": "xoGPhxM4qkQNnSpn",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=abs_{{ $('Webhook').item.json.body.resource.tracking_data.email }}",
+        "value": "=abs_{{ $('Webhook').item.json.body.resource.tracking_data.email }}",
+        "expire": true,
+        "ttl": 86400
+      },
+      "id": "27dd7fbd-c582-4daa-a5f9-36198ca24656",
+      "name": "Redis3",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        960
+      ],
+      "credentials": {
+        "redis": {
+          "id": "xoGPhxM4qkQNnSpn",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.toJsonString().split('\"')[1] || \"\" }}",
+                    "rightValue": "=abs_{{ $('Webhook').item.json.body.resource.tracking_data.email }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1fb7de6b-fccd-4e6c-a0c3-e9ada50a59d7"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e872dbef-47f3-4c04-aa86-ee14cfd2f699",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e391a7d0-25e1-431e-88dc-16bb0edc9b6a",
+      "name": "Switch2",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        860,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cb536313-e25e-481b-a5fa-e455f900ecc4",
+              "leftValue": "order.paid",
+              "rightValue": "={{ $('Webhook').item.json.body.event }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a9280204-2078-40b8-92c7-ef76f78a9f1a",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        640,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=abs_{{ $('Webhook').item.json.body.resource.tracking_data.email }}",
+        "value": "=abs_{{ $('Webhook').item.json.body.resource.tracking_data.email }}",
+        "expire": true,
+        "ttl": 86400
+      },
+      "id": "9d80213e-28f6-4f53-9759-b1793eafeb1e",
+      "name": "Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        860,
+        1160
+      ],
+      "credentials": {
+        "redis": {
+          "id": "xoGPhxM4qkQNnSpn",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "absolut-cart-reminder",
+        "options": {}
+      },
+      "id": "af26ff3d-402f-4b2c-ba08-e84129364c02",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        1060
+      ],
+      "webhookId": "6ff4b2e2-052f-443c-8b55-cb741a23f7e3"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Edit Fields').item.json.instance }}",
+        "remoteJid": "={{ $json.data[0].jid }}",
+        "messageText": "={{ $('Edit Fields').item.json.message }}",
+        "options_message": {
+          "linkPreview": false
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        860
+      ],
+      "id": "d99409f8-68f5-4b98-8bdc-124c2facd843",
+      "name": "Evolution API",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $json.instance }}",
+        "remoteJid": "=5562981154120",
+        "messageText": "={{ $json.message }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        1060
+      ],
+      "id": "825e549b-283c-466f-8cca-751d7ec7abc4",
+      "name": "Evolution API1",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "instanceName": "={{ $json.instance }}",
+        "numbers": "={{ $json.whatsappCliente }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        860
+      ],
+      "id": "4211e88b-7421-469e-80dc-093c4bae0ee9",
+      "name": "Evolution API2",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "159de9d7-9773-4080-aefd-cc050636846a",
+              "leftValue": "={{ $json.data[0].exists }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1740,
+        860
+      ],
+      "id": "576f7c5f-d4b7-4697-b5b2-f56057b162a0",
+      "name": "If2"
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Evolution API2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Evolution API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API2": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Evolution API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "GuzzleHttp/6.5.5 curl/7.81.0 PHP/7.2.34-54+ubuntu20.04.1+deb.sury.org+1",
+            "content-length": "9073",
+            "content-type": "application/json",
+            "merchant-token": "HqgmehY1mjFkFjJf8ZrCYqCIFDzFaUT9WnNrh52o",
+            "newrelic": "eyJ2IjpbMCwxXSwiZCI6eyJ0eSI6IkFwcCIsImFjIjoiMjkzNTI0OSIsImFwIjoiMTAyMzM4MjQxOSIsImlkIjoiNDQ4NTA3M2M0ZTNjMTJjYyIsInRyIjoiMDAwMDAwMDAwMDAwMDAwMGE4YmU1MjliODdiM2IyMjAiLCJ0eCI6IjQzNjFjMjVhZGMzNWQyNTgiLCJwciI6MS44NzE1OCwic2EiOnRydWUsInRpIjoxNzQ5NTA1MjI0MDYwfX0=",
+            "traceparent": "00-0000000000000000a8be529b87b3b220-4485073c4e3c12cc-01",
+            "tracestate": "2935249@nr=0-0-2935249-1023382419-4485073c4e3c12cc-4361c25adc35d258-1-1.871576-1749505224060",
+            "x-forwarded-for": "52.67.114.94",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "007b3bfbd68a",
+            "x-real-ip": "52.67.114.94",
+            "x-yampi-hmac-sha256": "ML+XhEzmJpKDIPS3i7rbkEkK7ldCpsqhodiLoU/Fhuk=",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "cart.reminder",
+            "time": "2025-06-09 18:40:23",
+            "merchant": {
+              "id": 585681,
+              "alias": "absolut-nutrition"
+            },
+            "resource": {
+              "id": 537572932,
+              "merchant_id": 585681,
+              "customer_id": 230686120,
+              "token": "woo-ace1ad20-4578-11f0-a51a-116d60f623a1",
+              "payment_alias": null,
+              "has_recommendation": false,
+              "is_upsell": false,
+              "totalizers": {
+                "total_items": 3,
+                "subtotal": 303.4,
+                "discount": 75.85,
+                "shipment": 17.05,
+                "shipment_original_value": 17.05,
+                "shipment_discount_value": 0,
+                "shipment_discount_percent": 0,
+                "progressive_discount_value": 75.85,
+                "combos_discount_value": 0,
+                "total": 244.6,
+                "shipment_formated": "R$ 17,05",
+                "subtotal_formated": "R$ 303,40",
+                "discount_formated": "R$ 75,85",
+                "total_formated": "R$ 244,60"
+              },
+              "shipping_service": "CORREIOS_SEDEX_03220",
+              "tracking_data": {
+                "name": "Camila de Sousa Santos",
+                "email": "camilasousasantos098@gmail.com"
+              },
+              "total_transactions": 0,
+              "simulate_url": "https://seguro.absolutnutrition.com.br/cart?cart_token=woo-ace1ad20-4578-11f0-a51a-116d60f623a1&utm_source=&utm_campaign=&forceCheckout=1&skipToCheckout=1&store_token=HqgmehY1mjFkFjJf8ZrCYqCIFDzFaUT9WnNrh52o&customerToken=def4b320-4577-11f0-90db-fdea4e2aec94",
+              "unauth_simulate_url": "https://seguro.absolutnutrition.com.br/cart?cart_token=woo-ace1ad20-4578-11f0-a51a-116d60f623a1&utm_source=&utm_campaign=&forceCheckout=1&skipToCheckout=1&store_token=HqgmehY1mjFkFjJf8ZrCYqCIFDzFaUT9WnNrh52o&forceLogout=1",
+              "utm_source": null,
+              "utm_campaign": null,
+              "utm_content": null,
+              "utm_term": null,
+              "utm_medium": null,
+              "last_transaction_status": null,
+              "created_at": {
+                "date": "2025-06-09 18:28:25.000000",
+                "timezone_type": 3,
+                "timezone": "America/Sao_Paulo"
+              },
+              "updated_at": {
+                "date": "2025-06-09 18:29:02.000000",
+                "timezone_type": 3,
+                "timezone": "America/Sao_Paulo"
+              },
+              "customer": {
+                "data": {
+                  "id": 230686120,
+                  "merchant_id": 585681,
+                  "marketplace_id": null,
+                  "cluster_id": null,
+                  "active": true,
+                  "type": "f",
+                  "name": "Camila de Sousa Santos",
+                  "razao_social": null,
+                  "first_name": "Camila",
+                  "last_name": "Santos",
+                  "generic_name": "Camila de Sousa Santos",
+                  "email": "camilasousasantos098@gmail.com",
+                  "cnpj": null,
+                  "state_registration": null,
+                  "cpf": "11478860677",
+                  "birthday": "2002-10-28",
+                  "phone": {
+                    "full_number": "31993403393",
+                    "area_code": "31",
+                    "number": "993403393",
+                    "formated_number": "(31) 99340-3393",
+                    "whatsapp_link": "https://api.whatsapp.com/send?phone=5531993403393"
+                  },
+                  "social_driver": null,
+                  "social_id": null,
+                  "newsletter": false,
+                  "whatsapp": false,
+                  "utm_source": null,
+                  "utm_campaign": null,
+                  "ip": "186.241.163.227",
+                  "notes": null,
+                  "token": "def4b320-4577-11f0-90db-fdea4e2aec94",
+                  "login_url": "https://seguro.absolutnutrition.com.br/auth/login/force?token=def4b320-4577-11f0-90db-fdea4e2aec94",
+                  "anonymized": false,
+                  "created_at": {
+                    "date": "2025-06-09 18:22:39.000000",
+                    "timezone_type": 3,
+                    "timezone": "America/Sao_Paulo"
+                  },
+                  "updated_at": {
+                    "date": "2025-06-09 18:22:39.000000",
+                    "timezone_type": 3,
+                    "timezone": "America/Sao_Paulo"
+                  }
+                }
+              },
+              "items": {
+                "data": [
+                  {
+                    "id": 799737982,
+                    "product_id": 17341801,
+                    "sku_id": 117153361,
+                    "kit_id": null,
+                    "bundle_id": null,
+                    "upsell_id": null,
+                    "bundle_name": null,
+                    "quantity": 1,
+                    "price": 158.8,
+                    "gift": false,
+                    "has_recomm": false,
+                    "customizations": [],
+                    "created_at": {
+                      "date": "2025-06-09 18:28:25.000000",
+                      "timezone_type": 3,
+                      "timezone": "America/Sao_Paulo"
+                    },
+                    "updated_at": {
+                      "date": "2025-06-09 18:28:25.000000",
+                      "timezone_type": 3,
+                      "timezone": "America/Sao_Paulo"
+                    },
+                    "sku": {
+                      "data": {
+                        "id": 117153361,
+                        "product_id": 17341801,
+                        "seller_id": null,
+                        "sku": "342",
+                        "token": "T6O65NIS1I",
+                        "erp_id": null,
+                        "blocked_sale": false,
+                        "barcode": null,
+                        "title": "Whey 100% Pure  900g -  Absolut Nutrition Morango com Chantily 900g",
+                        "availability": 1,
+                        "availability_soldout": -1,
+                        "days_availability_formated": "1 dia útil",
+                        "price_cost": 0,
+                        "price_sale": 158.8,
+                        "price_discount": 158.8,
+                        "width": 30,
+                        "height": 26,
+                        "length": 31,
+                        "weight": 0,
+                        "quantity_managed": false,
+                        "variations": [
+                          {
+                            "name": "Sabor",
+                            "id": 2212141,
+                            "value": "Morango com Chantily 900g",
+                            "value_id": 31463887
+                          }
+                        ],
+                        "combinations": "31463887",
+                        "order": 0,
+                        "total_in_stock": 0,
+                        "total_orders": null,
+                        "allow_sell_without_customization": false,
+                        "image_reference_sku_id": null,
+                        "purchase_url": "https://seguro.absolutnutrition.com.br/r/T6O65NIS1I",
+                        "created_at": {
+                          "date": "2023-04-25 10:51:42.000000",
+                          "timezone_type": 3,
+                          "timezone": "America/Sao_Paulo"
+                        },
+                        "updated_at": {
+                          "date": "2025-06-04 17:48:41.000000",
+                          "timezone_type": 3,
+                          "timezone": "America/Sao_Paulo"
+                        },
+                        "customizations": {
+                          "data": []
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 799737984,
+                    "product_id": 37133907,
+                    "sku_id": 249690584,
+                    "kit_id": null,
+                    "bundle_id": null,
+                    "upsell_id": null,
+                    "bundle_name": null,
+                    "quantity": 1,
+                    "price": 89.8,
+                    "gift": false,
+                    "has_recomm": false,
+                    "customizations": [],
+                    "created_at": {
+                      "date": "2025-06-09 18:28:25.000000",
+                      "timezone_type": 3,
+                      "timezone": "America/Sao_Paulo"
+                    },
+                    "updated_at": {
+                      "date": "2025-06-09 18:28:25.000000",
+                      "timezone_type": 3,
+                      "timezone": "America/Sao_Paulo"
+                    },
+                    "sku": {
+                      "data": {
+                        "id": 249690584,
+                        "product_id": 37133907,
+                        "seller_id": null,
+                        "sku": "530",
+                        "token": "NDRI2GZKX9",
+                        "erp_id": null,
+                        "blocked_sale": false,
+                        "barcode": null,
+                        "title": "Creatina 100% Pure Pouch - Leve 300g pague 250g - Bluster Nutrition",
+                        "availability": 1,
+                        "availability_soldout": -1,
+                        "days_availability_formated": "1 dia útil",
+                        "price_cost": 0,
+                        "price_sale": 89.8,
+                        "price_discount": 89.8,
+                        "width": 1,
+                        "height": 1,
+                        "length": 1,
+                        "weight": 1,
+                        "quantity_managed": false,
+                        "variations": [],
+                        "combinations": "249690584",
+                        "order": 0,
+                        "total_in_stock": 0,
+                        "total_orders": null,
+                        "allow_sell_without_customization": false,
+                        "image_reference_sku_id": null,
+                        "purchase_url": "https://seguro.absolutnutrition.com.br/r/NDRI2GZKX9",
+                        "created_at": {
+                          "date": "2024-11-19 12:31:58.000000",
+                          "timezone_type": 3,
+                          "timezone": "America/Sao_Paulo"
+                        },
+                        "updated_at": {
+                          "date": "2025-06-04 17:48:37.000000",
+                          "timezone_type": 3,
+                          "timezone": "America/Sao_Paulo"
+                        },
+                        "customizations": {
+                          "data": []
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 799737985,
+                    "product_id": 17341914,
+                    "sku_id": 117153642,
+                    "kit_id": null,
+                    "bundle_id": null,
+                    "upsell_id": null,
+                    "bundle_name": null,
+                    "quantity": 1,
+                    "price": 54.8,
+                    "gift": false,
+                    "has_recomm": false,
+                    "customizations": [],
+                    "created_at": {
+                      "date": "2025-06-09 18:28:25.000000",
+                      "timezone_type": 3,
+                      "timezone": "America/Sao_Paulo"
+                    },
+                    "updated_at": {
+                      "date": "2025-06-09 18:28:25.000000",
+                      "timezone_type": 3,
+                      "timezone": "America/Sao_Paulo"
+                    },
+                    "sku": {
+                      "data": {
+                        "id": 117153642,
+                        "product_id": 17341914,
+                        "seller_id": null,
+                        "sku": "116",
+                        "token": "7XFOD5R73I",
+                        "erp_id": null,
+                        "blocked_sale": false,
+                        "barcode": null,
+                        "title": "Thermo Pump 60 cáps - Absolut Nutrition",
+                        "availability": 1,
+                        "availability_soldout": -1,
+                        "days_availability_formated": "1 dia útil",
+                        "price_cost": 0,
+                        "price_sale": 54.8,
+                        "price_discount": 54.8,
+                        "width": 30,
+                        "height": 26,
+                        "length": 31,
+                        "weight": 0,
+                        "quantity_managed": false,
+                        "variations": [],
+                        "combinations": "117153642",
+                        "order": 0,
+                        "total_in_stock": 0,
+                        "total_orders": null,
+                        "allow_sell_without_customization": false,
+                        "image_reference_sku_id": null,
+                        "purchase_url": "https://seguro.absolutnutrition.com.br/r/7XFOD5R73I",
+                        "created_at": {
+                          "date": "2023-04-25 10:52:06.000000",
+                          "timezone_type": 3,
+                          "timezone": "America/Sao_Paulo"
+                        },
+                        "updated_at": {
+                          "date": "2025-06-04 17:48:44.000000",
+                          "timezone_type": 3,
+                          "timezone": "America/Sao_Paulo"
+                        },
+                        "customizations": {
+                          "data": []
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "transactions": {
+                "data": []
+              },
+              "spreadsheet": {
+                "data": {
+                  "customer_phone": "31993403393",
+                  "last_order_date": null,
+                  "products": "Whey 100% Pure  900g -  Absolut Nutrition Morango com Chantily 900g,Creatina 100% Pure Pouch - Leve 300g pague 250g - Bluster Nutrition,Thermo Pump 60 cáps - Absolut Nutrition",
+                  "products_skus": "342,530,116",
+                  "categories": "Absolut Nutrition,Proteínas,Qualidade de vida,Whey Protein 100% Concentrado,Bluster Nutrition,Creatina,Energia,Massa muscular,Qualidade de vida,Aminoácidos,Emagrecimento,Outros,Roupas e Acessórios,Vitaminas e Minerais,Absolut Nutrition,Termogênicos,Emagrecimento",
+                  "brands": "Woocommerce",
+                  "purchase_url": "https://seguro.absolutnutrition.com.br/cart?cart_token=woo-ace1ad20-4578-11f0-a51a-116d60f623a1&utm_source=Planilha&utm_campaign=Carrinho Abandonado&forceCheckout=1&skipToCheckout=1&store_token=HqgmehY1mjFkFjJf8ZrCYqCIFDzFaUT9WnNrh52o&forceLogout=1",
+                  "abandoned_step": "shippment",
+                  "count_recover_mail_sent": "0/4"
+                }
+              },
+              "metadata": {
+                "data": [
+                  {
+                    "key": "source_platform",
+                    "value": "woocommerce"
+                  }
+                ]
+              },
+              "search": {
+                "data": {
+                  "has_shipment_service": true,
+                  "has_address": true,
+                  "has_customer": true,
+                  "has_refused_payment": false,
+                  "abandoned_step": "shippment",
+                  "count_recover_mail_sent": 0,
+                  "created_at": "2025-06-09",
+                  "updated_at": "2025-06-09"
+                }
+              },
+              "emails": {
+                "data": [
+                  {
+                    "id": 453413934,
+                    "cart_id": 537572932,
+                    "promocode_id": null,
+                    "turn": 1,
+                    "email": "camilasousasantos098@gmail.com",
+                    "subject": null,
+                    "fire_date": "2025-06-09 18:59:02",
+                    "sent_at": null,
+                    "created_at": "2025-06-09 18:38:56",
+                    "updated_at": "2025-06-09 18:38:56"
+                  },
+                  {
+                    "id": 453413950,
+                    "cart_id": 537572932,
+                    "promocode_id": null,
+                    "turn": 2,
+                    "email": "camilasousasantos098@gmail.com",
+                    "subject": null,
+                    "fire_date": "2025-06-09 20:29:02",
+                    "sent_at": null,
+                    "created_at": "2025-06-09 18:38:56",
+                    "updated_at": "2025-06-09 18:38:56"
+                  },
+                  {
+                    "id": 453413961,
+                    "cart_id": 537572932,
+                    "promocode_id": null,
+                    "turn": 3,
+                    "email": "camilasousasantos098@gmail.com",
+                    "subject": null,
+                    "fire_date": "2025-06-10 18:29:02",
+                    "sent_at": null,
+                    "created_at": "2025-06-09 18:38:56",
+                    "updated_at": "2025-06-09 18:38:56"
+                  },
+                  {
+                    "id": 453413969,
+                    "cart_id": 537572932,
+                    "promocode_id": null,
+                    "turn": 4,
+                    "email": "camilasousasantos098@gmail.com",
+                    "subject": null,
+                    "fire_date": "2025-06-11 18:29:02",
+                    "sent_at": null,
+                    "created_at": "2025-06-09 18:38:56",
+                    "updated_at": "2025-06-09 18:38:56"
+                  }
+                ]
+              }
+            }
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/absolut-cart-reminder",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "49f68428-7708-4f02-8859-b30378f370ed",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2024-11-27T17:14:53.173Z",
+      "updatedAt": "2024-11-27T17:14:53.173Z",
+      "id": "mUCGPMdJjJRzfQit",
+      "name": "Absolute Nutrition"
+    }
+  ]
+}
