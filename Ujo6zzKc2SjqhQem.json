@@ -1,0 +1,164 @@
+{
+  "createdAt": "2025-04-30T09:29:26.381Z",
+  "updatedAt": "2025-05-11T09:14:56.615Z",
+  "id": "Ujo6zzKc2SjqhQem",
+  "name": "TESTE DISPARO VIDEO",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -60
+      ],
+      "id": "9fdbbc41-917a-4b77-a5ee-28bcc354860a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "phoneNumberId": "=662809173574386",
+        "mediaPropertyName": "video",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        -460
+      ],
+      "id": "4dfbffb3-c14c-4a11-93e9-eeaf412b4ff2",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "267ca494-b760-44f8-b65d-bef6e2273ca5",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "fsDXKfeMv1tVvrBU",
+          "name": "PH-PROD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "teste",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "video",
+              "fieldType": "file",
+              "acceptFileTypes": ".mp4"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -600,
+        -460
+      ],
+      "id": "503e8d0f-98ba-44fd-bd58-e9aa442a84bb",
+      "name": "On form submission",
+      "webhookId": "b8badd3a-f01c-4b77-9bd4-1a08be016367"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "634c8a3a-00e7-443f-a7ee-391144d1f4cd",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -420,
+        -60
+      ],
+      "id": "4c414da8-525a-4484-8ccd-84bf10edf9ac",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v22.0/662809173574386/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAJOsYyNwWYBO3ZAq1q0CZBAOWM01hXClE3RlQ3oH52BtGzcTZCMLo028kcb5NaKzMcK8bwNTq5EH1H8nZAbeAkzwHjFPbi2nn09AVBNfZBJ0T2yBoiSwDMJ59QqA4c7ZAIFpXZA1wLP2NEZCDAccSIaJ5uCeXbbV9ZB0NZCdmzSYwRJWNnp9Ty5UpbsfN8OmZB5zVvBQZDZD"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"5562981154120\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"teste_v\",\n    \"language\": {\n      \"code\": \"pt_BR\"\n    },\n    \"components\": [\n      {\n        \"type\": \"header\",\n        \"parameters\": [\n          {\n            \"type\": \"video\",\n            \"video\": {\n              \"id\": \"1020011939698209\"\n            }\n          }\n        ]\n      },\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"Valor 1\"\n          },\n          {\n            \"type\": \"text\",\n            \"text\": \"Valor 2\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        -60
+      ],
+      "id": "2f9041e3-f37d-4006-b06f-5cfe09f5c5f6",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e517b0ac-3874-48c8-ac9c-7db6aa310ae8",
+  "triggerCount": 0,
+  "tags": []
+}
