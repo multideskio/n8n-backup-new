@@ -1,0 +1,544 @@
+{
+  "createdAt": "2024-12-02T21:40:47.892Z",
+  "updatedAt": "2025-03-30T05:45:05.322Z",
+  "id": "oqQrsAG4LwLpNIFX",
+  "name": "PROPOSITO ACADEMY",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://memberclass.com.br/api/webhook/kiwify/clz0be3b7000112ct5n2w6xbf",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"order_status\": \"paid\",\n\t\"product_type\": \"membership\",\n\t\"webhook_event_type\": \"order_approved\",\n\t\"Product\": {\n\t\t\"product_id\": \"psk3pz4n9z00dlbe9urj\",\n\t\t\"product_name\": \"PropositoBank\"\n\t},\n\t\"Customer\": {\n\t\t\"full_name\": \"{{ $json[\"nome\"] }}\",\n\t\t\"first_name\": \"\",\n\t\t\"email\": \"{{ $json[\"email\"] }}\",\n\t\t\"mobile\": \"{{ $json[\"tel\"] }}\",\n\t\t\"CPF\": \"\",\n\t\t\"ip\": \"\"\n\t},\n\t\"Commissions\": {\n\t\t\"charge_amount\": \"0\",\n\t\t\"product_base_price\": \"0\",\n\t\t\"kiwify_fee\": \"0\"\n\t}\n}",
+        "options": {}
+      },
+      "id": "f99bdde1-1591-46a4-97c7-da9d262de466",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        440,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## O que esse fluxo faz?\nO fluxo realizada o cadastro de usuário direto na plataforma do Pr Rafael",
+        "width": 378
+      },
+      "id": "4650630b-043f-4fad-a514-b39b2dfa357d",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        60,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "0383e566-bff8-4471-b70b-57709cbf0bea",
+              "leftValue": "Success!",
+              "rightValue": "={{ $json.data }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "52be3948-8e15-4f6c-9ec9-d223063189a4",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        620,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados-API').item.json[\"urlApi\"] }}/message/sendText/{{ $('Dados-API').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados-API').item.json[\"key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"telefone\"] }}\",\n  \"text\": \"{{ $json[\"message\"].replace(/\\r?\\n/g, '\\\\n') }}\"\n}",
+        "options": {}
+      },
+      "id": "f7bca42c-c4ec-41fb-a0ed-79d766ad407c",
+      "name": "Envia no WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1540,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $json[\"key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\"{{ $('Dados recebidos').item.json.tel }}\"]\n}",
+        "options": {}
+      },
+      "id": "e819d9c7-61d0-4f6f-ae8c-fe2cf62fc8dc",
+      "name": "Numero-tel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1020,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "urlApi",
+              "stringValue": "https://easyevo.multidesk.io"
+            },
+            {
+              "name": "instace",
+              "stringValue": "dinamus"
+            },
+            {
+              "name": "key",
+              "stringValue": "77300745097B-4083-9717-B859955E8F0F"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "646586e5-2ac8-43d0-a537-11108bc8f483",
+      "name": "Dados-API",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        840,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.exists }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "ccda5608-1095-4438-a6b8-685ba11cd286",
+      "name": "True",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados-API').item.json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $('Dados-API').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados-API').item.json.key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"55{{ $json.number.split('+55')[1] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "e5a146d8-f485-4069-95a3-53d2af72caaf",
+      "name": "Numero-tel1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1400,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d00db68-8a45-4d7b-b11a-38248c0018a7",
+              "name": "message",
+              "value": "=🌟 *Bem-vindo(a), {{$('Dados recebidos').item.json.nome.split(\" \")[0] }}!* 🌟\n\n🎉 Estamos empolgados em tê-lo(a) na *PROPÓSITO ACADEMY*! Os dados de acesso foram enviados para o seu e-mail. 📧\n\n🔒 *Por segurança*, a senha foi enviada uma única vez. Se precisar alterá-la, basta acessar https://propositoacademy.com/login-email, clicar em _Esqueceu a senha?_ e inserir o seu e-mail.\n\n📩 Acesse seu e-mail e siga as instruções para redefinir sua senha.\n\n🚀 Aproveite ao máximo sua jornada na nossa plataforma!",
+              "type": "string"
+            },
+            {
+              "id": "87ecd99b-1ccf-41b9-a5a5-dcad16d36010",
+              "name": "telefone",
+              "value": "={{ $json.jid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "724e85a3-d883-4654-9dbf-ac5cda777b95",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1380,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "nome",
+              "stringValue": "={{ $json.body['names[first_name]'] }}"
+            },
+            {
+              "name": "email",
+              "stringValue": "={{ $json.body.email }}"
+            },
+            {
+              "name": "tel",
+              "stringValue": "={{ $json.body.phone }}"
+            }
+          ]
+        },
+        "include": "none",
+        "options": {}
+      },
+      "id": "d8952b5c-a792-4edf-9fb2-b3bce1bfe6a4",
+      "name": "Dados recebidos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        260,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.exists }}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "4cb5bf1e-5b76-4be3-8c15-feacaa71e1d9",
+                    "leftValue": "={{ $json.exists }}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8273186-cd18-4999-a143-fd39c3671e23",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1220,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d00db68-8a45-4d7b-b11a-38248c0018a7",
+              "name": "message",
+              "value": "=🌟 *Bem-vindo(a), {{ $('Dados recebidos').item.json.nome.split(\" \")[0] }}!* 🌟\n\n🎉 Estamos empolgados em tê-lo(a) na *PROPÓSITO ACADEMY*! Os dados de acesso foram enviados para o seu e-mail. 📧\n\n🔒 *Por segurança*, a senha foi enviada uma única vez. Se precisar alterá-la, basta acessar https://propositoacademy.com/login-email, clicar em _Esqueceu a senha?_ e inserir o seu e-mail.\n\n📩 Acesse seu e-mail e siga as instruções para redefinir sua senha.\n\n🚀 Aproveite ao máximo sua jornada na nossa plataforma!",
+              "type": "string"
+            },
+            {
+              "id": "87ecd99b-1ccf-41b9-a5a5-dcad16d36010",
+              "name": "telefone",
+              "value": "={{ $json.jid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3b896b9e-9dce-4630-bcdd-715d5443639f",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1780,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados-API').item.json[\"urlApi\"] }}/message/sendText/{{ $('Dados-API').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados-API').item.json[\"key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"telefone\"] }}\",\n  \"text\": \"{{ $json[\"message\"].replace(/\\r?\\n/g, '\\\\n') }}\"\n}",
+        "options": {}
+      },
+      "id": "13abd261-4b82-42a2-816b-14fc7fb0a53e",
+      "name": "Envia no WhatsApp1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1940,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4ed20232-0421-4778-b228-279a6ee036ae",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        60,
+        280
+      ],
+      "id": "d4f516c4-a96f-4486-a7f2-487f1cb301ef",
+      "name": "Webhook",
+      "webhookId": "4ed20232-0421-4778-b228-279a6ee036ae"
+    }
+  ],
+  "connections": {
+    "Numero-tel": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados-API": {
+      "main": [
+        [
+          {
+            "node": "Numero-tel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel1": {
+      "main": [
+        [
+          {
+            "node": "True",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Envia no WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Dados-API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados recebidos": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Numero-tel1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "True": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Envia no WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados recebidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "26c34ddd-c82c-4d9d-be71-8fe7b58d71de",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2024-12-02T21:40:40.770Z",
+      "updatedAt": "2024-12-02T21:40:40.770Z",
+      "id": "gwfHyX8EdOHftgKt",
+      "name": "Proposito Bank"
+    }
+  ]
+}
