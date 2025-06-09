@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-01-15T20:15:36.410Z",
-  "updatedAt": "2025-03-30T05:52:09.545Z",
+  "updatedAt": "2025-06-09T22:59:07.567Z",
   "id": "rn26lZeQw5Eh886B",
   "name": "RESUMO DE GRUPOS WHATSAPP",
   "active": false,
@@ -864,7 +864,14 @@
       }
     ]
   },
-  "versionId": "3a83059e-d6c3-40ac-b84e-ab83ccd48f49",
+  "versionId": "cf342151-c447-45ce-9868-22c6e9ed75ba",
   "triggerCount": 1,
-  "tags": []
+  "tags": [
+    {
+      "createdAt": "2025-06-09T22:58:45.373Z",
+      "updatedAt": "2025-06-09T22:58:45.373Z",
+      "id": "5qrXSOcALF3GpIvh",
+      "name": "Testar depois"
+    }
+  ]
 }
