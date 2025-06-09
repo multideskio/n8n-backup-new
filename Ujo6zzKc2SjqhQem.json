@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-04-30T09:29:26.381Z",
-  "updatedAt": "2025-05-11T09:14:56.615Z",
+  "updatedAt": "2025-06-09T23:04:51.312Z",
   "id": "Ujo6zzKc2SjqhQem",
   "name": "TESTE DISPARO VIDEO",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {},
@@ -158,7 +158,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "e517b0ac-3874-48c8-ac9c-7db6aa310ae8",
+  "versionId": "15365787-622c-46e0-9128-32329bb2f57a",
   "triggerCount": 0,
   "tags": []
 }
