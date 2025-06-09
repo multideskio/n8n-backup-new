@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-03-18T17:31:09.665Z",
-  "updatedAt": "2025-03-30T06:07:14.615Z",
+  "updatedAt": "2025-06-09T23:03:14.044Z",
   "id": "yYBUjhEP57pSNJfw",
   "name": "SINCRONIZA PEDIDOS SER25",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -381,7 +381,7 @@
       }
     ]
   },
-  "versionId": "4c47d05e-3ccc-43e0-b811-db1c2f832d99",
+  "versionId": "16ba3eca-a6fb-4690-b479-e0493a78453c",
   "triggerCount": 1,
   "tags": []
 }
