@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-04-04T09:52:22.815Z",
-  "updatedAt": "2025-04-04T09:52:28.604Z",
+  "updatedAt": "2025-06-09T23:03:22.509Z",
   "id": "RTlxw2xxd62g0QXq",
   "name": "TEST MP",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -30,7 +30,7 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "0b419762-6068-47b1-8946-b5a3e13767b3",
+  "versionId": "3b5906fc-59ce-4e8d-b827-43faeb08b325",
   "triggerCount": 1,
   "tags": []
 }
