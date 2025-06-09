@@ -1,0 +1,870 @@
+{
+  "createdAt": "2025-01-15T20:15:36.410Z",
+  "updatedAt": "2025-03-30T05:52:09.545Z",
+  "id": "rn26lZeQw5Eh886B",
+  "name": "RESUMO DE GRUPOS WHATSAPP",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "39ddb48d-5356-4c1c-8c63-a3eb86f99247",
+              "leftValue": "={{ $json.messageTimestamp.toDateTime('s').format('yyyy-MM-dd') }}",
+              "rightValue": "={{ $('Map Infos Iniciais').item.json.data }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ef952cb7-0c20-4bb1-8ce3-b7ff27639fbc",
+      "name": "Somente Hoje",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        360,
+        480
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "notesInFlow": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "981090d0-5b8b-4456-ba68-1ad19b0f83b3",
+              "name": "Mensagem.name_user",
+              "value": "={{ $json.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "3d479bb6-76d1-46c3-b9e4-ba4905759c8e",
+              "name": "Mensagem.text",
+              "value": "={{ $json.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "ccf8d881-ed90-4e4c-bd84-580579e78542",
+              "name": "Mensagem.Data",
+              "value": "={{ $json.messageTimestamp.toDateTime('s').format('yyyy-MM-dd TT') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "024d181c-0c68-4cc4-8412-79c1a25b5a81",
+      "name": "Map Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        780,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": "={{ $('Map Infos Iniciais').item.json.mensagens_maxima }}"
+      },
+      "id": "963b5237-b52b-4172-9103-22065121e709",
+      "name": "Limitar Mensagens",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        940,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "85b0beba-ae96-4f15-88ed-761f290b3129",
+      "name": "Agregar Todas Mensagens",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "42478e7a-1573-4625-8f9a-fa7df206d02a",
+              "name": "data",
+              "value": "={{ $json.data.toJsonString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d89be7b8-41d4-47ff-8803-bb4558807aba",
+      "name": "Map Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1180,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto da variável de entrada\nlet inputText = $json[\"output\"];\n\n// Substitui todos os casos de **texto** para *texto*\nlet outputText = inputText.replace(/\\*\\*(.*?)\\*\\*/g, '*$1*');\n\n// Substitui todas as ocorrências de \\n para \\n\\n\noutputText = outputText.replace(/([^\\n]|^)\\n([^\\n]|$)/g, '$1\\n\\n$2');\n\n// Retorna o resultado\nreturn {\n  json: {\n    outputText: outputText\n  }\n};\n"
+      },
+      "id": "e848eec2-6965-46ff-aa99-6831aacdcd19",
+      "name": "Formatar Texto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 500
+      },
+      "id": "f25c3683-5d63-4cbb-8309-4f7d240c2930",
+      "name": "Token Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "messages.records",
+        "options": {}
+      },
+      "id": "3244dff5-739d-4beb-bed3-0c4a55fd37fa",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        380,
+        880
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "39ddb48d-5356-4c1c-8c63-a3eb86f99247",
+              "leftValue": "={{ $json.messageType }}",
+              "rightValue": "=conversation",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1053d088-02f4-44ca-8fae-c92158c9d6a8",
+      "name": "Somente Texto",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        180,
+        680
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "3b308384-613d-432e-b5f2-132f35e513eb",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        360
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "MCZYHBrcmLRaCupZ",
+          "name": "GroupsResume"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "presencePenalty": 0.3
+        }
+      },
+      "id": "ff2afcea-c802-41bd-a5f9-c58f73aecc5a",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        360
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "MCZYHBrcmLRaCupZ",
+          "name": "GroupsResume"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkingMode": "advanced",
+        "options": {
+          "summarizationMethodAndPrompts": {
+            "values": {
+              "combineMapPrompt": "Escreva um resumo conciso com o seguinte critério: 1. Separe os assuntos por tópicos\n\n\nConversa:\n\n\"{text}\"\n\n\nRESUMO CONCISO:",
+              "prompt": "Escreva um resumo conciso com o seguinte critério: 1. Separe os assuntos por tópicos\n\n\nConversa:\n\n\"{text}\"\n\n\nRESUMO CONCISO:"
+            }
+          }
+        }
+      },
+      "id": "11dd937a-1f65-40f7-9f6b-bd4d75cb5608",
+      "name": "Resumir Mensagens",
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Preencher Infos",
+        "height": 313.46127626489005,
+        "width": 261.97838819336135
+      },
+      "id": "2f60d50b-d451-43b8-ada1-89409c0ba57f",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6bb13d8e-1084-41c0-bdcf-a0d15eb705aa",
+              "name": "url_evolution",
+              "value": "={{ $json.body.urlApi }}",
+              "type": "string"
+            },
+            {
+              "id": "f0da0569-3145-4c8a-812e-49079a7c3ccf",
+              "name": "nome_instancia_evolution",
+              "value": "={{ $json.body.instancia }}",
+              "type": "string"
+            },
+            {
+              "id": "3c6d353d-7da8-4641-a522-0f4a4ece306f",
+              "name": "id_grupo",
+              "value": "={{ $json.body.idGrupo }}",
+              "type": "string"
+            },
+            {
+              "id": "61463720-072f-4227-b2b8-12e6981ac494",
+              "name": "mensagens_maxima",
+              "value": 500,
+              "type": "number"
+            },
+            {
+              "id": "5af64764-6139-4140-9176-ad3a1f9e7e8c",
+              "name": "nome do grupo",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "3907640d-791f-438b-b420-a34020b97753",
+              "name": "token_apikey",
+              "value": "={{ $json.body.apikey }}",
+              "type": "string"
+            },
+            {
+              "id": "90293c92-1d70-47bc-8ff2-4d82ce04eade",
+              "name": "data",
+              "value": "={{ $now.minus(1, \"days\").format('yyyy-MM-dd') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1b4c5e01-ee6c-4e48-9a18-7f3393253db2",
+      "name": "Map Infos Iniciais",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -100,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url_evolution }}/chat/findMessages/{{ $json.nome_instancia_evolution }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $json.token_apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"where\": {\n\t\t\"key\": {\n\t\t\t\"remoteJid\": \"{{ $json.id_grupo }}\"\n\t\t}\n\t},\n\t\"page\": 1,\n\t\"offset\": 100\n}",
+        "options": {}
+      },
+      "id": "9e6a5d23-9ab7-4d48-ae27-7fc0e65b9937",
+      "name": "Get Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        1120
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "=*Nome do Grupo ou Identificação:* {{ $('Map Infos Iniciais').item.json[\"nome do grupo\"] }}\n*Data/Hora Agora:* {{ $now.format('yyyy-MM-dd TT') }}\n*Mensagens do dia:* {{ $('Map Infos Iniciais').item.json.data }}\n\n*Resumo:* {{ $json.response.text }}",
+        "options": {
+          "systemMessage": "=Crie um resumo detalhado e bem estruturado do que foi discutido no grupo com o seguinte formato:\n\n---\n\n[Nome do Grupo ou Identificação]\n⏰ Resumo das Conversas!\n\nResumo geral do grupo baseado nas últimas 100 mensagens (texto) de ontem:\n\n---\n\n1. *Principais Assuntos e Papos do Dia*\n1.1 [*Título do Assunto Principal*]  \n   - *Resumo:* [Resumo breve do tópico discutido.]  \n   - *Destaques da Conversa:*  \n     - [Pontos ou perguntas feitas por membros, adicionando informações relevantes.]  \n     - [Contribuições e sugestões que enriqueceram a conversa.]  \n     - [Links ou recursos compartilhados sobre o tema, se aplicável.]\n\n[Repita o item 1.2, 1.3, etc. conforme os tópicos principais discutidos.]\n\n---\n\n2. *Participação e Engajamento*\n[Parabenize quem teve mais engajamento]\n[Passe uma mensagem motivacional ou de agradecimento aos membros do grupo, incentivando a participação.]\n\n---\n\n📅 *Resumo Final:* \n[Resumo geral do dia ou da sessão.]\n\n---\n\nPor favor, preencha o resumo com base nos conteúdos do grupo, organizando as informações de forma objetiva e clara.\n\nNão esqueça de formatar o texto para o aplicativo WhatsApp."
+        }
+      },
+      "id": "7224d6f3-3ff0-4365-b9ca-3eb26b479902",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1660,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "796f2a9e-f29b-4d31-ad5e-d407c24d568d",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        780
+      ],
+      "id": "f262a810-8220-44f2-9e99-69c53e372c7f",
+      "name": "Webhook",
+      "webhookId": "796f2a9e-f29b-4d31-ad5e-d407c24d568d"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        960
+      ],
+      "id": "c4d63336-c1b0-4cef-a901-83f704f4af8f",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "575ef1a2-23b6-4b7f-abb8-9637d511a7fa",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        380
+      ],
+      "id": "bac7791b-8c7f-4e13-a509-2e6762f2afe9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Não há informações para compartilhar!\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        740,
+        740
+      ],
+      "id": "78e2c59d-5a57-42c6-876c-17e36a995521",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1a439ae0-f17f-4363-abca-66cd8418bbb2",
+              "leftValue": "={{ $json.body.idGrupo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b5a8950e-0c6a-49f6-a7e4-909ff5c01bef",
+              "leftValue": "={{ $json.body.urlApi }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "5c5ff9e5-9ad6-47d3-bca0-bc713655bb0e",
+              "leftValue": "={{ $json.body.instancia }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "473efd25-b58c-441d-9751-0b1a01f1ebf9",
+              "leftValue": "={{ $json.body.apikey }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "908c1847-02e4-4a85-87ed-27e2d348695c",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -340,
+        780
+      ],
+      "id": "239fcbc8-bdb4-464f-8959-e6d6c32a629d",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Alguma informação não foi passada na requisição\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        980
+      ],
+      "id": "f98918f4-e54b-4358-afef-f2bd9c9fc765",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Houve algum erro na solucitção da API, verificar conexão\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        1240
+      ],
+      "id": "a47766a0-3b27-4b88-8573-7aded8809ddc",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Não há informações para compartilhar!\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        1000
+      ],
+      "id": "1ba6126e-b172-4e97-9c79-b7be86fb3c84",
+      "name": "Respond to Webhook4"
+    }
+  ],
+  "connections": {
+    "Somente Hoje": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Dados": {
+      "main": [
+        [
+          {
+            "node": "Limitar Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limitar Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Agregar Todas Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar Todas Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Map Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Input": {
+      "main": [
+        [
+          {
+            "node": "Resumir Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Texto": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Resumir Mensagens",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Somente Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Somente Texto": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Somente Hoje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumir Mensagens": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Message": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Formatar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Infos Iniciais": {
+      "main": [
+        [
+          {
+            "node": "Get Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Resumir Mensagens",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Map Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Map Infos Iniciais",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "axios/1.7.4",
+            "content-length": "148",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "61a872d84fef",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "idGrupo": "120363286134712901@g.us",
+            "urlApi": "https://easyevo.multidesk.io",
+            "instancia": "ph_groups",
+            "apikey": "34A81F951F79-41A7-B5D5-1123EB003B24"
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/796f2a9e-f29b-4d31-ad5e-d407c24d568d",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "3a83059e-d6c3-40ac-b84e-ab83ccd48f49",
+  "triggerCount": 1,
+  "tags": []
+}
