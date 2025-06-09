@@ -1,0 +1,723 @@
+{
+  "createdAt": "2025-03-05T13:40:43.278Z",
+  "updatedAt": "2025-03-30T05:59:48.083Z",
+  "id": "7eEAHFGCWOTWqbxv",
+  "name": "VALIDAÇÃO",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1940,
+        -80
+      ],
+      "id": "0492c7f1-7347-4757-9841-f7e6ea387e10",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lqSMNkTkLsuVn8KN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cde6ea98-1ea0-4257-aa38-ae30c7a8dba0",
+              "name": "noticia",
+              "value": "={{ $json.data.markdown.replaceAll() ?? \"Site não suportado\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1100,
+        40
+      ],
+      "id": "530fe704-1964-450b-b48a-e603b2e927b9",
+      "name": "Edit Fields3",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 222665181,
+          "mode": "list",
+          "cachedResultName": "Materias",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit#gid=222665181"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Resumo": "=",
+            "Link": "={{ $('Google Sheets').item.json.link }}",
+            "Data": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "Probablidade": "={{ $json.probabilidade }}",
+            "Analise": "={{ $json.parametros_de_analise }}",
+            "Explicacao": "={{ $json.explicacao }}"
+          },
+          "matchingColumns": [
+            "Link"
+          ],
+          "schema": [
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Resumo",
+              "displayName": "Resumo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Probablidade",
+              "displayName": "Probablidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Analise",
+              "displayName": "Analise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Explicacao",
+              "displayName": "Explicacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -220,
+        80
+      ],
+      "id": "11105546-0f40-4adb-be50-b6b7b18273a1",
+      "name": "Google Sheets2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lqSMNkTkLsuVn8KN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.noticia ?? \"Este site não tem suporte a extração de dados\" }}",
+        "options": {
+          "systemMessage": "=Analise a seguinte notícia e determine a probabilidade de ser fake news. Considere fatores como fontes, coerência, viabilidade, tom sensacionalista e outros indicadores relevantes.\nFormato de resposta esperado (em JSON):\n{  \n  \"probabilidade\": \"%\",  \n  \"explicacao\": \"\",  \n  \"parametros_de_analise\": \"\"  \n}  \nCritérios de análise:\nFontes: A notícia cita fontes confiáveis e verificáveis?\nCoerência: O conteúdo faz sentido logicamente e está bem estruturado?\nViabilidade: O que é relatado é plausível e possível dentro da realidade?\nSensacionalismo: O tom da notícia é exagerado ou busca chocar o leitor?\nContexto: A notícia está fora de contexto ou distorcida?"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -720,
+        80
+      ],
+      "id": "5c57fd6b-c26d-4dd1-9a22-bd7198c6c7e2",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-4-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -720,
+        340
+      ],
+      "id": "fcc87b20-385e-474d-8dee-45c7989fbf10",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "E2kIPBw3otjaqfbR",
+          "name": "VALIDACAO_PABLO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "821161f9-9554-446d-a9c3-eb546bdcda40",
+              "name": "probabilidade",
+              "value": "={{ $json.output.parseJson().probabilidade }}",
+              "type": "string"
+            },
+            {
+              "id": "0e222434-ec6b-4993-9a82-97b7442c5dbb",
+              "name": "=parametros_de_analise",
+              "value": "={{ $json.output.parseJson().parametros_de_analise }}",
+              "type": "string"
+            },
+            {
+              "id": "87eda338-58cf-4745-aa54-9ab9d1b16457",
+              "name": "explicacao",
+              "value": "={{ $json.output.parseJson().explicacao }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        80
+      ],
+      "id": "a1b21c30-87d5-4c22-b851-9d0b8990eff9",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer fc-56e91c53f6b54f7d92cd248bb079e797"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"url\": \"{{ $json.link }}\",\n\t\"formats\": [\n\t\t\"markdown\"\n\t]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1280,
+        40
+      ],
+      "id": "8b7c3795-99d1-473e-8f9b-2b83f20c0de9",
+      "name": "HTTP Request2",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sinc",
+        "authentication": "basicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2160,
+        -80
+      ],
+      "id": "d498bd72-b480-47fa-b159-df9cc58efd43",
+      "name": "Webhook",
+      "webhookId": "790dc6c7-8a94-40bd-aec0-a609ca12fc27",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "A614HcbPPzc4YEjF",
+          "name": "SINCRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1700,
+        -80
+      ],
+      "id": "1d968df7-b06a-409b-a744-950e3c147a3a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d2878845-8bf4-43f1-a52d-3fde7f4342db",
+              "leftValue": "={{ $json.noticia }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0a556afd-d887-4558-b189-9675bfadde1e",
+              "leftValue": "www.youtube.com",
+              "rightValue": "={{ $('Loop Over Items').item.json.link.extractDomain() }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -900,
+        100
+      ],
+      "id": "b1d369ab-91cf-4802-a712-ceb16edaf3ed",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -40,
+        320
+      ],
+      "id": "6640ea83-a65c-401e-8453-fe6670a26df1",
+      "name": "Wait",
+      "webhookId": "a1e11c1a-dd51-454e-a8b1-35bbf2990a84"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0a556afd-d887-4558-b189-9675bfadde1e",
+              "leftValue": "www.youtube.com",
+              "rightValue": "={{ $('Loop Over Items').item.json.link.extractDomain() }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1480,
+        60
+      ],
+      "id": "4514d6e0-f1c2-4e57-b7a0-824f01c0c5cf",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 222665181,
+          "mode": "list",
+          "cachedResultName": "Materias",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit#gid=222665181"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Resumo": "=",
+            "Link": "=Fluxo finalizado",
+            "Data": "={{ $now.format('yyyy-MM-dd hh:mm:ss') }}",
+            "Probablidade": "=",
+            "Analise": "=",
+            "Explicacao": "="
+          },
+          "matchingColumns": [
+            "Link"
+          ],
+          "schema": [
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Resumo",
+              "displayName": "Resumo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Probablidade",
+              "displayName": "Probablidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Analise",
+              "displayName": "Analise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Explicacao",
+              "displayName": "Explicacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1240,
+        -240
+      ],
+      "id": "fd3b5c12-e329-4414-bb28-71dd424ed127",
+      "name": "Google Sheets3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lqSMNkTkLsuVn8KN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        -240
+      ],
+      "id": "3185c71c-d76a-4ea2-aae2-dd58df11c861",
+      "name": "Aggregate"
+    }
+  ],
+  "connections": {
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets2": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets3": {
+      "main": [
+        []
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "b42b953c-8b7d-402c-99e2-508753ed6e86",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-03-30T05:58:27.939Z",
+      "updatedAt": "2025-03-30T05:58:27.939Z",
+      "id": "8g5J9JYu3dsHu9sL",
+      "name": "PABLO MARÇAL"
+    }
+  ]
+}
