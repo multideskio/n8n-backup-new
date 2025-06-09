@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-01-17T03:10:10.017Z",
-  "updatedAt": "2025-03-30T05:52:26.291Z",
+  "updatedAt": "2025-06-09T23:00:23.103Z",
   "id": "Cs72AyFCV0srZKeM",
   "name": "FLOWISE MESSAGES GROUP",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -646,7 +646,7 @@
       }
     ]
   },
-  "versionId": "f8287d5c-8e31-480e-8d32-34e2039c6faa",
+  "versionId": "b26834d6-7b68-4169-a714-fc18385627ce",
   "triggerCount": 1,
   "tags": []
 }
