@@ -1,0 +1,652 @@
+{
+  "createdAt": "2025-01-17T03:10:10.017Z",
+  "updatedAt": "2025-03-30T05:52:26.291Z",
+  "id": "Cs72AyFCV0srZKeM",
+  "name": "FLOWISE MESSAGES GROUP",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4cdff297-e3f5-4008-8f48-852125ca66e6",
+              "name": "timeSearch",
+              "value": "={{ $json.body.data }}",
+              "type": "string"
+            },
+            {
+              "id": "fb4914c6-1732-43b1-a8cc-bf5e00c24715",
+              "name": "idGroup",
+              "value": "={{ $json.body.idGrupo }}",
+              "type": "string"
+            },
+            {
+              "id": "847007c1-6cb3-4e98-bb78-8a847fed6613",
+              "name": "urlApi",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e6d304d9-9226-49df-b939-193f9fcb7dc3",
+              "name": "instance",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "7806f2b4-29f4-4e1d-b16d-8befc29f3c89",
+              "name": "apikey",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2160,
+        400
+      ],
+      "id": "636a79ca-56cd-4508-b6aa-329e30189ad8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d81e4fdf-da1a-450b-853d-4de5c507c4d1",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2360,
+        400
+      ],
+      "id": "b8bdb839-21b4-4e4c-842b-10530ff759b7",
+      "name": "Webhook",
+      "webhookId": "d81e4fdf-da1a-450b-853d-4de5c507c4d1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "39ddb48d-5356-4c1c-8c63-a3eb86f99247",
+              "leftValue": "={{ $json.messageTimestamp.toDateTime('s').format('yyyy-MM-dd') }}",
+              "rightValue": "={{ $('Edit Fields').item.json.timeSearch }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "93874c82-af8c-481a-b844-c88821c09e2f",
+      "name": "Somente Hoje",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -1340,
+        40
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "notesInFlow": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "messages.records",
+        "options": {}
+      },
+      "id": "0984c182-4d22-48e7-bf56-5f6f2f14faa3",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1780,
+        200
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "39ddb48d-5356-4c1c-8c63-a3eb86f99247",
+              "leftValue": "={{ $json.messageType }}",
+              "rightValue": "=conversation",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7a6d4208-efa1-4158-9d20-7b1d9721ddc3",
+      "name": "Somente Texto",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -1580,
+        120
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://easyevo.multidesk.io/chat/findMessages/ph_groups?limit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "=34A81F951F79-41A7-B5D5-1123EB003B24"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"where\": {\n\t\t\"key\": {\n\t\t\t\"remoteJid\": \"{{ $json.idGroup }}\"\n\t\t}\n\t},\n\t\"page\": 1,\n\t\"offset\": 1000\n}",
+        "options": {}
+      },
+      "id": "39e47015-d4b4-47bf-8bf4-e75b618afc89",
+      "name": "Get Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2000,
+        400
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Houve algum erro na solucitção da API, verificar conexão\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1760,
+        420
+      ],
+      "id": "f6e0fb3e-d96f-4a69-a50c-a79ebf614a98",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Não há informações para compartilhar!\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1340,
+        280
+      ],
+      "id": "ded3f4f9-9d17-4d72-9137-fcc13ddd1339",
+      "name": "Respond to Webhook4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "575ef1a2-23b6-4b7f-abb8-9637d511a7fa",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1080,
+        -60
+      ],
+      "id": "34bdf8f2-2387-48bd-b8a5-e4c848a92ea1",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "message, data, numero",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -840,
+        100
+      ],
+      "id": "522a63e9-236a-423b-a72b-b09364098a27",
+      "name": "Remove Duplicates1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "85a6d8dc-8f97-4c0e-b835-8439777ff99f",
+              "name": "nome",
+              "value": "={{ $json.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "8c1be6fd-2344-4b64-824c-d5fa6e38bb52",
+              "name": "message",
+              "value": "={{ $json.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "1b693ac0-b873-4063-abfa-a1dce58c2c4b",
+              "name": "numero",
+              "value": "={{ $json.key.participant.split(\"@\")[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "e18ea84e-a8ff-4536-a9ee-0c3f338c50d2",
+              "name": "data",
+              "value": "={{ $json.messageTimestamp.toDateTime('s').format('yyyy-MM-dd HH:mm:ss') }}",
+              "type": "string"
+            },
+            {
+              "id": "b6217b0c-de2b-40d8-9fbf-d9b1cc00c111",
+              "name": "contato",
+              "value": "=https://wa.me/{{ $json.key.participant.split(\"@\")[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -820,
+        -120
+      ],
+      "id": "e21a308e-13d4-49ad-a57e-e02d12d1962f",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        100
+      ],
+      "id": "7d5ad833-b21f-4ca1-87e8-d7eaf2c59457",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e39cdd26-76c2-4a18-a165-84e8e3369393",
+              "name": "output",
+              "value": "=Quantidade de mensagens hoje: {{ JSON.stringify($json['data'].length) }}\n\n{{ $json[\"data\"].map(item => \n`Nome: ${item.nome}\nMensagem: ${item.message}\nNúmero: ${item.numero}\nData de envio: ${item.data}\nContato: ${item.contato}\\n\\n---\\n\\n`\n).join('') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -460,
+        100
+      ],
+      "id": "bc199414-eb7e-4fa2-838d-0e67c2129455",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.toJsonString() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -300,
+        100
+      ],
+      "id": "2ae1048d-ca8f-4c1f-b8ab-fccf3ed5c814",
+      "name": "Respond to Webhook5"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.toJsonString() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -500,
+        420
+      ],
+      "id": "15ec9094-8460-4ba9-ad9d-0eaedb5e9c20",
+      "name": "Respond to Webhook6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b76effab-3063-49cc-b12a-c3a76d66a641",
+              "name": "output",
+              "value": "Não há mensagens hoje.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -700,
+        420
+      ],
+      "id": "2dcf989d-8536-4bb0-9494-0da5168d9062",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        420
+      ],
+      "id": "6fe51211-a8fe-4380-b0f1-f8ac7a3bf01b",
+      "name": "Aggregate3"
+    }
+  ],
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Somente Hoje": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Somente Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Somente Texto": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Somente Hoje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Message": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook3": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook4": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+            "content-length": "62",
+            "accept": "*/*",
+            "accept-encoding": "gzip,deflate",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "61a872d84fef",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "data": "2025-01-17",
+            "idGrupo": "556292923577-1519041640@g.us"
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/d81e4fdf-da1a-450b-853d-4de5c507c4d1",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "f8287d5c-8e31-480e-8d32-34e2039c6faa",
+  "triggerCount": 1,
+  "tags": []
+}
