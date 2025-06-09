@@ -1,0 +1,759 @@
+{
+  "createdAt": "2025-06-09T22:53:37.203Z",
+  "updatedAt": "2025-06-09T22:54:13.889Z",
+  "id": "cIrKt9tqWVOHAV9e",
+  "name": "Comunicado de extratos",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 9
+            },
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 13
+            },
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "id": "587ca122-2315-461c-b2d5-093dc9f9e333",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -180,
+        290
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5a5e345-1595-4869-bb9f-8c990393d5d4",
+              "name": "urlApi",
+              "value": "https://evo1.conect.app",
+              "type": "string"
+            },
+            {
+              "id": "a56e6ebe-939f-4c94-b158-3c33ad260fa2",
+              "name": "instance",
+              "value": "h7_contabil",
+              "type": "string"
+            },
+            {
+              "id": "1fd96c3a-b475-46a2-94a2-8e0c50cb1a90",
+              "name": "apikey",
+              "value": "c7qhana17473u5x0ozwdho",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8e03ba8f-a5eb-4130-a2e3-135d648ddea6",
+      "name": "Dados Api WA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        40,
+        390
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A",
+          "mode": "list",
+          "cachedResultName": "AUTOMAÇÃO - H7 CONTÁBIL + ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 973691982,
+          "mode": "list",
+          "cachedResultName": "COMUNICADO DE EXTRATOS - CONTABIL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit#gid=973691982"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "STATUS"
+            }
+          ]
+        },
+        "options": {
+          "returnAllMatches": "returnAllMatches"
+        }
+      },
+      "id": "a840f8f3-c711-4261-9bf2-83dd8d83cd29",
+      "name": "Busca todos os registros",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        260,
+        390
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "f72bc8dd-605a-495d-901d-534d4a0042a2",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        480,
+        390
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A",
+          "mode": "list",
+          "cachedResultName": "AUTOMAÇÃO - H7 CONTÁBIL + ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 973691982,
+          "mode": "list",
+          "cachedResultName": "COMUNICADO DE EXTRATOS - CONTABIL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit#gid=973691982"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Busca todos os registros').item.json.row_number }}",
+            "STATUS": "enviado"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "EMPRESA",
+              "displayName": "EMPRESA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "COMPENTENCIA",
+              "displayName": "COMPENTENCIA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RESPONSAVEL",
+              "displayName": "RESPONSAVEL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TELEFONE",
+              "displayName": "TELEFONE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "GRUPO",
+              "displayName": "GRUPO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NUMBER TEST",
+              "displayName": "NUMBER TEST",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1792b778-d929-44bc-883a-f957f35ef3c5",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1800,
+        140
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "=20"
+      },
+      "id": "0ed3d8f6-0167-482d-9224-aaffe1b2546b",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2020,
+        240
+      ],
+      "webhookId": "267ab902-7364-45b1-b755-92b33adc2d57"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados Api WA').item.json.urlApi }}/chat/whatsappNumbers/{{ $('Dados Api WA').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados Api WA').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "=json",
+        "specifyBody": "=json",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "jsonBody": "={\"numbers\":[\"{{ $json[\"TELEFONE\"] }}\"]} ",
+        "options": {}
+      },
+      "id": "3e455b56-d913-4e91-8404-34323f161172",
+      "name": "Verifica se tem whatsapp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "d8dc9e9d-8419-44e1-92ea-03c8552920ad",
+              "leftValue": "={{ $json.exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "71e63f29-24b8-4b17-89c7-bdac73641443",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A",
+          "mode": "list",
+          "cachedResultName": "TESTE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 973691982,
+          "mode": "list",
+          "cachedResultName": "COMUNICADO DE EXTRATOS - CONTABIL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13uKVK_zolH84giGfUZI9nHFGbb1IYManCxC5W-aWd6A/edit#gid=973691982"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Busca todos os registros').item.json.row_number }}",
+            "STATUS": "Erro ao enviar"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "EMPRESA",
+              "displayName": "EMPRESA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "COMPENTENCIA",
+              "displayName": "COMPENTENCIA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RESPONSAVEL",
+              "displayName": "RESPONSAVEL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TELEFONE",
+              "displayName": "TELEFONE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "GRUPO",
+              "displayName": "GRUPO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NUMBER TEST",
+              "displayName": "NUMBER TEST",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3552fed5-32ed-46a3-8509-6309f124b738",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1800,
+        340
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados Api WA').item.json.urlApi }}/message/sendText/{{ $('Dados Api WA').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados Api WA').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('If1').item.json[\"jid\"] }}\",\n  \"textMessage\": {\n    \"text\": \"{{ $json[\"message\"].replace(/\\r?\\n/g, '\\\\n')}}\\n\\n_Obs.:_ _Essa é uma notificação automática através do nosso canal inteligente, caso haja necessidade de falar com um analista, entre em contato pelo nosso Nr Oficial_ 62 98311-0573\\n\\n⚠️ _Salve esse número para continuar recebendo nossas notificações_\"\n  }\n}",
+        "options": {}
+      },
+      "id": "e1ef131c-500a-43ba-a20f-e9c9ccaac8b2",
+      "name": "Envia mensagem para o admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1580,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4c1c3a5d-0539-4321-907d-7a8a94675c65",
+              "name": "message",
+              "value": "=Olá, aguardamos o envio do Extrato Bancário/Conciliação Bancária da empresa: {{ $('Busca todos os registros').item.json[\"EMPRESA\"] }}, referente a {{ $('Busca todos os registros').item.json[\"COMPENTENCIA\"] }} até o dia 10 (dez) desse mês para que a contabilidade da sua empresa não fique atrasada.\n\nCaso já tenha enviado, favor desconsiderar esse informativo, ou envie pelo email contabil@h7contabil.com.br.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e869c161-3bf8-4a83-bf89-a52ea546e3f9",
+      "name": "Prorrogação 2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1360,
+        140
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "73d52592-48b4-4bcf-af16-728ce3ea7da7",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        490
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "ee8168cb-ba1a-4467-9d4f-8be2eb23c8e5",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "90abcb4a-ff3a-424f-86f1-812410445326",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        700,
+        315
+      ]
+    },
+    {
+      "parameters": {
+        "path": "h7contabil-comunicado-de-extratos",
+        "authentication": "basicAuth",
+        "options": {}
+      },
+      "id": "1218f375-6000-400f-963b-8e8f9d0ba5d0",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        490
+      ],
+      "webhookId": "147de2b2-90e4-439e-8e4d-557d82509258",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "A614HcbPPzc4YEjF",
+          "name": "SINCRO"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Dados Api WA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Api WA": {
+      "main": [
+        [
+          {
+            "node": "Busca todos os registros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca todos os registros": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se tem whatsapp": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Prorrogação 2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagem para o admin": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prorrogação 2": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagem para o admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Verifica se tem whatsapp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados Api WA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "721ff932-cdbf-48b3-9279-f0ec021baff1",
+  "triggerCount": 1,
+  "tags": []
+}
