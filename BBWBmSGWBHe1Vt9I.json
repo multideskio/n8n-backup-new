@@ -1,0 +1,19 @@
+{
+  "createdAt": "2025-04-28T20:06:50.812Z",
+  "updatedAt": "2025-04-28T20:06:50.812Z",
+  "id": "BBWBmSGWBHe1Vt9I",
+  "name": "h7Contabil - Prorrogação/Contratação",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "30b939ca-325f-460e-b7ea-f5a22dfb0d96",
+  "triggerCount": 0,
+  "tags": []
+}
