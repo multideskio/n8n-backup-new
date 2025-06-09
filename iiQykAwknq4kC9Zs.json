@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-02-05T02:15:00.736Z",
-  "updatedAt": "2025-03-30T05:52:34.892Z",
+  "updatedAt": "2025-06-09T23:00:41.013Z",
   "id": "iiQykAwknq4kC9Zs",
   "name": "ANOTA DESPESAS",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -338,7 +338,7 @@
       }
     ]
   },
-  "versionId": "b9ebafac-ac0d-46e6-a1c0-ea1ec404d91e",
+  "versionId": "3d6765e9-45e6-473a-b709-04b07c10f12f",
   "triggerCount": 1,
   "tags": []
 }
