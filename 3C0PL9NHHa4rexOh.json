@@ -1,0 +1,479 @@
+{
+  "createdAt": "2025-03-05T05:20:43.532Z",
+  "updatedAt": "2025-03-30T06:00:24.328Z",
+  "id": "3C0PL9NHHa4rexOh",
+  "name": "EXTRATOR DE INFORMAÇÕES",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "api_key",
+              "value": "2cd242e69d7676a3cb607f04f41baeac74f7b4b5c3ed6cc337c1e646f0a20bed"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.nome.replaceAll(\" \", \"+\") }}"
+            },
+            {
+              "name": "google_domain",
+              "value": "google.com"
+            },
+            {
+              "name": "hl",
+              "value": "pt-br"
+            },
+            {
+              "name": "gl",
+              "value": "br"
+            },
+            {
+              "name": "start",
+              "value": "0"
+            },
+            {
+              "name": "num",
+              "value": "20"
+            },
+            {
+              "name": "device",
+              "value": "desktop"
+            },
+            {
+              "name": "tbm",
+              "value": "nws"
+            },
+            {
+              "name": "tbs",
+              "value": "sbd:1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -460,
+        -20
+      ],
+      "id": "b8914b41-dbfd-41fe-92fa-9f6471d46490",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit?gid=222665181#gid=222665181",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ukHNo6QS7L82ZgakDJuHVPe57wRXDyx18LoDcQYuDtk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "titulo": "={{ $json.titulo }}",
+            "link": "={{ $json.link }}",
+            "previa": "={{ $json.previa }}",
+            "site": "={{ $json.site }}",
+            "data": "={{ $json.data }}",
+            "data extracao": "={{ $now.format('dd-MM-yyyy HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "link"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "titulo",
+              "displayName": "titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "previa",
+              "displayName": "previa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "site",
+              "displayName": "site",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data extracao",
+              "displayName": "data extracao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        -20
+      ],
+      "id": "efe84433-9b5e-4284-bad9-f58b03ce603d",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe3e7e9d-1285-45a1-ac72-6d2d753ad2b7",
+              "name": "titulo",
+              "value": "={{ $json.noticias.title }}",
+              "type": "string"
+            },
+            {
+              "id": "4b251413-7e56-4e3e-bfd7-f5854d79e938",
+              "name": "data",
+              "value": "={{ $json.noticias.date }}",
+              "type": "string"
+            },
+            {
+              "id": "e5ab6531-9a5a-4ca5-8f74-cf22bd1ce318",
+              "name": "link",
+              "value": "={{ $json.noticias.link }}",
+              "type": "string"
+            },
+            {
+              "id": "e779611a-8048-4a43-ad00-6d94074c0dd6",
+              "name": "previa",
+              "value": "={{ $json.noticias.snippet }}",
+              "type": "string"
+            },
+            {
+              "id": "564faa48-6752-43c9-8c86-14c7193fafe9",
+              "name": "site",
+              "value": "={{ $json.noticias.source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        -20
+      ],
+      "id": "1b2a2225-e77d-4412-a712-c7916ee7ad0f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8159f1ff-8e0a-4031-bb52-8cbe41cd9b1b",
+              "name": "noticias",
+              "value": "={{ $json.news_results }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        -20
+      ],
+      "id": "9fde5151-6cd6-4a10-9269-c83b128d9cc4",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "noticias",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -20
+      ],
+      "id": "4d79747c-07e9-480c-9412-00375b0e7e85",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Pesquisar",
+        "formDescription": "Coloque o nome e depois verifique na tabela que te enviamos, em até 5 segundos as ultimas noticias sobre o nome pesquisado será listada.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "busca",
+              "placeholder": "Digite o nome",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "ENVIAR",
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "Verifique os dados extraídos na planilha."
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -820,
+        -20
+      ],
+      "id": "374aa06f-00fb-4d8f-9ec3-77dfeb20ad30",
+      "name": "On form submission",
+      "webhookId": "d4ac42a8-a6c2-4d7f-857e-50fbb570f5e0"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "06b0a3a0-54f0-45ce-9300-2a9c84b2df22",
+              "name": "nome",
+              "value": "={{ $json.busca ?? 'Pablo Marçal' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -640,
+        -20
+      ],
+      "id": "adcd655d-cb56-4c0d-a4a5-489b9b4cc808",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hook.multidesk.io/webhook/sinc",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        -20
+      ],
+      "id": "fe66aafd-7dc8-4c09-b8f1-1e9387efe626",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "A614HcbPPzc4YEjF",
+          "name": "SINCRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -20
+      ],
+      "id": "d2aa213d-1f09-4c8e-8356-d897225d974c",
+      "name": "Aggregate"
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "busca": "Pablo marçal",
+          "submittedAt": "2025-03-30T02:56:06.957-03:00",
+          "formMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "3b9a4034-c9a5-4a83-b542-5742326e5f7b",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-03-30T05:58:43.304Z",
+      "updatedAt": "2025-03-30T05:58:43.304Z",
+      "id": "DHm4aP56qCpRfO5C",
+      "name": "PABO MARÇAL"
+    }
+  ]
+}
