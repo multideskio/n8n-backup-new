@@ -1,8 +1,8 @@
 {
   "createdAt": "2025-05-26T12:55:26.546Z",
-  "updatedAt": "2025-06-09T21:42:32.740Z",
+  "updatedAt": "2025-06-09T22:36:56.281Z",
   "id": "fgPqEtwIAZh62fvf",
-  "name": "NOTIFICAÇÃO ABSOLUTE",
+  "name": "Recuperação de venda",
   "active": true,
   "isArchived": false,
   "nodes": [
@@ -980,7 +980,7 @@
       }
     ]
   },
-  "versionId": "49f68428-7708-4f02-8859-b30378f370ed",
+  "versionId": "220adcee-0516-41a8-9a6e-35fbb484063e",
   "triggerCount": 1,
   "tags": [
     {
