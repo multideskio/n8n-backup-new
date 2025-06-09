@@ -1,0 +1,301 @@
+{
+  "createdAt": "2024-06-20T07:29:52.295Z",
+  "updatedAt": "2024-11-26T20:00:18.112Z",
+  "id": "WXyh312hsqNtAkVX",
+  "name": "ADM - Conectar WhatsApp",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Recarregar a Cada 10 Segundos</title>\n<style>\n    body {\n        font-family: Arial, sans-serif;\n        text-align: center;\n        background-color: #f4f4f4;\n        margin: 0;\n        padding: 0;\n    }\n    .container {\n        max-width: 600px;\n        margin: 50px auto;\n        padding: 20px;\n        background-color: #fff;\n        border-radius: 8px;\n        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n    }\n    img {\n        max-width: 100%;\n        height: auto;\n        border-radius: 8px;\n        margin-bottom: 20px;\n    }\n</style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>Leia o QrCode com seu WhatsApp</h1>\n        <img id=\"imagem\" src=\"{{ $json['base64'] }}\" width=\"400px\">\n    </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "6131d9bc-f36b-46a0-b62a-beda95ee8f26",
+      "name": "Conectando",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        420,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Recarregar a Cada 10 Segundos</title>\n<style>\n    body {\n        font-family: Arial, sans-serif;\n        text-align: center;\n        background-color: #f4f4f4;\n        margin: 0;\n        padding: 0;\n    }\n    .container {\n        max-width: 600px;\n        margin: 50px auto;\n        padding: 20px;\n        background-color: #fff;\n        border-radius: 8px;\n        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n    }\n    img {\n        max-width: 100%;\n        height: auto;\n        border-radius: 8px;\n        margin-bottom: 20px;\n    }\n</style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>ERRO</h1>\n         <p>Entre em contato com o suporte</p>\n    </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "4059c138-b884-44a8-9262-4932043396cb",
+      "name": "Erro de conexão",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        200,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Recarregar a Cada 10 Segundos</title>\n<style>\n    body {\n        font-family: Arial, sans-serif;\n        text-align: center;\n        background-color: #f4f4f4;\n        margin: 0;\n        padding: 0;\n    }\n    .container {\n        max-width: 600px;\n        margin: 50px auto;\n        padding: 20px;\n        background-color: #fff;\n        border-radius: 8px;\n        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n    }\n    img {\n        max-width: 100%;\n        height: auto;\n        border-radius: 8px;\n        margin-bottom: 20px;\n    }\n</style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>Conectado</h1>\n        <img src=\"https://minioapi.multidesk.io/n8n/190411.png\" width=\"70px\">\n    </div>\n    <script>\n        // Função para recarregar a imagem a cada 10 segundos\n        setInterval(function() {\n            var image = document.getElementById('imagem');\n            image.src = '{{ $json[\"base64\"] }}?' + new Date().getTime(); // Adiciona um timestamp para forçar o recarregamento\n        }, 10000); // 10000 milissegundos = 10 segundos\n    </script>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "2b9eab00-2f17-47e0-b78e-f4e6ef6d6400",
+      "name": "Conectado",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        420,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "71c4a7de-df3f-4bf4-b307-29a463d251c7",
+              "name": "apiKey",
+              "value": "IGe5gP5i0PEcPHu+W9N1rKR3szCSCnlAAj5uZZiMsv4HC/bYajEDrNOST2sAQZdS",
+              "type": "string"
+            },
+            {
+              "id": "29010280-ed5f-4e54-982d-560a07232513",
+              "name": "urlApi",
+              "value": "https://easyevo.multidesk.io",
+              "type": "string"
+            },
+            {
+              "id": "eceb42d9-2e2b-4eb3-8a2b-61cd93495856",
+              "name": "instance",
+              "value": "={{ $('Recebe dados da instancia').item.json.query.instance }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d45e0d01-65e6-48a0-a3eb-af1d836c4808",
+      "name": "Define dados da API",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -640,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json[\"urlApi\"] }}/instance/restart/{{ $json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $json.apiKey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e423b182-c653-4f90-9877-50be195a0574",
+      "name": "Reinicia a instância",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -420,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "2b9dabcf-056c-4ff4-8784-c4eafc6a58cc",
+      "name": "Espera 3s antes de chamar a API de novo",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        760
+      ],
+      "webhookId": "dbaf1756-874c-46a3-83d9-4ec290110b1e"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Define dados da API').item.json[\"urlApi\"] }}/instance/connect/{{ $('Define dados da API').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Define dados da API').item.json.apiKey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a66150ce-16a2-44c0-9433-93a437ef5e43",
+      "name": "Verifica se instância está conectada",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -20,
+        760
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "d9b1b11b-7472-4171-9ba2-2d188783716c",
+              "leftValue": "={{ $json.instance.state }}",
+              "rightValue": "=open",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9411020d-f1b6-42c5-82fa-e98d81e43c02",
+      "name": "Open para conectada",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        200,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "path": "ceb7cfe4-4b47-4287-869f-861e004319b1",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "33a590ce-d60d-4894-b404-c13ac638f45a",
+      "name": "Recebe dados da instancia",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        -840,
+        760
+      ],
+      "webhookId": "b23cda73-80bc-42c5-93b7-c17bb5fa500a"
+    }
+  ],
+  "connections": {
+    "Define dados da API": {
+      "main": [
+        [
+          {
+            "node": "Reinicia a instância",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reinicia a instância": {
+      "main": [
+        [
+          {
+            "node": "Espera 3s antes de chamar a API de novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Espera 3s antes de chamar a API de novo": {
+      "main": [
+        [
+          {
+            "node": "Verifica se instância está conectada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se instância está conectada": {
+      "main": [
+        [
+          {
+            "node": "Open para conectada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro de conexão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Open para conectada": {
+      "main": [
+        [
+          {
+            "node": "Conectado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Conectando",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recebe dados da instancia": {
+      "main": [
+        [
+          {
+            "node": "Define dados da API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "04d22510-e2a9-4f12-b145-cb806c4100c5",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2024-06-20T07:29:36.849Z",
+      "updatedAt": "2024-06-20T07:29:36.849Z",
+      "id": "H8KnUKfLDJMp0K7p",
+      "name": "API WA"
+    }
+  ]
+}
