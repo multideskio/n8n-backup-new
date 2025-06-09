@@ -1,0 +1,386 @@
+{
+  "createdAt": "2025-05-22T14:09:48.314Z",
+  "updatedAt": "2025-05-22T20:45:36.037Z",
+  "id": "QJv9iJqws1WSQdQ5",
+  "name": "My workflow 7",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        -940,
+        -100
+      ],
+      "id": "9f5a2bc1-92ea-4af9-8bd6-ae0108d1d1b7",
+      "name": "Email Trigger (IMAP)",
+      "credentials": {
+        "imap": {
+          "id": "0n7ToMMGxLROAMr7",
+          "name": "IMAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1308mKvSizGBPbGljZPttf6zdOwJrEzk6cw7AQPJ4Azc",
+          "mode": "list",
+          "cachedResultName": "teste",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1308mKvSizGBPbGljZPttf6zdOwJrEzk6cw7AQPJ4Azc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2051501749,
+          "mode": "list",
+          "cachedResultName": "07 2025",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1308mKvSizGBPbGljZPttf6zdOwJrEzk6cw7AQPJ4Azc/edit#gid=2051501749"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "NOME",
+              "lookupValue": "={{ $json.nome }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -60,
+        0
+      ],
+      "id": "06afce43-5d58-4c71-8afc-8284f2dd40fe",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3ba6fdee-260d-48dc-a1b5-a0a3c56e51b2",
+              "name": "mesagem",
+              "value": "=Olá, {{ $json.NOME }}\n\n*subject*\n{{ $('Email Trigger (IMAP)').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "1d4a9aa3-e748-4afc-a9f0-338a346c7870",
+              "name": "tel",
+              "value": "={{ $json.tel }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        0
+      ],
+      "id": "d446ec36-5548-4ad2-9b18-76d02dbc04dd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "h7Contabil001",
+        "remoteJid": "={{ $json.tel }}",
+        "messageText": "={{ $json.mesagem }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        380,
+        -100
+      ],
+      "id": "9ecb487f-a96b-4c6e-b455-e1d47e78b42a",
+      "name": "Evolution API",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "h7Contabil001",
+        "remoteJid": "=5562981154120",
+        "messageText": "={{ $json.mesagem }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        600,
+        100
+      ],
+      "id": "397c4471-07bd-4a97-b107-23429311d8ec",
+      "name": "Evolution API1",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        100
+      ],
+      "id": "3b39a5c0-59d0-4b3f-a5fc-757709fd0c80",
+      "name": "Wait",
+      "webhookId": "eb95c32a-b0df-4cc0-8d52-5e86820ad658"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.textHtml;\nconst match = html.match(/([A-ZÁÉÍÓÚÃÕÇ ]{2,}) adicionou os seguintes arquivos/i);\n\nif (match && match[1]) {\n  return [{ json: { nome: match[1].trim() } }];\n} else {\n  return [{ json: { nome: null } }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        0
+      ],
+      "id": "f6ad9efd-fece-4a22-8384-e4f3a5158711",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.textHtml }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -720,
+        -200
+      ],
+      "id": "54dab440-910d-47bd-ad0b-6a0aa13c7057",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6e61702-e1fc-41f1-9aa3-30bd54ce7555",
+              "name": "nome",
+              "value": "={{ $json.nome.toUpperCase() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        0
+      ],
+      "id": "06168be3-b46b-438e-9525-2b428cb24255",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "342cb930-7267-477b-a47a-da7369e4d788",
+              "leftValue": "={{ $json.metadata['reply-to'] }}",
+              "rightValue": "nao-responda@onvio.com",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -720,
+        0
+      ],
+      "id": "05a0bc44-4af7-4c67-ab4f-0d82769185c4",
+      "name": "If"
+    }
+  ],
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Evolution API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Evolution API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Email Trigger (IMAP)": {
+      "lastMessageUid": 7
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Email Trigger (IMAP)": [
+      {
+        "json": {
+          "textHtml": "<html>\r\n    <body>\r\n        <table width=\"600\" align=\"center\">\r\n            <tr>\r\n                <td class=\"message\" style=\"color: #333333; font-size: 10pt; font-family: Arial\">\r\n                    <br />\r\n<p><img width=\"168\" src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/ED5FE50267B348AAB0AC2898F3A77567\" style=\"padding: 10px 10px 10px 3px;\" class=\"fr-fil fr-dib\"></p><p><span style=\"color: rgb(0, 0, 0);\">VINICIUS CIRQUEIRA adicionou os seguintes arquivos Ã  pasta <a href='https://onvio.com.br/clientcenter/documents/clients/9FDB5965D46E480194F222EA30854CCB/folder/311b7ed7650e42f1ba46010b8e629c06'>Pessoal</a>:</span></p><p><span style=\"color: rgb(0, 0, 0);\"><a href='https://onvio.com.br/clientcenter/documents/clients/9FDB5965D46E480194F222EA30854CCB/folder/311b7ed7650e42f1ba46010b8e629c06/document/7ce0cab5b355463895e7e2cb81024504'>2025047217608.pdf</a></span></p><table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-spacing: 0px; border-collapse: collapse; margin: 5px auto 5px 0;\r\n      background-color: rgb(255, 255, 255); outline: transparent solid 0px; border: none;\r\n      empty-cells: show; max-width: 100%; color: rgb(65, 65, 65); font-family: sans-serif;\r\n      font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400;\r\n      letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; white-space: normal; widows: 2;\r\n      word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial;\r\n      text-decoration-color: initial; width: 260px; height: 47px; vertical-align: middle;\"><tbody><tr style=\"user-select: none;\"></tr></tbody></table><table><tbody><tr><td style=\"vertical-align: top;\"><p><img width=\"36\" src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/306AABD74B46476D81F6232C4A5A414D\" style=\"padding: 10px 3px 10px 10px;\" class=\"fr-fil fr-dib\"></p></td><td><div style=\"margin-left: 20px;\"><p><strong><span style=\"color: #ff9000; font-size: 24px;\">Dicas de seguranÃ§a</span></strong></p><p><span style=\"color: rgb(0, 0, 0);\">Fique ligado nas dicas abaixo para evitar ataques cibernÃ©ticos. Ã de extrema importÃ¢ncia para a seguranÃ§a de todos!</span></p></div><ul style=\"color: rgb(0, 0, 0); padding-left: 4%;\"><li>Nossas notificaÃ§Ãµes seguem o mesmo padrÃ£o</li><li>Tenha cuidado com erros ortogrÃ¡ficos, de gramÃ¡tica ou atÃ© mesmo de formataÃ§Ã£o na notificaÃ§Ã£o recebida</li><li>O remetente de nossos e-mails de notificaÃ§Ã£o sempre serÃ¡ \"<strong>brasil@onvio.com</strong>\"</li><li>O site oficial de redirecionamento de nossos e-mails Ã© \"<strong>onvio.com.br</strong>\"</li></ul></td></tr></tbody></table><div style=\"background-color: #EFEFEF;\"><table><tbody><tr><td style=\"width: fit-content;\"><div style=\"margin-left: 10%; margin-bottom: 5%;\"><p><strong style=\"-webkit-text-stroke-width: 0px; background-color: rgb(239, 239, 239); box-sizing: border-box; color: rgb(65, 65, 65); font-family: sans-serif; font-size: 14px; font-style: normal; font-variant-caps: normal; font-variant-ligatures: normal; font-weight: bolder; letter-spacing: normal; orphans: 2; text-align: left; text-decoration-color: initial; text-decoration-style: initial; text-decoration-thickness: initial; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;\"><span style=\"box-sizing: border-box; color: rgb(0, 0, 0); font-size: 18px;\">Precisa de ajuda?</span></strong></p><span style=\"font-size: 14px; color: rgb(0, 0, 0);\">Entre em contato com nosso suporte!</span></div></td><td style=\"vertical-align: middle;\">&nbsp; &nbsp; &nbsp;<img width=\"341.297\" src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/38F08D72AB9A49E3B91C1CC48BB8B530\" style=\"padding: 10px 10px 10px 3px;\" class=\"fr-fil fr-dii\"></td></tr></tbody></table></div>                    <br />\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td class=\"signature\" style=\"color: #999999; font-size: 8pt; font-family: Arial\">\r\n            <tr>\r\n                <td class=\"signature\" style=\"color: #999999; font-size: 8pt; font-family: Arial\">\r\n                <hr><p><span style=\"color: #CCCCCC;\">Veja nossa <a href=\"https://www.thomsonreuters.com/pt/declaracao-de-privacidade.html\"> polÃ­tica de privacidade</a>, a qual inclui informaÃ§Ãµes sobre nossa polÃ­tica de âcookiesâ.<br><br>Esta mensagem Ã© confidencial, legalmente privilegiada e voltada unicamente para uso da pessoa ou entidade a quem Ã© endereÃ§ada. Se vocÃª nÃ£o for o destinatÃ¡rio pretendido, por favor, notifique o remetente imediatamente e exclua esta mensagem. Ã estritamente proibida a distribuiÃ§Ã£o, revelaÃ§Ã£o, cÃ³pia ou uso desta informaÃ§Ã£o de qualquer outra maneira.</span></p>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </body>\r\n</html>",
+          "textPlain": "Your email client does not support HTML messages",
+          "metadata": {
+            "return-path": "<01030196f9ac8e14-e2a91fec-681d-45ed-8cf1-8457db429a48-000000@sa-east-1.amazonses.com>",
+            "delivered-to": "teste@multidesk.io",
+            "received": "from d215-50.smtp-out.sa-east-1.amazonses.com (d215-50.smtp-out.sa-east-1.amazonses.com [23.249.215.50])\tby nl-srv-smtpin2.hostinger.io (mx.hostinger.com) with ESMTPS id 4b3KYg0Lbnz1gn8G\tfor <teste@multidesk.io>; Thu, 22 May 2025 20:25:58 +0000 (UTC)",
+            "arc-message-signature": "i=1; a=rsa-sha256; c=relaxed/relaxed; d=multidesk.io;\ts=hostingermail1; t=1747945559;\th=from:from:reply-to:reply-to:subject:subject:date:date:\t message-id:message-id:to:to:cc:mime-version:mime-version:\t content-type:content-type:dkim-signature;\tbh=/XPI64/nwQB8NLsuzxoiLdkF/ZzLJyX3UsEbX315oik=;\tb=HnrWBK/c3hdkZzAKOJIwXTHKRj2X8t064SP/y0Y5bKp/ajNmfDyGBY8eLmd/IasGpd6LRI\tpvIKxBuIR8vN2NS0daHFXRQx72hNwQ9s2PYbZnODcKm7n/NtZSysVI0bAqSwB+GZqZ6rZH\tvxi1+IhtE09fEAaHHioDGVRXUkjvwEdHGIf4fQbAgvZ2vKLOe73LxCv6550VZOsOldn0Yr\ta12zCWTbDnZrpJd+vjf7CHY+xbZ2iZjDI77ap/u8HIz5UH+Wte9KRVOFIWSzm3eqeF5olT\tcOyyLzQCkB5mCxmhXnB6A5LLpDcBiYodVo6b0UA6fKuPKGbfVSpCq7lZr2vn+A==",
+            "arc-authentication-results": "i=1;\tnl-srv-smtpin2.hostinger.io;\tdkim=pass header.d=onvio.com header.s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk header.b=OldfjsPZ;\tdkim=pass header.d=amazonses.com header.s=bm3ypaoivbtdzmy3b6w37fzb5voa2uru header.b=dR6RXgLm;\tspf=pass (nl-srv-smtpin2.hostinger.io: domain of 01030196f9ac8e14-e2a91fec-681d-45ed-8cf1-8457db429a48-000000@sa-east-1.amazonses.com designates 23.249.215.50 as permitted sender) smtp.mailfrom=01030196f9ac8e14-e2a91fec-681d-45ed-8cf1-8457db429a48-000000@sa-east-1.amazonses.com;\tdmarc=pass (policy=reject) header.from=onvio.com",
+            "arc-seal": "i=1; s=hostingermail1; d=multidesk.io; t=1747945559; a=rsa-sha256;\tcv=none;\tb=W3KW9LeB32dCEyidhAWGWI6pwtxL2sdBDGlCEzhnQmvoy5pkwWkfeO8d+Jztp1uhi2qHiS\taaG7fM7wLxBeXu1FdCnsJlz9XuPX1rrauWO2fEDIFl8aKHvV/J7gy/NmGrokgwfH8Wt776\tVLeKuygUPpvWn9Nlm6A4ANxCKAFsI50CrN8BFuzzIG+XHn5oFWjr22s7oA5/CQsRxRH8PX\tIoAOTF6gHx75t1wvqB4xL9MQPsKAILMpaT1BhVF2wQ1TY4sPC1bAEqsbP52W6eOK5sCrQn\tn0ljSi7Y8+zK7hxUa8IlnMCdFFNt4Ih9FiOX6EAzedUMy6iDq7nunlxpIUYomQ==",
+            "dkim-signature": "v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;\ts=5ege2cb5xawlryw3tyxprqnwxhz7dfuk; d=onvio.com; t=1747945557;\th=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type;\tbh=JVDWNvUwvq4BlSvreM9VlCnNKCZSJBFVvEe23whgpN4=;\tb=OldfjsPZw4tf7UekGp9Vh6t9C2cwkZS4+tq4Mk13rUMqKE+1NDWePRI/e/EgufeM\t7GD0dGGKkqeXFKCiOxrpjr+F0SlOS06Bl/rKTyz+a2LIIawTGaxyd77+V95lLmS1v+y\tV73msCM+udJL0WY96bt1TnuueobM4IdHsUmwn4xjqIl9HIpvIP0h5SKFaaafNhIc7px\tTj+MmNJ2yUPy424ber1wYb4PVyVJniCOFVnRHRj1WmnbXQCYa83ky3hJMxNXATTA5ge\tH7jHjXGdv45aJSUYsCt0t08FVkqg2TpSJRfKQBUI8t9SpNXXEavntoyMcgJFgOp7diH\t7qgsX0UB0w==",
+            "reply-to": "nao-responda@onvio.com",
+            "message-id": "<01030196f9ac8e14-e2a91fec-681d-45ed-8cf1-8457db429a48-000000@sa-east-1.amazonses.com>",
+            "mime-version": "1.0",
+            "content-type": "multipart/alternative; \tboundary=\"----=_Part_4574_1405671839.1747945557363\"",
+            "notification-id": "B3E70213746B4A249671430E8B78BF1E",
+            "send-date": "2025-05-22 20:25:57.362",
+            "feedback-id": "::1.sa-east-1.HyzjJe5W3cI4NuPpS3IY2bdh7X+uAfDzKafqpSd/jWE=:AmazonSES",
+            "x-ses-outgoing": "2025.05.22-23.249.215.50",
+            "x-cm-analysis": "v=2.4 cv=MNgym9Zl c=1 sm=1 tr=0 ts=682f8857 b=1 a=5zVwCfSNqz+o0fBL3I0e7w==:117 a=5zVwCfSNqz+o0fBL3I0e7w==:17 a=Hgn-wnRn1-cA:10 a=5KLPUuaC_9wA:10 a=pI1nZF2YvPsA:10 a=YFHz6ByJM4cA:10 a=0BVwIrmwBfeZIcNxclQA:9 a=QEXdDO2ut3YA:10 a=xJtQ6Bj1AAAA:8 a=awlg0vDVAAAA:8 a=Y1WfXIWlAAAA:8 a=eMfXoSSm54yPy4tauDsA:9 a=Zcxn8wAJGaET0iw-:21 a=_W_S_7VecoQA:10 a=P4HBiJYgT8gA:10 a=ro6mcqWbAb8A:10 a=jDcSQDIfc1euSD_Ydzpy:22 a=uDXMMbqNXFhfq9i5nQI5:22 a=GDcXCWfCA9Q-YhHFudAS:22 a=ruGik0fp8PtEto9ozX3K:22",
+            "x-cm-envelope": "MS4xfH9T/PW3cVYrgZlN3hKONSpZ+QdE/X9HiB+Z9bKn7Seu/AkrNO26/ywwm2p39cCB5Xn2+wYhGGyUL90sESN5d7bjRi6/2kIRgQV2mExTsVGGbaUf1K8g CCbtjLQW5MmqR/ICukzNy6XRLkxp6PcrMtkQoIcgPM1AyOLFXzwmBDAne7/Y7/KBBxAPnoAeWOYPFPaeihbo5Gp+rorXz9zAp7gHhVjvSABwwk8WM1PBr9Jg 8Wn/Wgai9vegBDfhpQi6utf46SzYR5fFJt0w7IuxAx+b7c7GZ3vNSNz7TEwjgVDb31jGckEAIJWFwRNtNbwKTg=="
+          },
+          "attributes": {
+            "uid": 4
+          },
+          "date": "Thu, 22 May 2025 20:25:57 +0000",
+          "from": "Onvio <brasil@onvio.com>",
+          "to": "teste@multidesk.io",
+          "subject": "Um novo arquivo está disponível de VINICIUS CIRQUEIRA"
+        }
+      }
+    ]
+  },
+  "versionId": "bc2d8aa3-1dfd-479d-8dab-b17e442eb880",
+  "triggerCount": 1,
+  "tags": []
+}
