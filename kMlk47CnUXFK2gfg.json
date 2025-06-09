@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-05-10T12:34:52.434Z",
-  "updatedAt": "2025-05-10T12:52:07.497Z",
+  "updatedAt": "2025-06-09T23:04:39.539Z",
   "id": "kMlk47CnUXFK2gfg",
   "name": "My workflow 4",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -130,7 +130,7 @@
       }
     ]
   },
-  "versionId": "f0dea62b-c3f0-4cbf-9a6f-c970bfbc3e70",
+  "versionId": "d06bb46b-b6f3-4ffa-8434-d81605cf52c0",
   "triggerCount": 1,
   "tags": []
 }
