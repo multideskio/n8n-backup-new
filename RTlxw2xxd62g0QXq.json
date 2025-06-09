@@ -1,0 +1,36 @@
+{
+  "createdAt": "2025-04-04T09:52:22.815Z",
+  "updatedAt": "2025-04-04T09:52:28.604Z",
+  "id": "RTlxw2xxd62g0QXq",
+  "name": "TEST MP",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c6f721c2-5a95-4c25-87f8-93f3f33986ed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4e494921-d2c0-49e8-8369-4236c7b5df59",
+      "name": "Webhook",
+      "webhookId": "c6f721c2-5a95-4c25-87f8-93f3f33986ed"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "0b419762-6068-47b1-8946-b5a3e13767b3",
+  "triggerCount": 1,
+  "tags": []
+}
