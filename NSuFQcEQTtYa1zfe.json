@@ -1,0 +1,251 @@
+{
+  "createdAt": "2025-05-15T12:01:08.500Z",
+  "updatedAt": "2025-05-15T14:50:08.083Z",
+  "id": "NSuFQcEQTtYa1zfe",
+  "name": "Ações ASAAS",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "cpf"
+            },
+            {
+              "name": "nome"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -480,
+        -40
+      ],
+      "id": "29063b29-4c6c-4348-ad9b-b5b123709b9d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "https://api-sandbox.asaas.com/v3/customers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "cpfCnpj",
+              "value": "={{ $('Edit Fields').item.json.cpf }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        -160
+      ],
+      "id": "65709297-7601-4231-94a4-a0faa1be38ef",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Z0MvhBso0QCoKXwz",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utilize para buscar o id do cliente, o id começa com cus_",
+        "url": "https://api-sandbox.asaas.com/v3/customers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "cpfCnpj",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `CPF ou CNPJ sem pontuações`, 'string') }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        20
+      ],
+      "id": "c44dcb80-ad63-4ce3-9f54-3d643100cd96",
+      "name": "buscarMembroAsaas",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Z0MvhBso0QCoKXwz",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a35afb53-7f9b-42f6-a916-9f9232912ace",
+              "name": "cpf",
+              "value": "={{ $json.cpf }}",
+              "type": "string"
+            },
+            {
+              "id": "cff79353-84a8-4158-a785-9233e2a890f5",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        -40
+      ],
+      "id": "7b3db723-b1df-4347-a4e1-f1bb152b22b8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a4196d5-b1ad-4c5a-9db6-14317a1c9c97",
+              "leftValue": "={{ $json.cpf }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "cbbfab6c-2da0-449c-962b-4df1b63330e1",
+              "leftValue": "={{ $json.nome }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -140,
+        -40
+      ],
+      "id": "54505640-7490-449d-a96f-bc8655c4613e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e681b157-25c1-475c-871b-899fbd86131d",
+              "name": "response",
+              "value": "=Informe os dados corretamente:\n\n{{ $json.toJsonString() }}\n\nObrigatório, nome completo e celular.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        100
+      ],
+      "id": "4c141b8e-22c5-439c-a69d-5ec5f24f72a9",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "cac114c9-499c-465f-91d6-cc856d087640",
+  "triggerCount": 0,
+  "tags": []
+}
