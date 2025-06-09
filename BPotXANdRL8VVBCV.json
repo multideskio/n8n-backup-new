@@ -1,0 +1,1071 @@
+{
+  "createdAt": "2025-06-09T22:48:39.573Z",
+  "updatedAt": "2025-06-09T22:48:46.319Z",
+  "id": "BPotXANdRL8VVBCV",
+  "name": "Cadastro vida na graça",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "urlApi",
+              "stringValue": "https://vidanagraca.com/"
+            },
+            {
+              "name": "baseApi",
+              "stringValue": "wp-json/rcp/v1/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "aa96e718-b168-4f27-86e4-9d1780c61def",
+      "name": "API SITE",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        -1400,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('Recebe dados da KIWIFY').item.json.body.order_status }}",
+              "value2": "paid"
+            }
+          ]
+        }
+      },
+      "id": "b894d773-780a-4577-a0b3-3be4b227c7c8",
+      "name": "VERIFICA SE FOI PAGO",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "login-email",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            },
+            {
+              "name": "nome",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.full_name }}"
+            },
+            {
+              "name": "senha",
+              "stringValue": "mudar@123"
+            },
+            {
+              "name": "status",
+              "stringValue": "active"
+            },
+            {
+              "name": "subscription",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Product.product_name }}"
+            },
+            {
+              "name": "total",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Subscription.charges.completed[0].amount }}"
+            },
+            {
+              "name": "iduser",
+              "stringValue": "={{ $json.id }}"
+            },
+            {
+              "name": "plano",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Product.product_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b8a956c1-cf8c-42ab-858f-f1e64d6ec056",
+      "name": "Config plano",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        140,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "wp_rcp_customers",
+          "mode": "list",
+          "cachedResultName": "wp_rcp_customers"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "user_id",
+              "value": "={{ $json.ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "20ea0348-1995-4aba-abd6-fecd0977e8f5",
+      "name": "Busca dados do usuário",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}payments/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $('Config plano').item.json.user_id }}"
+            },
+            {
+              "name": "amount",
+              "value": "={{ (parseFloat($('Recebe dados da KIWIFY').item.json.body.Commissions.product_base_price) / 100).toFixed(2) }}"
+            },
+            {
+              "name": "subscription",
+              "value": "={{ $('Code').item.json.plano }}"
+            },
+            {
+              "name": "transaction_id",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.order_id }}"
+            },
+            {
+              "name": "gateway",
+              "value": "kiwify"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "40ce0360-3575-4e55-b42e-6a5c941baea2",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        580,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}memberships/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "customer_id",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "object_id",
+              "value": "={{ $('Code').item.json.plano }}"
+            },
+            {
+              "name": "status",
+              "value": "Ativo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c192b6cb-dae2-4cc4-8ed0-b95aee71a32f",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        360,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenha o nome do webhook\nconst nomeRecebido = $json[\"body\"][\"Product\"][\"product_name\"];\n\n// Mapeie nomes para valores (substitua com seus próprios dados)\nconst mapaNomesValores = {\n  \"Plataforma Vida na Graça\": 1,\n  \"Vida na Graça Mensal\": 2,\n  // Adicione mais conforme necessário\n};\n\n// Verifique se o nome existe no mapa\nif (nomeRecebido in mapaNomesValores) {\n  // Retorne o valor correspondente\n  return { plano: mapaNomesValores[nomeRecebido] };\n} else {\n  // Se o nome não for encontrado, retorne um valor padrão ou uma mensagem de erro\n  return { resultado: NULL };\n}\n"
+      },
+      "id": "f1bce48e-1e59-4dee-b405-75692c55cd1c",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1620,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://vidanagraca.com/?fluentcrm=1&route=contact&hash=d47e3871-e97e-4550-b343-2a438453d541",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "full_name",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.full_name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.mobile }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c8767d51-b313-4f56-bddb-e7d62b93b7cf",
+      "name": "Fluent CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        800,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "wp_users",
+          "mode": "list",
+          "cachedResultName": "wp_users"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "user_email",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "53bfd663-28b2-4bee-ae44-788ba433d10b",
+      "name": "MySQL",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.2,
+      "position": [
+        -300,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "wp_users",
+          "mode": "list",
+          "cachedResultName": "wp_users"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "user_email",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d9c2b9fa-ea18-40f7-bbbc-05238ea11b89",
+      "name": "MySQL1",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        180
+      ],
+      "alwaysOutputData": true,
+      "notes": "Busca dados do usuário, verificando se o usuário existe..."
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "rules": {
+          "rules": [
+            {
+              "operation": "notContains",
+              "value2": "={{ $json.ID }}"
+            },
+            {
+              "operation": "notStartsWith",
+              "value2": "error"
+            }
+          ]
+        }
+      },
+      "id": "9d24403f-4c77-4a9e-ab0d-7cb1e8124dfe",
+      "name": "Switch1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [
+        -740,
+        180
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "wp_rcp_customers",
+          "mode": "list",
+          "cachedResultName": "wp_rcp_customers"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "user_id",
+              "value": "={{ $json.ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cc1aa9b0-ffc0-400b-8500-4d09e5efe8f5",
+      "name": "RCP CUSTOMERS",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.2,
+      "position": [
+        -520,
+        80
+      ],
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "notes": "Busca dados do usuário na tabela custumers"
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "login-email",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            },
+            {
+              "name": "nome",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.full_name }}"
+            },
+            {
+              "name": "senha",
+              "stringValue": "mudar@123"
+            },
+            {
+              "name": "status",
+              "stringValue": "active"
+            },
+            {
+              "name": "subscription",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Product.product_name }}"
+            },
+            {
+              "name": "total",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Subscription.charges.completed[0].amount }}"
+            },
+            {
+              "name": "iduser",
+              "stringValue": "={{ ($json.id) || \"N/A\" }}"
+            },
+            {
+              "name": "plano",
+              "stringValue": "={{ $('Recebe dados da KIWIFY').item.json.body.Product.product_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7f6d6ed0-4220-4d36-8cc5-cfcce18c63f0",
+      "name": "Config plano1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        -80,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}payments/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $('Config plano1').item.json.id }}"
+            },
+            {
+              "name": "amount",
+              "value": "={{ (parseFloat($('Recebe dados da KIWIFY').item.json.body.Commissions.product_base_price) / 100).toFixed(2) }}"
+            },
+            {
+              "name": "subscription",
+              "value": "={{ $('Code').item.json.plano }}"
+            },
+            {
+              "name": "transaction_id",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.order_id }}"
+            },
+            {
+              "name": "gateway",
+              "value": "kiwify"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dba21e79-9d17-4331-8132-bc24a29a8c5c",
+      "name": "Lança a fatura",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        580,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://vidanagraca.com/?fluentcrm=1&route=contact&hash=d47e3871-e97e-4550-b343-2a438453d541",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "full_name",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.full_name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.mobile }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e9e07219-cb02-4f83-8c69-3b29dc83146a",
+      "name": "Fluent CRM1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        800,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "rules": {
+          "rules": [
+            {
+              "operation": "notContains",
+              "value2": "={{ $json.id || null }}",
+              "outputKey": "data"
+            },
+            {
+              "operation": "startsWith",
+              "outputKey": "null"
+            }
+          ]
+        }
+      },
+      "id": "ee397870-aefc-4315-b410-65ca2be9639b",
+      "name": "Verifica se usuário já tem conta2",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        80
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}customers/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $('MySQL1').item.json.ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9414ae24-ea22-49f2-9075-9ebe46d26b20",
+      "name": "Cria aluno pagante",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        140,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}memberships/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "customer_id",
+              "value": "={{ $json }}"
+            },
+            {
+              "name": "object_id",
+              "value": "={{ $('Code').item.json.plano }}"
+            },
+            {
+              "name": "status",
+              "value": "Ativo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ce91510b-c5a1-491e-ac48-affe4e87adda",
+      "name": "Cria o plano",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        360,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "table": {
+          "__rl": true,
+          "value": "wp_rcp_memberships",
+          "mode": "list",
+          "cachedResultName": "wp_rcp_memberships"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "user_id",
+              "value": "={{ $('MySQL1').item.json.ID }}"
+            },
+            {
+              "column": "disabled",
+              "value": "0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "93ffe9f6-92cf-4b77-ad17-bd1f37c5f1d4",
+      "name": "Verifica se usuário tem alguma associação",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        -20
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}memberships/update/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "object_id",
+              "value": "={{ $('Code').item.json.plano }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e834cb2d-eba0-425d-9cf7-0c2628f48506",
+      "name": "Upgrade",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        140,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}payments/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $('Verifica se usuário tem alguma associação').item.json.user_id }}"
+            },
+            {
+              "name": "amount",
+              "value": "={{ (parseFloat($('Recebe dados da KIWIFY').item.json.body.Commissions.product_base_price) / 100).toFixed(2) }}"
+            },
+            {
+              "name": "subscription",
+              "value": "={{ $('Code').item.json.plano }}"
+            },
+            {
+              "name": "transaction_id",
+              "value": "2"
+            },
+            {
+              "name": "gateway",
+              "value": "kiwify"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "44486446-8865-48ca-88f6-687c4abc40a2",
+      "name": "HTTP Request6",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        360,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('API SITE').item.json.urlApi }}{{ $('API SITE').item.json.baseApi }}members/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "login",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}"
+            },
+            {
+              "name": "status",
+              "value": "active"
+            },
+            {
+              "name": "first_name",
+              "value": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.full_name }}"
+            },
+            {
+              "name": "password",
+              "value": "Mudar@123***"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1cc8372d-3c4c-4b42-8e3d-6bb62b1e4dd8",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -520,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "table": {
+          "__rl": true,
+          "value": "wp_users",
+          "mode": "list",
+          "cachedResultName": "wp_users"
+        },
+        "dataMode": "defineBelow",
+        "columnToMatchOn": "user_email",
+        "valueToMatchOn": "={{ $('Recebe dados da KIWIFY').item.json.body.Customer.email }}",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "user_pass",
+              "value": "$P$BrdNue1nmJnI7wTW6QsOa84jIKT2fg/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ae970a61-d1fe-4432-8d8a-e64a95915df4",
+      "name": "MySQL2",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.2,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "15a86b99-cc8a-470e-8040-11df61ce7e69",
+        "options": {}
+      },
+      "id": "bc8efd96-4912-4b9f-9a6a-8dcf65d83f5f",
+      "name": "Recebe dados da KIWIFY",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1840,
+        80
+      ],
+      "webhookId": "15a86b99-cc8a-470e-8040-11df61ce7e69"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "databaseId": 53,
+        "tableId": 518,
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4772,
+              "fieldValue": "={{ $now.format('dd-MM-yyyy HH:mm:ss') }}"
+            },
+            {
+              "fieldId": 4779,
+              "fieldValue": "=Vida na graça"
+            }
+          ]
+        }
+      },
+      "id": "719e0186-cc77-46b5-a436-fb8b52f7fdc7",
+      "name": "Baserow",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        -1620,
+        -20
+      ]
+    }
+  ],
+  "connections": {
+    "API SITE": {
+      "main": [
+        [
+          {
+            "node": "VERIFICA SE FOI PAGO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VERIFICA SE FOI PAGO": {
+      "main": [
+        [
+          {
+            "node": "MySQL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config plano": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca dados do usuário": {
+      "main": [
+        [
+          {
+            "node": "Config plano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Fluent CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "API SITE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fluent CRM": {
+      "main": [
+        [
+          {
+            "node": "MySQL2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL": {
+      "main": [
+        [
+          {
+            "node": "Busca dados do usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "RCP CUSTOMERS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RCP CUSTOMERS": {
+      "main": [
+        [
+          {
+            "node": "Verifica se usuário já tem conta2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config plano1": {
+      "main": [
+        [
+          {
+            "node": "Cria aluno pagante",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lança a fatura": {
+      "main": [
+        [
+          {
+            "node": "Fluent CRM1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se usuário já tem conta2": {
+      "main": [
+        [
+          {
+            "node": "Verifica se usuário tem alguma associação",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Config plano1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria aluno pagante": {
+      "main": [
+        [
+          {
+            "node": "Cria o plano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria o plano": {
+      "main": [
+        [
+          {
+            "node": "Lança a fatura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se usuário tem alguma associação": {
+      "main": [
+        [
+          {
+            "node": "Upgrade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upgrade": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "MySQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recebe dados da KIWIFY": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Baserow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "f1fd63f5-41e7-4592-88d8-1b6d2555818c",
+  "triggerCount": 0,
+  "tags": []
+}
