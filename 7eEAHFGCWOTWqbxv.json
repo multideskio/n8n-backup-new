@@ -1,8 +1,8 @@
 {
   "createdAt": "2025-03-05T13:40:43.278Z",
-  "updatedAt": "2025-03-30T05:59:48.083Z",
+  "updatedAt": "2025-06-09T23:02:00.097Z",
   "id": "7eEAHFGCWOTWqbxv",
-  "name": "VALIDAÇÃO",
+  "name": "Scrap Pablo Marçal",
   "active": true,
   "isArchived": false,
   "nodes": [
@@ -710,7 +710,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "b42b953c-8b7d-402c-99e2-508753ed6e86",
+  "versionId": "9438b15c-7a7a-448d-beaf-a02d550b98ad",
   "triggerCount": 1,
   "tags": [
     {
