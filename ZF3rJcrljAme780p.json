@@ -1,0 +1,462 @@
+{
+  "createdAt": "2025-06-09T22:39:07.726Z",
+  "updatedAt": "2025-06-09T22:41:03.007Z",
+  "id": "ZF3rJcrljAme780p",
+  "name": "Envia os dados de acesso aos usuarios",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "null",
+              "operation": "notEqual",
+              "value2": "={{ $json.body.event.usuario.celular }}"
+            }
+          ]
+        }
+      },
+      "id": "8eeb7981-94da-45dc-9f2d-6a0b6fb451d1",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados-API').item.json[\"urlApi\"] }}/message/sendText/{{ $('Dados-API').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados-API').item.json[\"key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"telefone\"] }}\",\n  \"text\": \"{{ $json[\"message\"].replace(/\\r?\\n/g, '\\\\n') }}\"\n}",
+        "options": {}
+      },
+      "id": "3f808c4b-2177-4c0c-a96e-73476dc3963b",
+      "name": "Envia no WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $json[\"key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"{{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"celular\"] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "093be553-44c6-4a56-add3-9a51b7be95a2",
+      "name": "Numero-tel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -220,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "urlApi",
+              "stringValue": "https://evo2.multidesk.io"
+            },
+            {
+              "name": "instace",
+              "stringValue": "dinamus"
+            },
+            {
+              "name": "key",
+              "stringValue": "6FAD0A4D48B8-4C5F-9309-D77D76E0D741"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f2fceac7-4650-4517-8437-e86dcb560d6c",
+      "name": "Dados-API",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        -440,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.exists }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "a8dfbc62-8bb1-486c-ae45-18a64f24b19f",
+      "name": "True",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        440,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d00db68-8a45-4d7b-b11a-38248c0018a7",
+              "name": "message",
+              "value": "=Olá *{{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"nome\"].split(\" \")[0] }} {{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"nome\"].split(\" \")[1] }}*, 🖐️\nAqui é do suporte da Ethos Academy.\n*Sua assinatura foi aprovada!* 🤩\n\nSe você já tinha o acesso gratuito ou é assinante antigo, o seu acesso não muda, *a sua senha é a mesma*, 🔑 agora se é a primeira vez que você está acessando a plataforma, os dados de acesso são:\n\n1. *Login:* https://login.ethosacademy.com.br\n2. *E-mail:* {{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"email\"] }}\n3. *Senha:* mudar123\n\n*Link de login automático:* ✨\n{{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"login_auto\"] }}\n\nAtt.\nEquipe Ethos Academy",
+              "type": "string"
+            },
+            {
+              "id": "87ecd99b-1ccf-41b9-a5a5-dcad16d36010",
+              "name": "telefone",
+              "value": "={{ $json.jid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5c57b9b8-3228-46f2-bc8d-8e76f9cf57a6",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados-API').item.json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $('Dados-API').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados-API').item.json.key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"55{{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"celular\"] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "22a3858c-ad8d-4252-8762-83ce2925bb32",
+      "name": "Numero-tel1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        220,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados-API').item.json[\"urlApi\"] }}/message/sendText/{{ $('Dados-API').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados-API').item.json[\"key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"telefone\"] }}\",\n  \"text\": \"{{ $json[\"message\"].replace(/\\r?\\n/g, '\\\\n') }}\"\n}",
+        "options": {}
+      },
+      "id": "e1839acc-fab1-465e-9ff0-60b6b1f612e1",
+      "name": "Envia no WhatsApp1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        880,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d00db68-8a45-4d7b-b11a-38248c0018a7",
+              "name": "message",
+              "value": "=Olá *{{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"nome\"].split(\" \")[0] }} {{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"nome\"].split(\" \")[1] }}*, 🖐️\nAqui é do suporte da Ethos Academy.\n*Sua assinatura foi aprovada!* 🤩\n\nSe você já tinha o acesso gratuito ou é assinante antigo, o seu acesso não muda, *a sua senha é a mesma*, 🔑 agora se é a primeira vez que você está acessando a plataforma, os dados de acesso são:\n\n1. *Login:* https://login.ethosacademy.com.br\n2. *E-mail:* {{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"email\"] }}\n3. *Senha:* mudar123\n\n*Link de login automático:* ✨\n{{ $('Webhook').item.json[\"body\"][\"event\"][\"usuario\"][\"login_auto\"] }}\n\nAtt.\nEquipe Ethos Academy",
+              "type": "string"
+            },
+            {
+              "id": "87ecd99b-1ccf-41b9-a5a5-dcad16d36010",
+              "name": "telefone",
+              "value": "={{ $json.jid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "340797e4-d34d-4551-8934-1bee146a0735",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        660,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ethos-entrega",
+        "options": {}
+      },
+      "id": "79e24f10-f1c8-4887-8dc8-df5656fb597a",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        100
+      ],
+      "webhookId": "24310397-a607-4d9a-8a1f-3c2524b138e1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.exists }}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "4cb5bf1e-5b76-4be3-8c15-feacaa71e1d9",
+                    "leftValue": "={{ $json.exists }}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7b693fae-f5a5-41fd-9dd5-4105e63a3190",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        0,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# CONFIGURA ESSE WEBHOOK PARA RECEBER DADOS DA ethosacademy",
+        "width": 540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -880,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "7ddbdc66-6c8e-430d-8be1-981cd2a753b8",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Dados-API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados-API": {
+      "main": [
+        [
+          {
+            "node": "Numero-tel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Envia no WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel1": {
+      "main": [
+        [
+          {
+            "node": "True",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Envia no WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "True": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Numero-tel1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "809ed3b9-bed2-4c85-9d2d-e572de42da50",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2024-12-02T22:30:01.479Z",
+      "updatedAt": "2024-12-02T22:30:01.479Z",
+      "id": "SgGQ4i9j7WOrjp6u",
+      "name": "Ethos"
+    }
+  ]
+}
