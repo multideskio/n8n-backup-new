@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-03-30T02:52:04.964Z",
-  "updatedAt": "2025-03-30T06:07:04.958Z",
+  "updatedAt": "2025-06-09T23:03:04.144Z",
   "id": "yixJ8bIqoAwbXwk9",
   "name": "PROJETO PILOTO DE ATENDIMENTO A IA",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -2650,7 +2650,7 @@
       }
     ]
   },
-  "versionId": "f8e87237-aca5-4566-8e21-d7d21f0d8ebc",
+  "versionId": "0ce7465e-2310-4499-bfb2-f0e6cb930ad7",
   "triggerCount": 1,
   "tags": []
 }
