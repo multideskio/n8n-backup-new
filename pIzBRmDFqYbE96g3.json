@@ -1,0 +1,1406 @@
+{
+  "createdAt": "2025-06-09T22:41:39.164Z",
+  "updatedAt": "2025-06-09T22:43:12.584Z",
+  "id": "pIzBRmDFqYbE96g3",
+  "name": "Ações de recuperação de vendas",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json.urlApi }}/message/sendText/{{ $('dadosApi').item.json.instace }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"jid\"] }}\",\n  \"text\": \"{{ $('Assinatura cancelada').item.json[\"mensagem\"].replace(/\\r?\\n/g, '\\\\n')}}\"\n}",
+        "options": {}
+      },
+      "id": "9677e3b5-35a4-4932-8638-61185c2f7133",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -500,
+        1260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json.urlApi }}/message/sendText/{{ $('dadosApi').item.json.instace }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"jid\"] }}\",\n  \"text\": \"{{ $('Assinatura atrasa').item.json[\"mensagem\"].replace(/\\r?\\n/g, '\\\\n')}}\"\n}",
+        "options": {}
+      },
+      "id": "abfb895d-8ffa-439f-a4fe-2f73791fe4a8",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -500,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb98d1bd-104e-4d94-b4ca-a66f851f9458",
+              "name": "nome",
+              "value": "={{ $('Webhook').item.json.body.Customer.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "8acaaa1d-5b95-4eec-ab6f-bccf458081e1",
+              "name": "telefone",
+              "value": "={{ $('Webhook').item.json.body.Customer.mobile }}",
+              "type": "string"
+            },
+            {
+              "id": "caad7cfd-2ec7-429f-843e-2a3c92f251d2",
+              "name": "=mensagem",
+              "value": "=Olá, Graça e Paz *{{ $('Webhook').item.json[\"body\"][\"Customer\"][\"first_name\"] }}*\n\n*Vim falar sobre a sua renovação da Ethos Academy.*\n\nEstou enviando essa mensagem para lembrar que a *sua assinatura* da Ethos *venceu hoje* e seu acesso *encontra-se bloqueado*🔒, pois não conseguimos efetuar a renovação pelo cartão cadastrado \n\n⚠️ *Atualize a forma de pagamento e restabeleça seu acesso.*\n*Te enviei um e-mail para atualizar a sua forma de pagamento, esse email pode estar no nome da _kiwify_*\n\n*_Ainda tem alguma dúvida, precisa falar conosco?_*\n_Responda essa mensagem e vamos te ajudar em sua renovação._\nFica na paz",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6b495535-280a-4a38-a855-0c667f6c5e82",
+      "name": "Assinatura atrasa",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -1160,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb98d1bd-104e-4d94-b4ca-a66f851f9458",
+              "name": "nome",
+              "value": "={{ $('Webhook').item.json.body.Customer.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "8acaaa1d-5b95-4eec-ab6f-bccf458081e1",
+              "name": "telefone",
+              "value": "={{ $('Webhook').item.json.body.Customer.mobile }}",
+              "type": "string"
+            },
+            {
+              "id": "caad7cfd-2ec7-429f-843e-2a3c92f251d2",
+              "name": "=mensagem",
+              "value": "=Olá, Graça e Paz *{{ $('Webhook').item.json[\"body\"][\"Customer\"][\"first_name\"] }}*\n\n*SUA ASSINATURA FOI CANCELADA!* ☹️\nComo não conseguimos atualizar o pagamento, *infelizmente sua assinatura da Ethos acaba de ser cancelada*, em breve ela será apagada e você infelizmente perderá todos os dados de vídeos assistidos, favoritos e o progresso que possui na plataforma.\n\n*MAS AINDA DÁ TEMPO!*⏳\n🔔 Essa é sua última chamada. \n\n⚠️ *Você precisa atualizar AGORA a forma de pagamento e imediatamente restabeleceremos seu acesso, você só precisa clicar no link abaixo:*\n\n👉 Anual: https://pay.kiwify.com.br/51683nl\n👉 Mensal: https://pay.kiwify.com.br/X8p2HEC\n\n_Espero que você tenha visto essa e todas as msg a tempo, *qualquer tipo de ajuda estamos aqui para auxiliar*_\n\nFica na paz",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bd911019-d508-42cb-af2d-d6d192a0d650",
+      "name": "Assinatura cancelada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -1160,
+        1260
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb98d1bd-104e-4d94-b4ca-a66f851f9458",
+              "name": "nome",
+              "value": "={{ $('Webhook').item.json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "8acaaa1d-5b95-4eec-ab6f-bccf458081e1",
+              "name": "telefone",
+              "value": "={{ $('Webhook').item.json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "caad7cfd-2ec7-429f-843e-2a3c92f251d2",
+              "name": "=mensagem",
+              "value": "=Olá, Graça e Paz *{{ $('Webhook').item.json[\"body\"][\"name\"].split(\" \")[0] }}*\n\n🫤 Huuum, vi aqui que você tentou realizar a assinatura da *Ethos Academy* mas por algum motivo você não conseguiu finalizar! ☹️\n\nEstamos aqui para te ajudar, *reservamos temporariamente* o item em seu carrinho de compra.\n\nhttps://pay.kiwify.com.br/{{ $('Webhook').item.json[\"body\"][\"checkout_link\"] }}?name={{ $('Webhook').item.json[\"body\"][\"name\"].replaceAll(\" \", \"%20\") }}&cpf={{ $('Webhook').item.json[\"body\"][\"cpf\"] }}&phone={{ $('Webhook').item.json[\"body\"][\"phone\"].split(\"+\")[1] }}&email={{ $('Webhook').item.json[\"body\"][\"email\"] }}\n\n👆*Clique e finalize AGORA seu pedido* ou digite *DÚVIDA* se você precisa de algum tipo de ajuda 🫡",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "72f02c34-d896-4ea4-af5a-800a4b2fe4b2",
+      "name": "Carrinho abandonado",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -280,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json.urlApi }}/message/sendText/{{ $('dadosApi').item.json.instace }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json[\"jid\"] }}\",\n  \"text\": \"{{ $('Carrinho abandonado').item.json[\"mensagem\"].replace(/\\r?\\n/g, '\\\\n')}}\"\n}",
+        "options": {}
+      },
+      "id": "9bd32c55-ea46-4458-b039-7d3d321bb69a",
+      "name": "HTTP Request4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        380,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $('dadosApi').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"{{ $('Carrinho abandonado').item.json[\"telefone\"] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "9f57f185-e7d3-48aa-80b8-b1dc52eafcad",
+      "name": "Numero-tel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -60,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "b9c16562-d751-4a30-b1d9-acfbb4dbead0",
+              "leftValue": "={{ $json.exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "71b7cdf8-cc6c-45cc-b73a-9d5eb3c4d8d9",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        160,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f3674c0-a5de-4127-a03f-0d1116256de0",
+              "name": "urlApi",
+              "value": "https://evo2.multidesk.io",
+              "type": "string"
+            },
+            {
+              "id": "fe50a6b5-cb5c-4bc7-9a14-5aeab9ada873",
+              "name": "instace",
+              "value": "dinamus",
+              "type": "string"
+            },
+            {
+              "id": "99939c21-1891-4366-9fbb-6e7f23fd8c51",
+              "name": "apikey",
+              "value": "6FAD0A4D48B8-4C5F-9309-D77D76E0D741",
+              "type": "string"
+            },
+            {
+              "id": "cda09cfb-9242-4dbd-91b6-742b767f4f68",
+              "name": "numeroTest",
+              "value": "5562981154120",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e7b22e2c-725e-4923-b625-9b501798d282",
+      "name": "dadosApi",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -1600,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $('dadosApi').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"{{ $json[\"telefone\"] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "98a697f0-b2db-4ae6-9847-3bcb63825c17",
+      "name": "Numero-tel1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -940,
+        1260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "b9c16562-d751-4a30-b1d9-acfbb4dbead0",
+              "leftValue": "={{ $json.exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ff53583b-d880-41a7-bdb0-4212c0e23bf9",
+      "name": "Filter1",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        1260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $('dadosApi').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"{{ $json[\"telefone\"] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "caa02324-e93d-44ec-b1a2-9abe80267fea",
+      "name": "Numero-tel2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -940,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "b9c16562-d751-4a30-b1d9-acfbb4dbead0",
+              "leftValue": "={{ $json.exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4e4ba5a4-c13d-40c5-a50c-1eb6b30a9c00",
+      "name": "Filter2",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "a37561d6-33f3-4c87-ba20-41daf9a64d57",
+              "leftValue": "={{ $('Webhook').item.json.body.checkout_link }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a71224d9-8414-45e0-a0dc-f6ffe71c3667",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json.urlApi }}/message/sendText/{{ $('dadosApi').item.json.instace }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Numero-tel3').item.json.jid }}\",\n  \"text\": \"{{ $('Assinatura cancelada1').item.json[\"mensagem\"].replace(/\\r?\\n/g, '\\\\n')}}\"\n}",
+        "options": {}
+      },
+      "id": "e0cc9702-6279-4bec-ace8-ef340b1b83fb",
+      "name": "HTTP Request5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -500,
+        1660
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb98d1bd-104e-4d94-b4ca-a66f851f9458",
+              "name": "nome",
+              "value": "={{ $('Webhook').item.json.body.Customer.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "8acaaa1d-5b95-4eec-ab6f-bccf458081e1",
+              "name": "telefone",
+              "value": "={{ $('Webhook').item.json.body.Customer.mobile }}",
+              "type": "string"
+            },
+            {
+              "id": "caad7cfd-2ec7-429f-843e-2a3c92f251d2",
+              "name": "=mensagem",
+              "value": "=Olá, Graça e Paz *{{ $('Webhook').item.json[\"body\"][\"Customer\"][\"first_name\"] }}*\n\n*O PIX FOI GERADO*\nPara realizar o pagamento copie todo o código e cole no aplicativo do seu banco...\n\nVou te enviar o código na próxima mensagem...",
+              "type": "string"
+            },
+            {
+              "id": "07ab7cbc-b047-4ce0-a232-c56ad215d83e",
+              "name": "copia e cola",
+              "value": "={{ $('Webhook').item.json.body.pix_code }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9c65ee60-efd2-4910-a62e-3edd7b4dc8ba",
+      "name": "Assinatura cancelada1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -1160,
+        1660
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json[\"urlApi\"] }}/chat/whatsappNumbers/{{ $('dadosApi').item.json[\"instace\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"numbers\": [\n    \"{{ $json[\"telefone\"] }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "050a334d-6564-4385-9bce-3a7466d1fc9f",
+      "name": "Numero-tel3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -940,
+        1660
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "b9c16562-d751-4a30-b1d9-acfbb4dbead0",
+              "leftValue": "={{ $json.exists }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5674b747-838b-4722-98a6-3227a833eb15",
+      "name": "Filter3",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        1660
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dadosApi').item.json.urlApi }}/message/sendText/{{ $('dadosApi').item.json.instace }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('dadosApi').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Numero-tel3').item.json.jid }}\",\n  \"text\": \"{{ $('Assinatura cancelada1').item.json[\"copia e cola\"] }}\"\n}",
+        "options": {}
+      },
+      "id": "e87cd189-8ea5-425c-bc02-e27c31e76b59",
+      "name": "HTTP Request6",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -60,
+        1660
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "fbecf6b6-13bb-487d-bf6e-d995342cfdf4",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        1660
+      ],
+      "webhookId": "8977e1e3-c59a-4f7e-9af7-bb33944e1831"
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "={{ $('Webhook').item.json.body.email }}"
+      },
+      "id": "2d96f779-f195-4b6a-8f1f-207c58b467b6",
+      "name": "Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1160,
+        1460
+      ],
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Webhook').item.json.body.email }}",
+        "value": "={{ $('Webhook').item.json.body.email }}",
+        "expire": true,
+        "ttl": 86400
+      },
+      "id": "9b0f9b3f-d520-48c7-953f-81f67f92f033",
+      "name": "Redis1",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        1460
+      ],
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.toJsonString().split('\"')[1] }}",
+                    "rightValue": "={{ $('Webhook').item.json.body.email }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "a47768f6-d6f2-48fc-b094-5b1ee3d09f7f",
+      "name": "Switch1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -940,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "={{ $('Webhook').item.json.body.Customer.email }}"
+      },
+      "id": "b407d78e-6dee-4714-8173-896c36bc9c52",
+      "name": "Redis2",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1160,
+        660
+      ],
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Webhook').item.json.body.Customer.email }}",
+        "value": "={{ $('Webhook').item.json.body.Customer.email }}",
+        "expire": true,
+        "ttl": 86400
+      },
+      "id": "39ee2877-278f-4dd1-ab7e-73b01827bc85",
+      "name": "Redis3",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        660
+      ],
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.toJsonString().split('\"')[1] }}",
+                    "rightValue": "={{ $('Webhook').item.json.body.Customer.email }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "e872dbef-47f3-4c04-aa86-ee14cfd2f699",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "49d4fd4c-2f34-4905-968f-404608a4ddd6",
+      "name": "Switch2",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -940,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "={{ $('Webhook').item.json.body.Customer.email }}"
+      },
+      "id": "6e843547-b7b6-4a3c-b02b-6cc9bee9320d",
+      "name": "Redis4",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1160,
+        860
+      ],
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Webhook').item.json.body.Customer.email }}",
+        "value": "={{ $('Webhook').item.json.body.Customer.email }}",
+        "expire": true,
+        "ttl": 86400
+      },
+      "id": "9ccbfdc6-504b-4a74-bf4d-1887133eb9c6",
+      "name": "Redis5",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        860
+      ],
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.toJsonString().split('\"')[1] }}",
+                    "rightValue": "={{ $('Webhook').item.json.body.Customer.email }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "e872dbef-47f3-4c04-aa86-ee14cfd2f699",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "173f438f-5d4d-488b-9945-997b6b55846e",
+      "name": "Switch3",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -940,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9f35949a-33b4-4279-ba4c-b2ca6b355339",
+        "options": {}
+      },
+      "id": "34709d64-3512-49b3-8827-522aaae3a271",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1820,
+        1160
+      ],
+      "webhookId": "9f35949a-33b4-4279-ba4c-b2ca6b355339"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "7c4127f0-a0ef-4345-8646-6676aecc01b9",
+                    "leftValue": "={{ $('Webhook').item.json.body.webhook_event_type }}",
+                    "rightValue": "order_approved",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "dd30f6e3-9099-4585-b6a9-290b8c89637c",
+                    "leftValue": "={{ $('Webhook').item.json.body.webhook_event_type }}",
+                    "rightValue": "subscription_renewed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.webhook_event_type }}",
+                    "rightValue": "subscription_late",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "146b9132-1de9-4039-8232-9aad99b65eda",
+                    "leftValue": "={{ $('Webhook').item.json.body.webhook_event_type }}",
+                    "rightValue": "subscription_canceled",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "83587200-c2d2-4aad-9975-21a090d30103",
+                    "leftValue": "={{ $('Webhook').item.json.body.status }}",
+                    "rightValue": "abandoned",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "7d12d405-47c0-41af-a898-9aec504ebf3c",
+                    "leftValue": "={{ $('Webhook').item.json.body.webhook_event_type }}",
+                    "rightValue": "pix_created",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5e33972a-2ae5-48c2-b9b2-6d3479527108",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -1380,
+        1097
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# CONFIGURA ESSE WEBHOOK NA KIWIFY\n",
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1840,
+        880
+      ],
+      "typeVersion": 1,
+      "id": "6f9ccc82-b24c-483b-a841-ca619338f5ff",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Assinatura atrasa": {
+      "main": [
+        [
+          {
+            "node": "Numero-tel2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assinatura cancelada": {
+      "main": [
+        [
+          {
+            "node": "Numero-tel1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carrinho abandonado": {
+      "main": [
+        [
+          {
+            "node": "Numero-tel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dadosApi": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel2": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Carrinho abandonado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assinatura cancelada1": {
+      "main": [
+        [
+          {
+            "node": "Numero-tel3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Numero-tel3": {
+      "main": [
+        [
+          {
+            "node": "Filter3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Redis5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "dadosApi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Assinatura atrasa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Assinatura cancelada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Assinatura cancelada1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "ed5b9354-c630-43e8-a3b5-18e11407028b",
+  "triggerCount": 0,
+  "tags": []
+}
