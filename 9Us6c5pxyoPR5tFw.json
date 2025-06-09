@@ -1,0 +1,444 @@
+{
+  "createdAt": "2025-01-15T21:46:48.225Z",
+  "updatedAt": "2025-03-30T05:51:58.314Z",
+  "id": "9Us6c5pxyoPR5tFw",
+  "name": "EXTRAI INFORMAÇÕES SOBRE OS GRUPOS DO USUARIO - BODY",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=### **Contexto**\nJosé é um assistente virtual no WhatsApp, projetado para ajudar os clientes a encontrar informações sobre grupos com base no **nome** fornecido. Ele utiliza uma API segura que retorna o **ID, nome e descrição** dos grupos de maneira eficiente, mantendo confidencialidade total das configurações internas.\n\n---\n\n### **Objetivo**\nGarantir uma experiência clara, humanizada e segura no atendimento, processando as solicitações do cliente e retornando respostas formatadas e personalizadas no WhatsApp.\n\n---\n\n**Informações Internas (Uso Exclusivo do Sistema):**\n   - **URL da API:** `{{ $json.body.server_url }}`\n   - **Instância:** `{{ $json.body.instance }}`\n   - **APIKEY:** `{{ $json.body.apikey }}`\n   - **Nome do Cliente:** `{{ $json.body.data.pushName }}`\n   - **Mensagem do Cliente:** `{{ $json.body.data.message.conversation }}`\n   \n   > **Nota:** Essas variáveis **nunca** devem ser compartilhadas com o cliente.",
+        "options": {
+          "systemMessage": "="
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -660,
+        -80
+      ],
+      "id": "87febedc-4300-4ac5-afb3-381920491c11",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory_{{ $json.body.data.key.remoteJid.split(\"@\")[0] }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.4,
+      "position": [
+        -880,
+        300
+      ],
+      "id": "15e2fbec-5344-4d28-a016-fa83c473e039",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "xoGPhxM4qkQNnSpn",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "=Utilize para buscar resumos de conversas no grupo escolhido pelo cliente.\n\nData atual: {{ $now.setLocale(\"pt-BR\").format('yyyy-MM-dd') }}\nHora atual: {{ $now.setLocale(\"pt-BR\").format('HH:mm') }}",
+        "method": "POST",
+        "url": "https://hook.multidesk.io/webhook/796f2a9e-f29b-4d31-ad5e-d407c24d568d",
+        "sendBody": true,
+        "parametersBody": {
+          "values": [
+            {
+              "name": "idGrupo"
+            },
+            {
+              "name": "urlApi"
+            },
+            {
+              "name": "instancia"
+            },
+            {
+              "name": "apikey"
+            }
+          ]
+        },
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "idGrupo",
+              "description": "ID DO GRUPO DO WHATSAPP, EXEMPLO DE ID: \"120363286134712901@g.us\""
+            },
+            {
+              "name": "urlApi",
+              "description": "A URL da api informada"
+            },
+            {
+              "name": "instancia",
+              "description": "O nome da instancia informada"
+            },
+            {
+              "name": "apikey",
+              "description": "A APIKEY informada"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        300
+      ],
+      "id": "c0f90377-add8-4b0b-b366-ac33eef4fdc0",
+      "name": "Resumir conversas de grupos"
+    },
+    {
+      "parameters": {
+        "toolDescription": "# Extrair id, nome e descrição do ou dos grupos.\n\nEnvie na solicitação a query \"tipo\" com \"quantidade\" ou \"nomes\" para extrair os dados dos grupos.",
+        "url": "https://hook.multidesk.io/webhook/ad7ce6c1-3111-4a49-bc93-04d2730e5b8b",
+        "sendQuery": true,
+        "parametersQuery": {
+          "values": [
+            {
+              "name": "tipo"
+            },
+            {
+              "name": "urlApi"
+            },
+            {
+              "name": "instancia"
+            },
+            {
+              "name": "apikey"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        -640,
+        280
+      ],
+      "id": "83bdb502-4dea-4a8d-9a7d-a7af95646396",
+      "name": "Extrair informacoes sobre os grupos"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3c2c6828-ff0f-47bc-8223-b76124424be4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1160,
+        -60
+      ],
+      "id": "a95b1d1a-4fa9-4af1-ae1b-c31b20e3ae29",
+      "name": "Webhook",
+      "webhookId": "3c2c6828-ff0f-47bc-8223-b76124424be4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1aefa129-1f35-4804-a6a7-0df788b52780",
+              "leftValue": "={{ $json.body.data.messageType }}",
+              "rightValue": "conversation",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "dfed858d-f7f6-4744-a3c2-95ab3cc775cd",
+              "leftValue": "={{ $json.body.data.key.remoteJid }}",
+              "rightValue": "556281204120@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "76690751-aedb-49dc-8962-096a3f9d3322",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -940,
+        -60
+      ],
+      "id": "4344ea6b-79be-4fab-831c-29d43893adc3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto da variável de entrada\nlet inputText = $json[\"output\"];\n\n// Substitui todos os casos de **texto** para *texto*\nlet outputText = inputText.replace(/\\*\\*(.*?)\\*\\*/g, '*$1*');\n\n// Substitui todas as ocorrências de \\n para \\n\\n\noutputText = outputText.replace(/([^\\n]|^)\\n([^\\n]|$)/g, '$1\\n\\n$2');\n\n// Retorna o resultado\nreturn {\n  json: {\n    outputText: outputText\n  }\n};\n"
+      },
+      "id": "27483953-8521-4b74-8f63-04926d2be2a0",
+      "name": "Formatar Texto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -60,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Webhook').item.json.body.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.outputText }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "bc17a7ac-610f-4e59-88e6-092c11279c5a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        -1060,
+        300
+      ],
+      "id": "1dbd04d6-1b3c-4776-8d47-beb28990db36",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "MCZYHBrcmLRaCupZ",
+          "name": "GroupsResume"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": ""
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1160,
+        -260
+      ],
+      "typeVersion": 1,
+      "id": "3a0cdfe1-41fd-4f57-a806-00c4e9b93b74",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumir conversas de grupos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair informacoes sobre os grupos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Formatar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Texto": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "axios/1.7.7",
+            "content-length": "952",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "61a872d84fef",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "ph_groups",
+            "data": {
+              "key": {
+                "remoteJid": "556281204120@s.whatsapp.net",
+                "fromMe": false,
+                "id": "8C423A0B9AB8D6592731ECFB84D360E9"
+              },
+              "pushName": "Multidesk.Io",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Uai, qual o nome completo do meu grupo ag12x?",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "p3wiqPT2qTd0jw==",
+                    "senderTimestamp": "1736184605",
+                    "recipientKeyHash": "tLCW/G4gIlm+TQ==",
+                    "recipientTimestamp": "1737013596"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "a2iymmVdR1rmLD4QGVfxisPaWnZNPZGZ5Fim6RULfz0="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1737013867,
+              "instanceId": "48d0d6a0-5ede-4f57-a357-75d2fbbae617",
+              "source": "android"
+            },
+            "destination": "https://hook.multidesk.io/webhook/3c2c6828-ff0f-47bc-8223-b76124424be4",
+            "date_time": "2025-01-16T04:51:08.630Z",
+            "sender": "556281154120@s.whatsapp.net",
+            "server_url": "https://easyevo.multidesk.io",
+            "apikey": "34A81F951F79-41A7-B5D5-1123EB003B24"
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/3c2c6828-ff0f-47bc-8223-b76124424be4",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "fccbfd22-e292-4e93-b51d-926230bfff2f",
+  "triggerCount": 1,
+  "tags": []
+}
