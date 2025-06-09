@@ -1,0 +1,185 @@
+{
+  "createdAt": "2025-05-23T13:43:38.294Z",
+  "updatedAt": "2025-05-23T13:57:04.551Z",
+  "id": "8NoQJeBuZqseEHLe",
+  "name": "My workflow 8",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "42d5b72f-0f23-469d-a615-02152e66c66f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "c5447c7b-10a1-4da1-a12d-5bc4662f4aa9",
+      "name": "Webhook",
+      "webhookId": "42d5b72f-0f23-469d-a615-02152e66c66f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c975ace8-c5a0-4c31-ac4a-f2b698786290",
+              "name": "body.transcript",
+              "value": "={{ $json.body.transcript.toJsonString() }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        0
+      ],
+      "id": "e8843cfa-0123-4a40-aa10-d1bfad3f95ab",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {
+          "summarizationMethodAndPrompts": {
+            "values": {
+              "summarizationMethod": "refine",
+              "refinePrompt": "USE PT-BR\nYour job is to produce a final summary\nWe have provided an existing summary up to a certain point: \"{existing_answer}\"\nWe have the opportunity to refine the existing summary\n(only if needed) with some more context below.\n------------\n\"{text}\"\n------------\n\nGiven the new context, refine the original summary\nIf the context isn't useful, return the original summary.\n\nREFINED SUMMARY:"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "typeVersion": 2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "f6162b1f-8d2d-4e4d-95ba-546ee3477fdd",
+      "name": "Summarization Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        280,
+        180
+      ],
+      "id": "0e0bd15e-062b-4d60-9400-0c836f2cba2b",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "o1EjkbqRqJfu8RKU",
+          "name": "Groq account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+            "content-length": "2085",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "cookie": "_ga=GA1.1.1254322524.1746191601; _fbp=fb.1.1746191600966.910077260316180304; PHPSESSID=b0n3o7vgshfmm5nsamfadhm229; _ga_LTSTHXR406=GS2.1.s1746983251$o5$g1$t1746983262$j0$l0$h0",
+            "origin": "chrome-extension://ciepnfnceimjehngolkijpnbappkkiag",
+            "priority": "u=1, i",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "none",
+            "sec-fetch-storage-access": "active",
+            "x-forwarded-for": "143.0.254.239",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "007b3bfbd68a",
+            "x-real-ip": "143.0.254.239"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "meetingTitle": "Meet",
+            "meetingStartTimestamp": "2025-05-23T13:46:03.652Z",
+            "meetingEndTimestamp": "2025-05-23T13:52:21.881Z",
+            "transcript": [
+              {
+                "personName": "Você",
+                "timestamp": "2025-05-23T13:45:33.594Z",
+                "transcriptText": "Não Desative as legendas. Então tá, né desativar.  "
+              },
+              {
+                "personName": "Paulo Henrique",
+                "timestamp": "2025-05-23T13:46:37.967Z",
+                "transcriptText": "Ah tá. Para não misturar as coisas não misturar os áudios organizar Deixar aqui. Já existem? automação de WhatsApp tem um tal do está bom Dá para a gente pesquisar sobre estar bom ali para ver o que que é. Tem uma ação na prática o valor muito bons ali para poder. ganhar No máximo que tem automação de WhatsApp de 532,80. Vamos ver sobre isso aqui. Vamos lá tipo. É interessante. full power 2025 é 1332 prêmio 2025 888 Vamos ver tem contato no grupo. Enfim nós grupo de afiliados os atributos. É interessante, mas a gente precisa. Ver melhor como é que funciona as coisas sobre o que que é isso? Que automação que é essa Enviar? Até acesso a plataforma para poder ver como é que funciona. Efetiva para ela tomar seu WhatsApp aí você pode se tornar feriado participar de sucesso. Em alta como funciona? benefícios recursos mais exclusivos promocionais se isso aqui foi especialmente feito para comissão Não parte. Se bater 188 opções. oferta de 447 197 e 397 produto de venda única site No site tem conheço nova automação no Instagram? Ilimitado dólar está custando quase r$ 100 e com ferramentas tornaram inviáveis, você não pode ser feito de besta então Assista o vídeo enquanto está no ar a Deus. De aprender como criar automações para Instagram sem usar o Manchete? Você vai ter acesso da Playstation obter o perfil do usuário? responder comentários mensagem privadas respostas rápidas  Tem respostas Monções? Postar conteúdo interessante. Estão dizendo sobre o conteúdo aliás em vídeo Então é um fluxo. Que vai uma plataforma. assim ele precisa pensar uma forma de E criar um site. Faz virar um sas. Essa transcrição é uma bosta. "
+              }
+            ],
+            "chatMessages": []
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/42d5b72f-0f23-469d-a615-02152e66c66f",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "721ad96a-c7b6-4800-aae6-093c2abfeaf8",
+  "triggerCount": 1,
+  "tags": []
+}
