@@ -1,0 +1,490 @@
+{
+  "createdAt": "2024-12-06T14:06:28.541Z",
+  "updatedAt": "2025-03-30T05:47:12.106Z",
+  "id": "cxTHTYGLnfdMxKgB",
+  "name": "ANOTAÇÕES",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ef33d4a1-f7a3-4904-a6f9-566bed13de50",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        -200
+      ],
+      "id": "c48ddde2-b4bb-4b39-a92e-4e7f5177baa1",
+      "name": "Webhook",
+      "webhookId": "ef33d4a1-f7a3-4904-a6f9-566bed13de50"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64a08cba-84c5-4f2b-b50c-4223e46cf04d",
+              "name": "message",
+              "value": "=*DADOS TESTE*\n\n*INTENÇÃO:* {{ $json.body.intensao }}\n*NOME:* {{ $json.body.nome }}\n*TELEFONE:* {{ $json.body.telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "78b44663-38a3-4d88-bc5a-bbb6a2302817",
+              "name": "url",
+              "value": "https://easyevo.multidesk.io/",
+              "type": "string"
+            },
+            {
+              "id": "44cd80e8-8176-4265-9522-4ff83c742d2c",
+              "name": "instance",
+              "value": "notificactions",
+              "type": "string"
+            },
+            {
+              "id": "7ddc7676-a786-42cb-8e77-464ecd31d359",
+              "name": "apikey",
+              "value": "B2C80EDDD0A3-4E9F-9200-CA93C928EC3E",
+              "type": "string"
+            },
+            {
+              "id": "810b72f6-9013-4cfa-8829-ea8d8ee58f5a",
+              "name": "suporte",
+              "value": "5562981154120",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -260
+      ],
+      "id": "217d83c4-c9ba-4264-9b3d-1b1ef654db41",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}message/sendText/{{ $('Edit Fields2').item.json[\"instance\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Edit Fields2').item.json[\"apikey\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=5562981154120"
+            },
+            {
+              "name": "text",
+              "value": "={{$('Edit Fields2').item.json[\"message\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b84245c3-7596-4304-bc5a-24ba49a9a3c8",
+      "name": "Monitoramento2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        220,
+        -500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}message/sendText/{{ $('Edit Fields2').item.json[\"instance\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Edit Fields2').item.json[\"apikey\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=+55 64 9952-6870"
+            },
+            {
+              "name": "text",
+              "value": "={{$('Edit Fields2').item.json[\"message\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e00bf0c7-12f5-47c0-becd-4333eba74b4f",
+      "name": "Monitoramento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        220,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## INTENÇÃO",
+        "height": 380,
+        "width": 760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -340,
+        -380
+      ],
+      "typeVersion": 1,
+      "id": "e872dd9e-8958-4d5c-8778-077376cdf04e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}message/sendText/{{ $('Edit Fields2').item.json[\"instance\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Edit Fields2').item.json[\"apikey\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=+55 64 9978-1822"
+            },
+            {
+              "name": "text",
+              "value": "={{$('Edit Fields2').item.json[\"message\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1099e4dd-304a-41b6-8346-7372a11d11f0",
+      "name": "Monitoramento1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        220,
+        -340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}message/sendText/{{ $('Edit Fields2').item.json[\"instance\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Edit Fields2').item.json[\"apikey\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=+55 64 9208-9471"
+            },
+            {
+              "name": "text",
+              "value": "={{$('Edit Fields2').item.json[\"message\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "abadee98-fcba-4871-ba8a-6b78545cbfe6",
+      "name": "Monitoramento3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        220,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.tipo }}",
+                    "rightValue": "intencao",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a7a617b-a6f8-4e33-b4a9-12124b433217",
+                    "leftValue": "={{ $json.body.tipo }}",
+                    "rightValue": "agendamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -780,
+        100
+      ],
+      "id": "5c356ce5-626a-4b9e-9529-a69996007c6c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1PZc82sUOO0irG8_Q3kqiG5aFbhljigMbmLBHMv5JSWw/edit?gid=2906786#gid=2906786",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Intencao do cliente",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PZc82sUOO0irG8_Q3kqiG5aFbhljigMbmLBHMv5JSWw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "intencao": "={{ $json.body.intensao }}",
+            "telefone": "={{ $json.body.telefone }}",
+            "nome": "={{ $json.body.nome }}",
+            "loja": "={{ $json.body.loja ?? \"Loja\"}}",
+            "ID": "1",
+            "Hora da acao": "={{ $now.format('dd/MM/yyyy HH:mm:ss') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "intencao",
+              "displayName": "intencao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "loja",
+              "displayName": "loja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hora da acao",
+              "displayName": "Hora da acao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "08dd35c3-668b-4e79-b0b6-2d81d0e4d434",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -740,
+        -200
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VlWuaL18BrL092ZL",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Monitoramento2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Monitoramento",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Monitoramento1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Monitoramento3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "axios/1.7.4",
+            "content-length": "88",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "5.161.64.220",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "a2912de38595",
+            "x-real-ip": "5.161.64.220"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "intensao": "orçamento",
+            "nome": "PAULO",
+            "telefone": "62981154120",
+            "loja": "GOIAS MARMORE"
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/ef33d4a1-f7a3-4904-a6f9-566bed13de50",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "ef6b5590-1762-4e8c-8099-714074ce7231",
+  "triggerCount": 1,
+  "tags": []
+}
