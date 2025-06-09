@@ -1,0 +1,318 @@
+{
+  "createdAt": "2025-04-28T20:28:27.797Z",
+  "updatedAt": "2025-04-28T20:55:16.094Z",
+  "id": "l9fUwmOtftlJv13g",
+  "name": "Conect",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "instanceName": "={{ $json.instance }}",
+        "options_Create_instance": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        240,
+        240
+      ],
+      "id": "8f8a1d13-a53b-49e3-878f-45ab754867be",
+      "name": "Evolution API1",
+      "retryOnFail": false,
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "instance-connect",
+        "instanceName": "={{ $('Edit Fields1').item.json.instance }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        480,
+        240
+      ],
+      "id": "4e47ba6e-628e-420c-a46e-cb79be8de934",
+      "name": "Evolution API2",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <!--  <meta http-equiv=\"refresh\" content=\"60\">Reload a cada 20 segundos -->\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Conecte-se</title>\n  <style>\n    body {\n      margin: 0;\n      height: 100vh;\n      display: flex;\n      flex-direction: column;\n      justify-content: center;\n      align-items: center;\n      background-color: #f4f4f4;\n      font-family: Arial, sans-serif;\n    }\n    h1 {\n      margin-bottom: 20px;\n      color: #333;\n    }\n    img {\n      width: 250px;\n      height: 250px;\n    }\n  </style>\n</head>\n<body>\n  <h1>WhatsApp conectado</h1>\n  <img src=\"{{ $json.data[0].profilePicUrl }}\" alt=\"Foto de Perfil\">\n  <p>{{ $json.data[0].ownerJid }}</p>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1140,
+        140
+      ],
+      "id": "55965d35-deaf-4589-b22a-38d024cea312",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c77b37f9-18c8-4e7f-870e-9458b517a327",
+              "name": "instance",
+              "value": "=h7Contabil001",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        240
+      ],
+      "id": "2f629fd3-ad4d-4b82-a3ba-84dff89ba8cc",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "# CRIA A INSTANCIA",
+        "height": 600,
+        "width": 1880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -300,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "572e1857-1ac5-4f7e-8cd2-00f533307788",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "path": "ad3c916d-d0d6-41c1-841f-71a8ac376841",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        240
+      ],
+      "id": "21cf7a46-d2f3-40b6-9276-0d7b5257b0fb",
+      "name": "Webhook",
+      "webhookId": "ad3c916d-d0d6-41c1-841f-71a8ac376841"
+    },
+    {
+      "parameters": {
+        "operation": "fetch-instances",
+        "instanceName": "={{ $('Edit Fields1').item.json.instance }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        920,
+        140
+      ],
+      "id": "cecaac29-9cd9-4b42-9bc8-961959f0d8fa",
+      "name": "Evolution API3",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "09a58d9b-07da-4e30-b0ae-e1eacdc232a8",
+              "leftValue": "={{ $json.data.instance.state }}",
+              "rightValue": "open",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        700,
+        240
+      ],
+      "id": "065aa059-4996-4b1d-90ec-1b8df7d065db",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <!--<meta http-equiv=\"refresh\" content=\"20\">  Reload a cada 20 segundos -->\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Conecte-se</title>\n  <style>\n    body {\n      margin: 0;\n      height: 100vh;\n      display: flex;\n      flex-direction: column;\n      justify-content: center;\n      align-items: center;\n      background-color: #f4f4f4;\n      font-family: Arial, sans-serif;\n    }\n    h1 {\n      margin-bottom: 20px;\n      color: #333;\n    }\n    img {\n      width: 250px;\n      height: 250px;\n    }\n  </style>\n</head>\n<body>\n  <h1>Conecte-se</h1>\n  <img src=\"{{ $json.data.base64 }}\" alt=\"QR Code\">\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        360
+      ],
+      "id": "cdabaf42-0db6-454f-82ea-5b9d99a9cc3b",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "connections": {
+    "Evolution API1": {
+      "main": [
+        [
+          {
+            "node": "Evolution API2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Evolution API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API3": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Evolution API3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "cache-control": "max-age=0",
+            "if-none-match": "W/\"3708-9OjMGEuz5rlJBu2VpDIlYLK8T+s\"",
+            "priority": "u=0, i",
+            "referer": "https://hook.multidesk.io/webhook/ad3c916d-d0d6-41c1-841f-71a8ac376841",
+            "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "same-origin",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "186.192.106.67",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "007b3bfbd68a",
+            "x-real-ip": "186.192.106.67"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://hook.multidesk.io/webhook/ad3c916d-d0d6-41c1-841f-71a8ac376841",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "fe998e0b-615c-4d3b-8b0e-00cb8d8c16de",
+  "triggerCount": 1,
+  "tags": []
+}
