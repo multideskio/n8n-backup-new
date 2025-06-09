@@ -1,0 +1,325 @@
+{
+  "createdAt": "2025-05-26T12:58:13.774Z",
+  "updatedAt": "2025-05-26T16:06:51.434Z",
+  "id": "3GnN4x2qhBWR8wNy",
+  "name": "# CRIA A INSTÂNCIA",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "instanceName": "={{ $json.instance }}",
+        "options_Create_instance": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        560,
+        240
+      ],
+      "id": "14dc1ba9-3499-4a2f-931f-9d9b9130263b",
+      "name": "Evolution API1",
+      "retryOnFail": false,
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "instance-connect",
+        "instanceName": "={{ $('Edit Fields1').item.json.instance }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        800,
+        240
+      ],
+      "id": "fa0e0635-7ac3-45cf-9198-cbc08798091f",
+      "name": "Evolution API2",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <!--<meta http-equiv=\"refresh\" content=\"20\">  Reload a cada 20 segundos -->\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Conecte-se</title>\n  <style>\n    body {\n      margin: 0;\n      height: 100vh;\n      display: flex;\n      flex-direction: column;\n      justify-content: center;\n      align-items: center;\n      background-color: #f4f4f4;\n      font-family: Arial, sans-serif;\n    }\n    h1 {\n      margin-bottom: 20px;\n      color: #333;\n    }\n    img {\n      width: 250px;\n      height: 250px;\n    }\n  </style>\n</head>\n<body>\n  <h1>WhatsApp conectado</h1>\n  <img src=\"{{ $json.data[0].profilePicUrl }}\" alt=\"Foto de Perfil\">\n  <p>{{ $json.data[0].ownerJid }}</p>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1460,
+        140
+      ],
+      "id": "f2908149-43bc-41dc-9512-47a37eebfafc",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c77b37f9-18c8-4e7f-870e-9458b517a327",
+              "name": "instance",
+              "value": "=absolute",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        360,
+        240
+      ],
+      "id": "565b11d4-11d2-442f-a77c-425f1f04e73c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "fetch-instances",
+        "instanceName": "={{ $('Edit Fields1').item.json.instance }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        140
+      ],
+      "id": "0e01f6fe-c500-4b02-b895-807f51c21e0d",
+      "name": "Evolution API3",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "09a58d9b-07da-4e30-b0ae-e1eacdc232a8",
+              "leftValue": "={{ $json.data.instance.state }}",
+              "rightValue": "open",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1020,
+        240
+      ],
+      "id": "10877a70-45e8-48d2-b039-0b9ebc515ff7",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <!-- <meta http-equiv=\"refresh\" content=\"20\"> --><!-- Reload a cada 20 segundos -->\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Conecte-se</title>\n  <style>\n    body {\n      margin: 0;\n      height: 100vh;\n      display: flex;\n      flex-direction: column;\n      justify-content: center;\n      align-items: center;\n      background-color: #f4f4f4;\n      font-family: Arial, sans-serif;\n    }\n    h1 {\n      margin-bottom: 20px;\n      color: #333;\n    }\n    img {\n      width: 250px;\n      height: 250px;\n    }\n  </style>\n</head>\n<body>\n  <h1>Conecte-se</h1>\n  <img src=\"{{ $json.data.base64 }}\" alt=\"QR Code\">\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1240,
+        380
+      ],
+      "id": "7afffa59-0ae6-40bf-bada-2cb7f05a85c2",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "content": "# CRIA A INSTÂNCIA",
+        "height": 600,
+        "width": 1880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "39b443a1-2ef4-4815-bf00-809e65b31d61",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "path": "87d5a8f0-36a7-4152-881f-27b344a2e2ca",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        100,
+        240
+      ],
+      "id": "a1af4434-f770-4d87-bd39-e492284866df",
+      "name": "Webhook",
+      "webhookId": "87d5a8f0-36a7-4152-881f-27b344a2e2ca"
+    }
+  ],
+  "connections": {
+    "Evolution API1": {
+      "main": [
+        [
+          {
+            "node": "Evolution API2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Evolution API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API3": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Evolution API3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.sendzap-ia.com",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "cache-control": "max-age=0",
+            "if-none-match": "W/\"3714-DBNVayft84vTC8xDXgyYNWc0oY0\"",
+            "priority": "u=0, i",
+            "referer": "https://hook.sendzap-ia.com/webhook/87d5a8f0-36a7-4152-881f-27b344a2e2ca",
+            "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "same-origin",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "38.191.124.234",
+            "x-forwarded-host": "hook.sendzap-ia.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7c5b60aa4d8f",
+            "x-real-ip": "38.191.124.234"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://hook.sendzap-ia.com/webhook/87d5a8f0-36a7-4152-881f-27b344a2e2ca",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "287f1ad1-716f-4572-b297-6dd4b6aab496",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2024-11-27T17:14:53.173Z",
+      "updatedAt": "2024-11-27T17:14:53.173Z",
+      "id": "mUCGPMdJjJRzfQit",
+      "name": "Absolute Nutrition"
+    }
+  ]
+}
