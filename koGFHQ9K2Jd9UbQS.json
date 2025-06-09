@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-01-16T20:42:34.662Z",
-  "updatedAt": "2025-03-30T05:52:20.197Z",
+  "updatedAt": "2025-06-09T23:00:09.941Z",
   "id": "koGFHQ9K2Jd9UbQS",
   "name": "DADOS DOS GRUPOS PARA O FLOWISE",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -117,7 +117,7 @@
       }
     ]
   },
-  "versionId": "75d11ac0-690b-4546-8c68-10741706247d",
+  "versionId": "0bd642ca-0a31-42b1-8691-d41e03fb4217",
   "triggerCount": 1,
   "tags": []
 }
