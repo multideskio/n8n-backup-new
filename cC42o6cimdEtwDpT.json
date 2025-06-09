@@ -1,0 +1,219 @@
+{
+  "createdAt": "2025-06-09T22:14:39.176Z",
+  "updatedAt": "2025-06-09T22:31:58.560Z",
+  "id": "cC42o6cimdEtwDpT",
+  "name": "DELETA FLOWS SEM PAI",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        100
+      ],
+      "name": "Manual Trigger",
+      "id": "42a6b9de-2241-4a00-abc6-07c6a6fa829a"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        200
+      ],
+      "name": "Listar Workflows n8n",
+      "id": "959fa24d-1dcc-4b8c-8bb7-691f060bf58c",
+      "credentials": {
+        "n8nApi": {
+          "id": "Zl50MqcThO1GI87e",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "list",
+        "owner": {
+          "__rl": true,
+          "value": "multideskio",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n-backup-new",
+          "mode": "list",
+          "cachedResultName": "n8n-backup-new",
+          "cachedResultUrl": "https://github.com/multideskio/n8n-backup-new"
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1060,
+        20
+      ],
+      "name": "Listar Arquivos GitHub",
+      "id": "39f8c58f-5cdf-4a09-a03c-231dd35d8a8a",
+      "webhookId": "8c268218-17d9-4cd8-9503-ac5134ed2885",
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "B2TqrPwYlHVFyFxJ",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "id",
+              "field2": "id"
+            }
+          ]
+        },
+        "resolve": "preferInput2",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        -640,
+        140
+      ],
+      "id": "2e08262c-5d33-41df-af8b-9a1466c66979",
+      "name": "Compare Datasets"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  return {\n    json: {\n      id: item.json.name.replace('.json', ''), // extrai ID do nome do arquivo\n      ...item.json\n    }\n  };\n});\n"
+      },
+      "name": "Extrai ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -860,
+        20
+      ],
+      "id": "59a25a79-9f2e-478a-b097-7a6965864d85"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "delete",
+        "owner": {
+          "__rl": true,
+          "value": "multideskio",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n-backup-new",
+          "mode": "list",
+          "cachedResultName": "n8n-backup-new",
+          "cachedResultUrl": "https://github.com/multideskio/n8n-backup-new"
+        },
+        "filePath": "={{ $json.name }}",
+        "commitMessage": "Remove arquivo órfão do GitHub"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -340,
+        80
+      ],
+      "id": "e448f16b-d6da-49a5-8710-9e2bcba297b3",
+      "name": "GitHub",
+      "webhookId": "1c14f75d-dff7-43f1-b66b-228be4efc8f8",
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "B2TqrPwYlHVFyFxJ",
+          "name": "GitHub account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Listar Arquivos GitHub",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Listar Workflows n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listar Arquivos GitHub": {
+      "main": [
+        [
+          {
+            "node": "Extrai ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listar Workflows n8n": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extrai ID": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Datasets": {
+      "main": [
+        [
+          {
+            "node": "GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "1edf274f-78b4-4838-a862-c0b7e8c152d4",
+  "triggerCount": 0,
+  "tags": []
+}
