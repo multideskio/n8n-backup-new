@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-06-09T22:53:37.203Z",
-  "updatedAt": "2025-06-09T22:54:13.889Z",
+  "updatedAt": "2025-06-10T02:02:43.042Z",
   "id": "cIrKt9tqWVOHAV9e",
   "name": "Comunicado de extratos",
   "active": true,
@@ -572,6 +572,98 @@
           "name": "SINCRO"
         }
       }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "execucao",
+          "mode": "list",
+          "cachedResultName": "execucao"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cliente": "H7 Contabil",
+            "fluxo": "Comunicado de extratos",
+            "tipo": "notificacao",
+            "executado_em": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cliente",
+              "displayName": "cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fluxo",
+              "displayName": "fluxo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "executado_em",
+              "displayName": "executado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        100,
+        120
+      ],
+      "id": "54b40941-b5bd-47d8-8a2e-62b07bcc15f3",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "x98L9tSBgUTLACQE",
+          "name": "relatorios_n8n"
+        }
+      }
     }
   ],
   "connections": {
@@ -580,6 +672,11 @@
         [
           {
             "node": "Dados Api WA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres",
             "type": "main",
             "index": 0
           }
@@ -740,6 +837,11 @@
             "node": "Dados Api WA",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -753,7 +855,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "721ff932-cdbf-48b3-9279-f0ec021baff1",
+  "versionId": "2e2e7911-b690-4a47-a051-69f285d83c4b",
   "triggerCount": 1,
   "tags": []
 }
