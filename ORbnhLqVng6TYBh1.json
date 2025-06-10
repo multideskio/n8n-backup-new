@@ -1,0 +1,187 @@
+{
+  "createdAt": "2025-06-10T02:07:31.490Z",
+  "updatedAt": "2025-06-10T02:19:53.071Z",
+  "id": "ORbnhLqVng6TYBh1",
+  "name": "SALVA EXECUCOES FINAL DO DIA",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 23,
+              "triggerAtMinute": 45
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -600,
+        -20
+      ],
+      "id": "c6dbf62f-b3c1-4999-86b3-429d9ef3c577",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM public.execucao\nWHERE executado_em BETWEEN '{{ $now.format('yyyy-MM-dd') }} 00:00:00' AND '{{ $now.format('yyyy-MM-dd') }} 23:59:59';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -380,
+        -20
+      ],
+      "id": "78584136-5939-4f36-919d-e076f9216495",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "x98L9tSBgUTLACQE",
+          "name": "relatorios_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1T-h-mE8vDZyRPJnjeQun0kqf4YZ1za7t2jcYF33FpgE",
+          "mode": "list",
+          "cachedResultName": "ExecuçõesClientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T-h-mE8vDZyRPJnjeQun0kqf4YZ1za7t2jcYF33FpgE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "execucoes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T-h-mE8vDZyRPJnjeQun0kqf4YZ1za7t2jcYF33FpgE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "cliente": "={{ $json.cliente }}",
+            "fluxo": "={{ $json.fluxo }}",
+            "tipo": "={{ $json.tipo }}",
+            "data": "={{ $json.executado_em.toDateTime().format('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cliente",
+              "displayName": "cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fluxo",
+              "displayName": "fluxo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -160,
+        -20
+      ],
+      "id": "f2310d03-5d01-4021-b615-f4615fe9346b",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "F1q83vevrtHbMz3Q",
+          "name": "MULTIDESK"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6e24225e-1f18-405c-9939-fd08629c4048",
+  "triggerCount": 1,
+  "tags": []
+}
