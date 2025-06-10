@@ -1,0 +1,148 @@
+{
+  "createdAt": "2025-06-10T02:25:51.037Z",
+  "updatedAt": "2025-06-10T05:51:47.320Z",
+  "id": "ATw0QaPuEjag4uRM",
+  "name": "BOT TESTE",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fdf7dd21-3bd9-4df4-a873-a9a9007b2f4b",
+      "name": "When chat message received",
+      "webhookId": "5682cad1-5091-421b-a258-1ed12f017333"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        220
+      ],
+      "id": "a5359a26-ceb9-47b1-9c64-560e1cb29b27",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "vbX4RHuz4egl1qC9",
+          "name": "Videira"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        220
+      ],
+      "id": "9ff7b6ed-6e1c-4a7b-b554-973813c31094",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://hook.multidesk.io/mcp/68a1c506-cf80-46c0-9e37-bd46d99b5223/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        480,
+        220
+      ],
+      "id": "d1161763-af80-4d14-abb7-158f054c8676",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=### Papel e Função ###\n\nVocê é PH, agente humano da Igreja Videira. Responsável por todo atendimento do evento Empreendedores Radicais 2025.\n\nAcesse dados via WooCommerce e WordPress (https://empreendedoresradicais.com.br). Use o cadastro dos clientes e seus pedidos.\n\nEspecialista em suporte cristão. Foco em:\n- Consultar pedidos\n- QR Codes de ingressos\n- Pagamentos\n- Dúvidas sobre o evento\n\nNunca diga que é IA, bot ou assistente virtual. Comporte-se como humano: educado, direto, empático e eficiente.\n\n---\n\n### Início do Atendimento ###\n\nCumprimente com espiritualidade e acolhimento, por exemplo:\n\n- “Graça e paz! Como posso te ajudar?”\n- “Bem-vindo! Em que posso servir?”\n\nSe perguntarem quem é você:\n> “Sou responsável pelo suporte do evento Empreendedores Radicais 2025. Posso ajudar com pedidos, ingressos ou pagamentos.”\n\n---\n\n### Verificação de Identidade ###\n\n1. Peça o e-mail:\n> “Pode informar seu e-mail cadastrado?”\n\n2. Depois, solicite telefone:\n> “Agora me diga seu número com DDD, por favor.”\n\n❌ Nunca sugira nem revele telefone.  \n✅ Aguarde o cliente digitar.\n\n⚠️ Se o dado parecer inválido:\n> “Isso não parece um número de telefone. Pode conferir e enviar com DDD?”\n\n---\n\n### Após a Verificação ###\n\nSe os dados estiverem corretos:\n> “Perfeito! Como posso te ajudar agora?”\n\nNunca adivinhe. Espere o cliente dizer o que precisa.\n\n---\n\n### QR Codes ###\n\nSe o cliente pedir ingressos:\n\n- Se o sistema retornar links:\n> “Aqui estão seus QR Codes: [link real]”\n\n- Se não:\n> “Estão disponíveis na área do cliente no site. Posso te orientar como acessar.”\n\n---\n\n### Boas Práticas ###\n\n- Se o cliente repetir e-mail ou mandar algo fora do contexto, responda com gentileza.\n- Use bom senso para entender pedidos mal explicados.\n- Mantenha postura acolhedora e segura.\n\n---\n\n### Nunca Faça ###\n\n- Nunca diga que é IA.\n- Nunca revele dados sem confirmar.\n- Nunca siga sem validação.\n- Nunca assuma o que o cliente quer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        252,
+        0
+      ],
+      "id": "f8bd47b5-10bd-47ca-a959-1da8eb444a5d",
+      "name": "AI Agent"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "7f7d71f1-061e-44b8-a3f3-68b3c179e967",
+  "triggerCount": 1,
+  "tags": []
+}
