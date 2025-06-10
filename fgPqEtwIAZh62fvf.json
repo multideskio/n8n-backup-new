@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-05-26T12:55:26.546Z",
-  "updatedAt": "2025-06-09T22:36:56.281Z",
+  "updatedAt": "2025-06-10T04:30:53.722Z",
   "id": "fgPqEtwIAZh62fvf",
   "name": "Recuperação de venda",
   "active": true,
@@ -404,6 +404,98 @@
       ],
       "id": "576f7c5f-d4b7-4697-b5b2-f56057b162a0",
       "name": "If2"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "execucao",
+          "mode": "list",
+          "cachedResultName": "execucao"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fluxo": "Recuperação de venda",
+            "cliente": "Absolute Nutrition",
+            "tipo": "={{ $json.body.event }}",
+            "executado_em": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cliente",
+              "displayName": "cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fluxo",
+              "displayName": "fluxo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "executado_em",
+              "displayName": "executado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        460,
+        760
+      ],
+      "id": "912b201c-2492-462a-823c-dfdf640b5e98",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "x98L9tSBgUTLACQE",
+          "name": "relatorios_n8n"
+        }
+      }
     }
   ],
   "connections": {
@@ -502,6 +594,11 @@
         [
           {
             "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres",
             "type": "main",
             "index": 0
           }
@@ -980,7 +1077,7 @@
       }
     ]
   },
-  "versionId": "220adcee-0516-41a8-9a6e-35fbb484063e",
+  "versionId": "f623c403-7865-43d7-81be-45c383db8dab",
   "triggerCount": 1,
   "tags": [
     {
