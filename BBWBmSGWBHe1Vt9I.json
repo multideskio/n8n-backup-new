@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-28T20:06:50.812Z",
-  "updatedAt": "2025-06-09T22:51:54.543Z",
+  "updatedAt": "2025-06-10T02:03:46.713Z",
   "id": "BBWBmSGWBHe1Vt9I",
   "name": "h7Contabil - Prorrogação/Contratação",
   "active": true,
@@ -769,6 +769,98 @@
         -400,
         160
       ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "execucao",
+          "mode": "list",
+          "cachedResultName": "execucao"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cliente": "H7 Contabil",
+            "fluxo": "Prorrogacao/Contratacao",
+            "tipo": "notificacao",
+            "executado_em": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cliente",
+              "displayName": "cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fluxo",
+              "displayName": "fluxo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "executado_em",
+              "displayName": "executado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1460,
+        80
+      ],
+      "id": "d49c6113-38b8-4156-8162-b5b25102a67a",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "x98L9tSBgUTLACQE",
+          "name": "relatorios_n8n"
+        }
+      }
     }
   ],
   "connections": {
@@ -777,6 +869,11 @@
         [
           {
             "node": "Dados Api WA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres",
             "type": "main",
             "index": 0
           }
@@ -948,6 +1045,11 @@
             "node": "Dados Api WA",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1026,7 +1128,7 @@
       }
     ]
   },
-  "versionId": "e57e3a49-fc34-4ed7-935c-bc5f22301499",
+  "versionId": "1dc432ca-619d-40d4-927b-eedd70a546df",
   "triggerCount": 2,
   "tags": []
 }
