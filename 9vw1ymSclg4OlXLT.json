@@ -1,0 +1,384 @@
+{
+  "createdAt": "2025-06-10T02:59:13.037Z",
+  "updatedAt": "2025-06-10T13:41:25.782Z",
+  "id": "9vw1ymSclg4OlXLT",
+  "name": "MCP",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "68a1c506-cf80-46c0-9e37-bd46d99b5223"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        212,
+        0
+      ],
+      "id": "178dc87e-d211-4f8f-b4c9-3ae3c56ded1b",
+      "name": "MCP Server Trigger",
+      "webhookId": "68a1c506-cf80-46c0-9e37-bd46d99b5223"
+    },
+    {
+      "parameters": {
+        "resource": "order",
+        "operation": "getAll",
+        "options": {
+          "customer": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Customer', `Utilize o ID`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.wooCommerceTool",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        220
+      ],
+      "id": "d72b03ef-1e43-47bb-b106-358b4fc22ea2",
+      "name": "TodosOsPedidos",
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "f7Hhpu4lWaMBr4IN",
+          "name": "EMPREENDEDORES"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "customer",
+        "operation": "getAll",
+        "limit": 1,
+        "filters": {
+          "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.wooCommerceTool",
+      "typeVersion": 1,
+      "position": [
+        60,
+        220
+      ],
+      "id": "7abb1867-3239-4a78-8ba6-80660dce417e",
+      "name": "PesquisaCliente",
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "f7Hhpu4lWaMBr4IN",
+          "name": "EMPREENDEDORES"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "order",
+        "operation": "get",
+        "orderId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Order_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.wooCommerceTool",
+      "typeVersion": 1,
+      "position": [
+        180,
+        220
+      ],
+      "id": "5a85ce93-f6c4-472b-a3fb-1df296a67c85",
+      "name": "umPedido",
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "f7Hhpu4lWaMBr4IN",
+          "name": "EMPREENDEDORES"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "customer",
+        "operation": "get",
+        "customerId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Customer_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.wooCommerceTool",
+      "typeVersion": 1,
+      "position": [
+        300,
+        220
+      ],
+      "id": "cf338f63-7232-40b6-8d74-eba9311d87c5",
+      "name": "umCliente",
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "f7Hhpu4lWaMBr4IN",
+          "name": "EMPREENDEDORES"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utilize para retornar os dados do ingresso e ver o QrCode",
+        "url": "https://empreendedoresradicais.com.br/wp-json/custom-api/v1/ingressos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "order_id",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Pesquise os ingressos pelo ID do pedido`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        220
+      ],
+      "id": "29c1632a-bc8f-44e9-9971-a2463da02004",
+      "name": "buscaIngressos"
+    },
+    {
+      "parameters": {
+        "description": "Utilize essa ferramenta para enviar o código de verificação via SMS para confirmar se realmente é o cliente retornado no pedido.",
+        "workflowId": {
+          "__rl": true,
+          "value": "5zWeJlbmmYyHb6RL",
+          "mode": "list",
+          "cachedResultName": "Envia codigo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone', `Informe o numero de telefone do cliente retornado no cadastro para verificar a identidade.`, 'string') }}",
+            "tipo": "=gerar_codigo"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "id_pedido",
+              "displayName": "id_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "codigo",
+              "displayName": "codigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        540,
+        220
+      ],
+      "id": "5d0bfca9-2236-462b-a874-de5bc2b5ed05",
+      "name": "enviaCodigoSms"
+    },
+    {
+      "parameters": {
+        "description": "Utilize para confirmar se o código que o cliente forneceu é o mesmo que está registrado como enviado, se sim, esse cliente está liberado para ver qualquer coisa em relação ao seu cadastro",
+        "workflowId": {
+          "__rl": true,
+          "value": "5zWeJlbmmYyHb6RL",
+          "mode": "list",
+          "cachedResultName": "Envia codigo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone', `Informe o numero de telefone do cliente retornado no cadastro para verificar a identidade.`, 'string') }}",
+            "tipo": "=verifica",
+            "codigo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('codigo', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "id_pedido",
+              "displayName": "id_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "codigo",
+              "displayName": "codigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        220
+      ],
+      "id": "1223d3f0-31fe-4f35-a29a-0e9c05db001f",
+      "name": "confirmaCodigo"
+    }
+  ],
+  "connections": {
+    "TodosOsPedidos": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PesquisaCliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "umPedido": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "umCliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscaIngressos": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enviaCodigoSms": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "confirmaCodigo": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "b76b7715-1136-4aaa-b845-0ac54f466a56",
+  "triggerCount": 1,
+  "tags": []
+}
