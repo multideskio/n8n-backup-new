@@ -1,0 +1,67 @@
+{
+  "createdAt": "2025-06-10T04:53:42.216Z",
+  "updatedAt": "2025-06-10T05:13:05.100Z",
+  "id": "rckkHIWjmOxeSFUs",
+  "name": "My workflow 2",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b17c24fc-9ac6-4028-a30c-52010c92d10d",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "305118fd-da29-4eea-9b4b-44951bd7e296",
+      "name": "Webhook",
+      "webhookId": "b17c24fc-9ac6-4028-a30c-52010c92d10d"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "hook.multidesk.io",
+            "content-length": "131",
+            "accept": "*/*",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "195.201.160.143",
+            "x-forwarded-host": "hook.multidesk.io",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "007b3bfbd68a",
+            "x-real-ip": "195.201.160.143",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "msg_id": "77270674053",
+            "status": "DELIVERED",
+            "timestamp": "1749532028.9804",
+            "webhook_event": "dlr",
+            "webhook_timestamp": "2025-06-10T07:07:09+02:00"
+          },
+          "webhookUrl": "https://hook.multidesk.io/webhook/b17c24fc-9ac6-4028-a30c-52010c92d10d",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "b758c40b-afc5-45fd-a579-4a15e5e92632",
+  "triggerCount": 1,
+  "tags": []
+}
