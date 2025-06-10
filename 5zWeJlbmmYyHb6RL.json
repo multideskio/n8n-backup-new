@@ -1,0 +1,697 @@
+{
+  "createdAt": "2025-06-10T04:04:46.711Z",
+  "updatedAt": "2025-06-10T05:12:06.559Z",
+  "id": "5zWeJlbmmYyHb6RL",
+  "name": "Envia codigo",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "email"
+            },
+            {
+              "name": "id_pedido"
+            },
+            {
+              "name": "phone"
+            },
+            {
+              "name": "tipo"
+            },
+            {
+              "name": "codigo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1200,
+        0
+      ],
+      "id": "af43068a-6999-4214-9f52-ef0f25f55939",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b04d79a3-fec7-46b8-bc72-c503d724183c",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "092d4f28-6e91-4e28-9e82-18e588abf17b",
+              "name": "id_pedido",
+              "value": "={{ $json.id_pedido }}",
+              "type": "string"
+            },
+            {
+              "id": "30522690-1324-42a6-ab42-0a67a29624b1",
+              "name": "phone",
+              "value": "=5562981154120",
+              "type": "string"
+            },
+            {
+              "id": "8f4f1ec3-abe3-4c77-98ea-8324ac7d50a5",
+              "name": "tipo",
+              "value": "={{ $json.tipo }}",
+              "type": "string"
+            },
+            {
+              "id": "1793347e-1b6b-4b37-b897-fcc02a9fb89b",
+              "name": "codigo",
+              "value": "={{ $json.codigo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -980,
+        0
+      ],
+      "id": "42ded866-481c-4b8c-b252-e3c81598a9f7",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gateway.seven.io/api/sms",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "to",
+              "value": "={{ $('Edit Fields').item.json.phone }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.mensagem }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        340,
+        -500
+      ],
+      "id": "e5bbc149-c9ed-4ddd-a3d2-95778a2aa325",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "A614HcbPPzc4YEjF",
+          "name": "SINCRO"
+        },
+        "httpHeaderAuth": {
+          "id": "xRFXH6aui9vwV02M",
+          "name": "SMS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const codigo = Math.floor(100000 + Math.random() * 900000);\nreturn [{\n  json: {\n    codigo,\n    mensagem: `Seu código de verificação é: ${codigo}`,\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        -500
+      ],
+      "id": "f6bf7246-7f8b-4f02-83b3-20717f959357",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "phone",
+        "key": "={{ $json.phone.replace(/[^0-9]/g, '') }}_codet",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        -400
+      ],
+      "id": "2f665096-291d-4a6f-b686-c8cb41448451",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a5952a6d-602e-4733-a0e8-c568894415f0",
+              "leftValue": "={{ $json.phone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -400
+      ],
+      "id": "e9bdbdb9-71bf-4a88-8976-a5843168699f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf649d2d-63b9-4e08-96bb-8994994e0bfe",
+              "name": "response",
+              "value": "O código já foi enviado, caso o cliente precise novamente só é possível após 5 minutos.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -100,
+        -300
+      ],
+      "id": "173ba4a4-96e8-4fb0-8037-93baacc3bdf5",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Edit Fields').item.json.phone.replace(/[^0-9]/g, '') }}_codet",
+        "value": "={{ $json.codigo }}",
+        "keyType": "string",
+        "expire": true,
+        "ttl": 300
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -500
+      ],
+      "id": "48d0e1f9-f5ae-459a-9459-6b23aa0cb490",
+      "name": "Redis1",
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d8d08d69-e10d-44ff-a9cb-51e03d69bb70",
+              "name": "response",
+              "value": "=Enviamos um código para seu telefone {{ $('Edit Fields').item.json.phone }} que estava cadastrado em seu pedido. Por favor me informe o código para proceguir com seu atendimento...",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -500
+      ],
+      "id": "428b96ab-75ad-4b7e-8070-b1308d946c79",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipo }}",
+                    "rightValue": "gerar_codigo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f002d069-99b8-4f9e-a33f-616a3079224a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "12a37a08-4d05-4c80-8790-4c0348d0dc54",
+                    "leftValue": "={{ $json.tipo }}",
+                    "rightValue": "verifica",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -760,
+        0
+      ],
+      "id": "d091105f-00e8-4865-af30-0d2280c4e255",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "phone",
+        "key": "={{ $json.phone.replace(/[^0-9]/g, '') }}_codet",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        0
+      ],
+      "id": "fad05f58-7ec9-4fbe-9568-3d66160ee7c8",
+      "name": "Redis2",
+      "credentials": {
+        "redis": {
+          "id": "bnN4hC1JEWAx7EA1",
+          "name": "Redis Rafael"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a5952a6d-602e-4733-a0e8-c568894415f0",
+              "leftValue": "={{ $json.phone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        0
+      ],
+      "id": "79cb25f4-7f3b-49ac-a9f4-ba5ba737f053",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf649d2d-63b9-4e08-96bb-8994994e0bfe",
+              "name": "response",
+              "value": "CODIGO CONFIRMADO",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        120,
+        -100
+      ],
+      "id": "620e5505-cb88-417a-a6d2-27644aec2ea5",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf649d2d-63b9-4e08-96bb-8994994e0bfe",
+              "name": "response",
+              "value": "Gerar e enviar o código novamente para o cliente",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -100,
+        -100
+      ],
+      "id": "84ea42a4-0f36-4692-96d6-48a28c946fe3",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf649d2d-63b9-4e08-96bb-8994994e0bfe",
+              "name": "response",
+              "value": "Nenhuma ação foi definida",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -540,
+        200
+      ],
+      "id": "bb403c7e-5737-40ff-918a-453c6d88e69d",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a05c6301-1d0b-4062-8b24-0ebaf398e295",
+              "leftValue": "={{ $json.phone }}",
+              "rightValue": "={{ $('Edit Fields').item.json.codigo }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -100,
+        100
+      ],
+      "id": "10db029f-650c-4eac-8112-a31cafe0d34c",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf649d2d-63b9-4e08-96bb-8994994e0bfe",
+              "name": "response",
+              "value": "OS CODIGO NÃO SÃO IGUAIS, PORTANDO CODIGO INVALÍDO",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        120,
+        200
+      ],
+      "id": "2d0c3fc5-7105-4769-bf8d-a7125632fa0e",
+      "name": "Edit Fields6"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "email": null,
+          "id_pedido": null,
+          "phone": "62985000202",
+          "tipo": "gerar_codigo",
+          "codigo": null
+        }
+      }
+    ]
+  },
+  "versionId": "5356a128-9528-48ce-b2ee-f5ad07bbf4fc",
+  "triggerCount": 0,
+  "tags": []
+}
