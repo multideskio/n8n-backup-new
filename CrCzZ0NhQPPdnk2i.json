@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-06-06T13:30:58.901Z",
-  "updatedAt": "2025-06-10T02:00:47.947Z",
+  "updatedAt": "2025-06-12T12:59:56.235Z",
   "id": "CrCzZ0NhQPPdnk2i",
   "name": "Notifica clientes da H7",
   "active": true,
@@ -16,7 +16,7 @@
       "typeVersion": 2,
       "position": [
         -2100,
-        220
+        440
       ],
       "id": "d9b6cbef-0335-4522-8b9b-036b3f7b8b73",
       "name": "Email Trigger (IMAP)",
@@ -47,7 +47,7 @@
       "typeVersion": 3.4,
       "position": [
         -1880,
-        220
+        540
       ],
       "id": "faf063b4-fdec-4cb6-93cd-77d0baf8c552",
       "name": "Edit Fields"
@@ -81,8 +81,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        -1220,
-        220
+        -1000,
+        640
       ],
       "id": "04d1e0ac-bd84-4f97-8754-da6eb30a9810",
       "name": "Google Sheets",
@@ -116,7 +116,7 @@
       "typeVersion": 1.2,
       "position": [
         -1660,
-        220
+        640
       ],
       "id": "b9d29266-e1e2-4064-9018-f43319e44467",
       "name": "HTML1"
@@ -144,8 +144,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1480,
-        220
+        -1440,
+        640
       ],
       "id": "ce5ab611-5dfb-4c6d-9c4c-e8da252eaae1",
       "name": "Edit Fields1"
@@ -157,8 +157,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -680,
-        -40
+        -560,
+        40
       ],
       "id": "226dffcc-2ef0-43a9-93db-a55f760fe880",
       "name": "Code"
@@ -170,8 +170,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -460,
-        -40
+        -340,
+        40
       ],
       "id": "9ef00002-abd2-4d91-9a67-fdd7a1adff11",
       "name": "Loop Over Items"
@@ -187,8 +187,8 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -240,
-        -20
+        -120,
+        40
       ],
       "id": "82921bd3-5fc7-4dee-8f6c-3676a425c340",
       "name": "Evolution API",
@@ -206,8 +206,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -20,
-        0
+        100,
+        115
       ],
       "id": "9a257b18-2783-4e02-85f2-8e8aca0b3ece",
       "name": "Wait",
@@ -224,7 +224,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -20,
+        100,
         -360
       ],
       "id": "8be925b7-f0ad-4c4d-945e-1eb7a9a1f1c5",
@@ -248,35 +248,11 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -240,
-        -220
+        -120,
+        -235
       ],
       "id": "e46134be-524a-43bd-9695-679bdbea4b80",
       "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "resource": "messages-api",
-        "instanceName": "h7Contabil001",
-        "remoteJid": "=556298569790",
-        "messageText": "=A empresa *{{ $json.empresa }}* ainda não esta ativa para receber mensagens...",
-        "options_message": {}
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        -2100,
-        555
-      ],
-      "id": "09428310-529e-4d14-a36b-64646762fefd",
-      "name": "Evolution API2",
-      "credentials": {
-        "evolutionApi": {
-          "id": "pKhSM9dUbHf7g9Su",
-          "name": "Evolution account"
-        }
-      },
-      "disabled": true
     },
     {
       "parameters": {
@@ -306,8 +282,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1000,
-        95
+        -780,
+        240
       ],
       "id": "671c3426-9dc1-4670-ab34-6fa091c2a15e",
       "name": "If1"
@@ -317,14 +293,14 @@
         "resource": "messages-api",
         "instanceName": "h7Contabil001",
         "remoteJid": "=5562981154120",
-        "messageText": "=Houve um erro ao tentar notificar empresa.\n\nErro na pesquisa do sheets\nhttps://editor.multidesk.io/workflow/x4HyxkTfnA6lNZW6/8dff09",
+        "messageText": "=Houve um erro ao tentar notificar empresa \n\n*{{ $('Edit Fields1').item.json.empresa }}*.\n\nErro na pesquisa do sheets:\nhttps://docs.google.com/spreadsheets/d/1FMseSLKqjX4apuDoPQDKBLUCgVSuuqu9GPIQd2qUSjc/edit?usp=sharing\n",
         "options_message": {}
       },
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -1000,
-        295
+        -340,
+        715
       ],
       "id": "1d3608e0-241c-4339-a3fc-d5c2f4a52c37",
       "name": "Evolution API3",
@@ -342,8 +318,8 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        -1640,
-        -80
+        -1660,
+        440
       ],
       "id": "04561f79-6f4a-45e7-afec-31bbed4945fb",
       "name": "HTML",
@@ -360,7 +336,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -20,
+        100,
         -160
       ],
       "id": "6e750e7e-1454-40dc-8e8a-52adb3b6a57e",
@@ -379,8 +355,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1340,
-        200
+        -1220,
+        640
       ],
       "id": "eabf3b9e-b085-495a-9dfb-8d2187265609",
       "name": "Code1"
@@ -465,8 +441,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1860,
-        -180
+        -1880,
+        340
       ],
       "id": "f20f6e60-770d-4c2a-891e-35887275e78f",
       "name": "Postgres",
@@ -476,6 +452,113 @@
           "name": "relatorios_n8n"
         }
       }
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        640
+      ],
+      "id": "c5d62683-d4ee-4ea8-8a78-dd6fb910ee9f",
+      "name": "Wait1",
+      "webhookId": "5839764e-c281-49e1-9dc6-7da830200dec"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "h7Contabil001",
+        "remoteJid": "=5562981154120",
+        "messageText": "=Houve um erro ao tentar notificar empresa *{{ $('Edit Fields1').item.json.empresa }}*.\n\nVerifique o cadastro na planilha\n\nErro na pesquisa do sheets:\nhttps://docs.google.com/spreadsheets/d/1FMseSLKqjX4apuDoPQDKBLUCgVSuuqu9GPIQd2qUSjc/edit?usp=sharing",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        240
+      ],
+      "id": "76c5cf5f-1e68-4da4-9c16-0647f9a5eaea",
+      "name": "Evolution API5",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "h7Contabil001",
+        "remoteJid": "=556298569790",
+        "messageText": "=Houve um erro ao tentar notificar empresa *{{ $('Edit Fields1').item.json.empresa }}*.\n\nVerifique o cadastro na planilha\n\nErro na pesquisa do sheets:\nhttps://docs.google.com/spreadsheets/d/1FMseSLKqjX4apuDoPQDKBLUCgVSuuqu9GPIQd2qUSjc/edit?usp=sharing\n",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        440
+      ],
+      "id": "d5fe9c8c-e4f8-48c8-85ae-cb97e3d667d1",
+      "name": "Evolution API6",
+      "credentials": {
+        "evolutionApi": {
+          "id": "pKhSM9dUbHf7g9Su",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        440
+      ],
+      "id": "110e863d-a54a-44e0-8a81-5a6787ddea8c",
+      "name": "Wait2",
+      "webhookId": "5839764e-c281-49e1-9dc6-7da830200dec"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f347721f-92a5-4454-be82-dc7a30f8681a",
+              "leftValue": "={{ $('Edit Fields1').item.json.empresa }}",
+              "rightValue": "null",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -780,
+        640
+      ],
+      "id": "28face55-1345-4b82-9617-3e7629466a04",
+      "name": "If"
     }
   ],
   "connections": {
@@ -522,7 +605,7 @@
         ],
         [
           {
-            "node": "Evolution API3",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -626,6 +709,18 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Evolution API5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -639,6 +734,50 @@
           }
         ]
       ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Evolution API3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API3": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Evolution API6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -646,7 +785,7 @@
   },
   "staticData": {
     "node:Email Trigger (IMAP)": {
-      "lastMessageUid": 296
+      "lastMessageUid": 338
     }
   },
   "meta": {
@@ -656,41 +795,41 @@
     "Email Trigger (IMAP)": [
       {
         "json": {
-          "textHtml": "<html>\r\n    <body>\r\n        <table width=\"600\" align=\"center\">\r\n            <tr>\r\n                <td class=\"message\" style=\"color: #333333; font-size: 10pt; font-family: Arial\">\r\n                    <br />\r\n<p><img src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/ED5FE50267B348AAB0AC2898F3A77567\" width=\"168\" style=\"overflow: auto; padding: 10px 10px 10px 3px; position: relative; z-index: 1;\" style=\"z-index: 1; position: relative; overflow: auto; padding-left:3px; padding-right:10px; padding-bottom:10px; padding-top:10px; display: inline-block; float: none;\"></p><p><span style=\"color: rgb(0, 0, 0);\">THAYNNARA CAMARGO adicionou os seguintes arquivos Ã  pasta <a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5'>FOLHA DE PAGAMENTO</a> da empresa&nbsp;<a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5'>ABA PRODUTOS PARA FESTA LTDA</a>:</span></p><p><span style=\"color: rgb(0, 0, 0);\"><br/><span style='margin-left: 25px;'><a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5/document/72a6fc9f03fc4cb999d19065482da89c'>141-RecibodePagamento-052025.pdf</a></span><br/><span style='margin-left: 25px;'><a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5/document/710a791bf2b2426a9e42665d52cd54bc'>141-EncargosdaEmpresa-052025.pdf</a></span><br/><span style='margin-left: 25px;'><a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5/document/c4ad7cae85994317891a039ce52c0e0f'>141-ExtratoMensal-052025.pdf</a></span><br/><span style='margin-left: 25px;'><a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5/document/f1d096aa65024c0c807535df5fb13de4'>141-RelatÃ³riodeLÃ­quidos-052025.pdf</a></span><br/><span style='margin-left: 25px;'><a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5/document/34c75948d3e34f1c9808402582425ef0'>141-ResumoMensal-052025.pdf</a></span><br/><span style='margin-left: 25px;'><a href='https://onvio.com.br/clientcenter/documents/clients/CBB0FA57A8A74CB28DE6E3308D4704B7/folder/b23c7495bcd4415cb65e1a70c5d3f2d5/document/bab1ed0b90a746caa8bc2ea8888b0880'>141-ProgramaÃ§Ã£odeFÃ©rias-052025.pdf</a></span><br/><br/></span></p><table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-spacing: 0px; border-collapse: collapse; margin: 5px auto 5px 0;      background-color: rgb(255, 255, 255); outline: transparent solid 0px; border: none;      empty-cells: show; max-width: 100%; color: rgb(65, 65, 65); font-family: sans-serif;      font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400;      letter-spacing: normal; orphans: 2; text-align: left; text-transform: none; white-space: normal; widows: 2;      word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial;      text-decoration-color: initial; width: 260px; height: 47px; vertical-align: middle;\"><tbody><tr style=\"user-select: none;\"></tr></tbody></table><table><tbody><tr><td style=\"vertical-align: top;\"><p><img src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/306AABD74B46476D81F6232C4A5A414D\" width=\"36\" style=\"overflow: auto; padding: 10px 3px 10px 10px; position: relative; z-index: 1;\" style=\"z-index: 1; position: relative; overflow: auto; padding-left:10px; padding-right:3px; padding-bottom:10px; padding-top:10px; display: inline-block; float: none;\"></p></td><td><div style=\"margin-left: 20px;\"><p><strong><span style=\"color: #ff9000; font-size: 24px;\">Dicas de seguranÃ§a</span></strong></p><p><span style=\"color: rgb(0, 0, 0);\">Fique ligado nas dicas abaixo para evitar ataques cibernÃ©ticos. Ã de extrema importÃ¢ncia para a seguranÃ§a de todos!</span></p></div><ul style=\"color: rgb(0, 0, 0); padding-left: 4%;\"><li>Nossas notificaÃ§Ãµes seguem o mesmo padrÃ£o</li><li>Tenha cuidado com erros ortogrÃ¡ficos, de gramÃ¡tica ou atÃ© mesmo de formataÃ§Ã£o na notificaÃ§Ã£o recebida</li><li>O remetente de nossos e-mails de notificaÃ§Ã£o sempre serÃ¡ \"<strong>brasil@onvio.com</strong>\"</li><li>O site oficial de redirecionamento de nossos e-mails Ã© \"<strong>onvio.com.br</strong>\"</li></ul></td></tr></tbody></table><div style=\"background-color: #EFEFEF;\"><table><tbody><tr><td style=\"width: fit-content;\"><div style=\"margin-left: 10%; margin-bottom: 5%;\"><p><strong style=\"-webkit-text-stroke-width: 0px; background-color: rgb(239, 239, 239); box-sizing: border-box; color: rgb(65, 65, 65); font-family: sans-serif; font-size: 14px; font-style: normal; font-variant-caps: normal; font-variant-ligatures: normal; font-weight: bolder; letter-spacing: normal; orphans: 2; text-align: left; text-decoration-color: initial; text-decoration-style: initial; text-decoration-thickness: initial; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;\"><span style=\"box-sizing: border-box; color: rgb(0, 0, 0); font-size: 18px;\">Precisa de ajuda?</span></strong></p><span style=\"font-size: 14px; color: rgb(0, 0, 0);\">Entre em contato com nosso suporte!</span></div></td><td style=\"vertical-align: middle;\">&nbsp; &nbsp; &nbsp;<img src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/38F08D72AB9A49E3B91C1CC48BB8B530\" width=\"341.297\" style=\"overflow: auto; padding: 10px 10px 10px 3px; position: relative; z-index: 1;\" style=\"z-index: 1; position: relative; overflow: auto; padding-left:3px; padding-right:10px; padding-bottom:10px; padding-top:10px; display: inline-block; float: none;\"></td></tr></tbody></table></div>                    <br />\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td class=\"signature\" style=\"color: #999999; font-size: 8pt; font-family: Arial\">\r\n            <tr>\r\n                <td class=\"signature\" style=\"color: #999999; font-size: 8pt; font-family: Arial\">\r\n                <hr><p><span style=\"color: #CCCCCC;\">Veja nossa <a href=\"https://www.thomsonreuters.com/pt/declaracao-de-privacidade.html\"> polÃ­tica de privacidade</a>, a qual inclui informaÃ§Ãµes sobre nossa polÃ­tica de âcookiesâ.<br><br>Esta mensagem Ã© confidencial, legalmente privilegiada e voltada unicamente para uso da pessoa ou entidade a quem Ã© endereÃ§ada. Se vocÃª nÃ£o for o destinatÃ¡rio pretendido, por favor, notifique o remetente imediatamente e exclua esta mensagem. Ã estritamente proibida a distribuiÃ§Ã£o, revelaÃ§Ã£o, cÃ³pia ou uso desta informaÃ§Ã£o de qualquer outra maneira.</span></p>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </body>\r\n</html>",
+          "textHtml": "<html>\r\n    <body>\r\n        <table width=\"600\" align=\"center\">\r\n            <tr>\r\n                <td class=\"message\" style=\"color: #333333; font-size: 10pt; font-family: Arial\">\r\n                    <br />\r\n<p><img width=\"168\" src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/ED5FE50267B348AAB0AC2898F3A77567\" style=\"padding: 10px 10px 10px 3px;\" class=\"fr-fil fr-dib\"></p><p style=\"box-sizing: border-box; margin: 0px 0px 10px; color: rgb(33, 33, 33); font-family: Arial, ;\"><span style=\"font-size: 16px;\">Prezado(a) NOTIFICAÃÃES,</span></p><p><br></p><p><br><span style=\"font-size: 16px;\">GostarÃ­amos de informÃ¡-lo que existem documentos publicados prÃ³ximos da data de vencimento no Onvio Portal do Cliente que nÃ£o foram visualizados:</span></p><div style=\"font-size: 16px;\">ELOHIM PRODUTOS PARA FESTAS LTDA <br/><ul><li>0 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>ICMS ELOHIM.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/FD54E115A9B94D22886DF4F1B3A6AB59/folder/e98d498a81874c459cc1a317012d6c76/document/9e51320895c54d2db672460f066d30db'>Visualizar</a></li></ul>CITOCENTER LABORATORIO MEDICO LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>ISSQN CITO CENTER FILIAL 027-14381617 05-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/8883F4C83A57431FA91BEF34C0C089F3/folder/a0ddeacc6def4b1dae245e63fdc7c64d/document/636fb442abf04ccfa4e73ea7fe06db1a'>Visualizar</a></li></ul>ALFA PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>CONTRIBUIÃÃO ASSISTENCIAL  - 052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/3DD15959E83F4DED85FC0DCF9A42EEE2/folder/50f98e0b4e5c4880a504f92dc6258aa9/document/13cea7158b5a4d78a283809878859ee2'>Visualizar</a></li></ul>BENJAMIM PRODUTOS PARA FESTAS LTDA - ME <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContribuiÃ§Ã£o Assistencial - 052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/729CE225FA3542D7A65AD0B8B565D6D8/folder/7135bbdcae0f4f61bacc9782b5a61abe/document/d9cc9c7ae0d34164a9a5bb239ca536de'>Visualizar</a></li></ul>GUANABARA PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContribuiÃ§Ã£o Assistencial - 052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/3DB73FEA4D594C1DBC323A4672283564/folder/4642d7e0e14e477fb7dab474b2668705/document/b33cd5ecf8f340e4a36c79cdfd13ab74'>Visualizar</a></li></ul>HERMINIO PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContribuiÃ§Ã£o Assistencial -052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/2BA610ADDE484B2DABC6201D65B7E622/folder/ee36476f21884526a7707053bcddfeb7/document/ea08b76d335043f6a444d8be09b84ca4'>Visualizar</a></li></ul>CALDAS PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContribuiÃ§Ã£o Assistencial - 052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/702422AD0A5946C6B017C3A7FDC37B11/folder/fc2f4d7731324f1585175f2575ee7268/document/d53ffddf19aa42f6acc4c2dfca4a7915'>Visualizar</a></li></ul>HIPER FESTAS PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContribuiÃ§Ã£o Assistencial - 052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/F28521603D7E47D897CE7B84CB30F221/folder/d4ef4a45d4a34770a8f9fd3223c229ea/document/8de5dfe72fea4cc49bf4e6a02c39f2e8'>Visualizar</a></li></ul>JM PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContrbuiÃ§Ã£o Assistencial.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/F704187A41A0497AA093433E4E9A2BF9/folder/59254d2e85a04b76b21adbc64089d532/document/e45b45fbe68345d7b80d913ac3df9b22'>Visualizar</a></li></ul>JUDA PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContrbuiÃ§Ã£o Assistencial.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/915AFBFACFCC42459749A43DD96A2D69/folder/d24fc70076704938b444ce2e9fff80e7/document/ea180b025de84f71b97fa1f63ca1b1f7'>Visualizar</a></li></ul>SANTOS PRODUTOS PARA FESTAS LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>Boleto ContribuiÃ§Ã£o Assistencial - 052025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/7953A9F17DA547FFA0A13978EA0CAEAA/folder/ce01c0f2c29347c08dcd2096a02a7c47/document/a11cd646fdd34644a8946eba193d275a'>Visualizar</a></li></ul>ZION PRODUTOS PARA FESTA LTDA <br/><ul><li>1 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>GRRF - DANIELA PAULA .pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/DC0404BF868148579BEAFDBDFA411F3D/folder/316441b99e844358bbb2233e922fc5f3/document/aa8658c0b5eb4aca88bc4c2bd6d71147'>Visualizar</a></li></ul>SOU BASICA CRISTINA COSMETICOS E PERFUMARIA LTDA <br/><ul><li>2 dias para vencer os documentos:</li> <br /><li style='list-style-type:none;'>CobranÃ§a BSF 01-2025 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/02a15d2a300a40c4afee6adc2a982d05'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 02-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/e2f399da5a8d476297ad4b604aa13f82'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 02-2025 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/6974f21bdb024ffd9e53207349c07b11'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 03-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/d5c2992e9c224588bdefe7c5ae32606b'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 03-2025 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/579da31c52b0460b9a203d10697344ef'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 04-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/080e4686ff6d4496b42550f225ee9344'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 04-2025 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/e7ac0b4629ad4a84b952892b07bca956'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 05-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/e7329640fed442c4a7532e267d84e0e8'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 05-2025 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/0ae359df3958486fb8940425ad8d4f0f'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 06-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/655994d709cf402f9004f07c1201ecfd'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 07-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/cd6a84dd5b2543a1a3007e2206366abb'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 09-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/687b213b77cb49818d16e433da966e60'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 10-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/7a21f08a497c404baa1106da54149ed1'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 11-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/f653a8526bed4ef48c9902ee4a61254a'>Visualizar</a></li><li style='list-style-type:none;'>CobranÃ§a BSF 12-2024 - Venc 14-06-2025.pdf - <a href='https://onvio.com.br/clientcenter/documents/clients/004D9D7545B84661A2417F740BD55EF2/folder/1145c8fa3b104d16b65e138169b3d295/document/96eb413d9ff44edfa75514791fda6260'>Visualizar</a></li></ul></div><p><br></p><p><br><span style=\"font-size: 16px;\">Obrigado.</span></p><table><tbody><tr><td style=\"vertical-align: top;\"><p><img width=\"36\" src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/306AABD74B46476D81F6232C4A5A414D\" style=\"padding: 10px 3px 10px 10px;\" class=\"fr-fil fr-dib\"></p></td><td><div style=\"margin-left: 20px;\"><p><strong><span style=\"color: #ff9000; font-size: 24px;\">Dicas de seguranÃ§a</span></strong></p><p><span style=\"color: rgb(0, 0, 0);\">Fique ligado nas dicas abaixo para evitar ataques cibernÃ©ticos. Ã de extrema importÃ¢ncia para a seguranÃ§a de todos!</span></p></div><ul style=\"color: rgb(0, 0, 0); padding-left: 4%;\"><li>Nossas notificaÃ§Ãµes seguem o mesmo padrÃ£o</li><li>Tenha cuidado com erros ortogrÃ¡ficos, de gramÃ¡tica ou atÃ© mesmo de formataÃ§Ã£o na notificaÃ§Ã£o recebida</li><li>O remetente de nossos e-mails de notificaÃ§Ã£o sempre serÃ¡ \"<strong>brasil@onvio.com</strong>\"</li><li>O site oficial de redirecionamento de nossos e-mails Ã© \"<strong>onvio.com.br</strong>\"</li></ul></td></tr></tbody></table><div style=\"background-color: #EFEFEF;\"><table><tbody><tr><td style=\"width: fit-content;\"><div style=\"margin-left: 10%; margin-bottom: 5%;\"><p><strong style=\"-webkit-text-stroke-width: 0px; background-color: rgb(239, 239, 239); box-sizing: border-box; color: rgb(65, 65, 65); font-family: sans-serif; font-size: 14px; font-style: normal; font-variant-caps: normal; font-variant-ligatures: normal; font-weight: bolder; letter-spacing: normal; orphans: 2; text-align: left; text-decoration-color: initial; text-decoration-style: initial; text-decoration-thickness: initial; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;\"><span style=\"box-sizing: border-box; color: rgb(0, 0, 0); font-size: 18px;\">Precisa de ajuda?</span></strong></p><span style=\"font-size: 14px; color: rgb(0, 0, 0);\">Entre em contato com nosso suporte!</span></div></td><td style=\"vertical-align: middle;\">&nbsp; &nbsp; &nbsp;<img width=\"341.297\" src=\"https://onvio.com.br/api/notifications/v1/templates/DEFAULT/images/38F08D72AB9A49E3B91C1CC48BB8B530\" style=\"padding: 10px 10px 10px 3px;\" class=\"fr-fil fr-dii\"></td></tr></tbody></table></div>                    <br />\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td class=\"signature\" style=\"color: #999999; font-size: 8pt; font-family: Arial\">\r\n            <tr>\r\n                <td class=\"signature\" style=\"color: #999999; font-size: 8pt; font-family: Arial\">\r\n                <hr><p><span style=\"color: #CCCCCC;\">Veja nossa <a href=\"https://www.thomsonreuters.com/pt/declaracao-de-privacidade.html\"> polÃ­tica de privacidade</a>, a qual inclui informaÃ§Ãµes sobre nossa polÃ­tica de âcookiesâ.<br><br>Esta mensagem Ã© confidencial, legalmente privilegiada e voltada unicamente para uso da pessoa ou entidade a quem Ã© endereÃ§ada. Se vocÃª nÃ£o for o destinatÃ¡rio pretendido, por favor, notifique o remetente imediatamente e exclua esta mensagem. Ã estritamente proibida a distribuiÃ§Ã£o, revelaÃ§Ã£o, cÃ³pia ou uso desta informaÃ§Ã£o de qualquer outra maneira.</span></p>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </body>\r\n</html>",
           "textPlain": "Your email client does not support HTML messages",
           "metadata": {
             "delivered-to": "ti@h7contabil.com.br",
-            "received": "by 2002:a05:6e04:c85:b0:359:4fea:edd9 with SMTP id xx5csp1749463imc; Mon, 9 Jun 2025 12:25:51 -0700 (PDT)",
-            "x-google-smtp-source": "AGHT+IGdeH5A+68eVT/JjE/tNdtzfJb6Dr7QdmaAt9oby2gUpwrbPmt0HfY3Aecnu0K21HE91XoT",
-            "x-received": "by 2002:a05:6102:3f93:b0:4e6:ddd0:96f7 with SMTP id ada2fe7eead31-4e7729fd190mr12972503137.13.1749497151051; Mon, 09 Jun 2025 12:25:51 -0700 (PDT)",
-            "arc-seal": "i=1; a=rsa-sha256; t=1749497151; cv=none; d=google.com; s=arc-20240605; b=ASX5worx398X6WZ37nKDwW9t0NcJLH/wzbieaftenD+ChjKadF4ISs9bkmVb50MfcA Uqvs03VjHjboxeJHXT/mViLIhwYrtp5Rqg3n9W4Ek1YAjCvq9XHBlRggFPP8I9s+c2zc A0lUdhJzz/hQaNmrc/tFi+KWF4na+xxBsBuR1YUptBBroFm7vOVvJXm/9SckrszeoU0n 4VtG+KFR1NFcRV+g/GQsLjHet53p4T5pQQeuJ842pALV/kAEEpToQWLsAyHuDhTjYuYd apJMXc5F5uM7ZPuoeIjOK7y3Cc0gnbWVuMPxivHR8T9ah0eErI8i086xpA6CuQDsBcXr OMdg==",
-            "arc-message-signature": "i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605; h=feedback-id:send-date:notification-id:mime-version:subject :message-id:to:reply-to:from:date:dkim-signature:dkim-signature; bh=91c+46LpSjClmMVmu5dI7IgQjz7qfRYm0dpoSAzFRTA=; fh=rWMRgZyQxqV5rsDhiO38pzDRc+bKGXU9aE9FVIpLq8E=; b=ioY+7D6KBm2wMabfQdJbCF2ZrzG89tWZxeF78JxmEMwm8BKfbnYuRXYgb9G6veHk35 AgxUbabDvjbzsBixUXtatyLTT5pPCn+tmuAZK3vaM3z+w1xToZNys0gg8UIVZcIyu2qA TcRQTM6iLL+N6JLxbIBx3CkrqJ/pCq6l/oz3NoDNGMrOMdp8im2Ux4qlpg985hOYzN7d y12aN93t46tdTnf8b2pV0VaXjmOCY/ivKBLI53wzjNTYFGh9FkCvDoXBegO3O4aZzy1t EhiOWMgiMeIKa3v0YRgdktQFKmxA3Szm9SBlu4YaPCKveUZ4PmHii49i1vFJ67obptGF 7+wQ==; dara=google.com",
-            "arc-authentication-results": "i=1; mx.google.com; dkim=pass header.i=@onvio.com header.s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk header.b=Z9T89182; dkim=pass header.i=@amazonses.com header.s=bm3ypaoivbtdzmy3b6w37fzb5voa2uru header.b=rKDp68gF; spf=pass (google.com: domain of 010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com designates 23.249.215.57 as permitted sender) smtp.mailfrom=010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com; dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=onvio.com",
-            "return-path": "<010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com>",
-            "received-spf": "pass (google.com: domain of 010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com designates 23.249.215.57 as permitted sender) client-ip=23.249.215.57;",
-            "authentication-results": "mx.google.com; dkim=pass header.i=@onvio.com header.s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk header.b=Z9T89182; dkim=pass header.i=@amazonses.com header.s=bm3ypaoivbtdzmy3b6w37fzb5voa2uru header.b=rKDp68gF; spf=pass (google.com: domain of 010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com designates 23.249.215.57 as permitted sender) smtp.mailfrom=010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com; dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=onvio.com",
-            "dkim-signature": "v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk; d=onvio.com; t=1749497149; h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type; bh=2DrQDfYzPfegPcAUXajRobrjWOXpcYGD//zX32aiRiU=; b=Z9T89182s+LtDAKW8Md4dqQPRdX5O/S3fufyP6Dy/MQxZBGQs/wE5pLCKYv8iyLI GA+mgBE1MeNsR08K0SizbE9T5DJ6x13Bm6zATw5b+yOauOCAZD978g+oChp/WTmuug5 iasxvzJnHLEkUb+XaMbJnMN7MI0B5U05ZrUeCy2RQmIu88bbyI+umVJ+bEteAvcn1fa j0+J8qv596Xp9d4RadLDNfniJuhVxNqkWs0uXD5pY2msGmmVi0Oi5YBuVI13i0naYc/ WMBxg/BtK17lC1ZEIB4RaBtyr7Fu4zUAPkrjR7VfEx5NPc2rKcnehGMFbquPAZzl12u egmtwxH4JA==",
+            "received": "by 2002:a05:6e04:c85:b0:359:4fea:edd9 with SMTP id xx5csp3480317imc; Thu, 12 Jun 2025 01:11:43 -0700 (PDT)",
+            "x-google-smtp-source": "AGHT+IHvylSWiIHZtx1dpomNqcJO6Sw8M7gqRxEprD16ABu1xzxmXjlQtNCZV2XV+4gy1F3qDiGp",
+            "x-received": "by 2002:a17:90b:6c4:b0:311:c5d9:2c70 with SMTP id 98e67ed59e1d1-313af139e4emr9345163a91.15.1749715903532; Thu, 12 Jun 2025 01:11:43 -0700 (PDT)",
+            "arc-seal": "i=1; a=rsa-sha256; t=1749715903; cv=none; d=google.com; s=arc-20240605; b=WOvG06N3tVTfgluPWKHZpytZL+krH4JqbLktZUFVszrCKhET6n8fHTYLc2ieL1Texm vVbVAL+YwnPKejA17lOuP5jOo0MtY4Fe6A0zPQ5eDYHU/hby9xv4yCO0Ak8xTOFlHug8 2eJHiOIctPaTUwtsLgH8G+qTXWJvNTbTS9jySgZm1hQy48snGiTsUixYP6uvbJUTXhny Rp3seIoYbOPuYToHgBwKVaqgvi5jH9Z7NHE0OdB7sHidsC9zv87+D16y/qSx5PvXNUW3 WAI4UAbm+nh1hNXm2NWBuIl8mDmCfFyhRb7BJ31EglcTGbWW1QECVC219zrh+ng12bag 6Qsw==",
+            "arc-message-signature": "i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605; h=feedback-id:send-date:notification-id:mime-version:subject :message-id:to:reply-to:from:date:dkim-signature:dkim-signature; bh=7RoEyB5znMdOd4NgOQ9OtBu+bjzb3k6v2nDgI7pASRI=; fh=rWMRgZyQxqV5rsDhiO38pzDRc+bKGXU9aE9FVIpLq8E=; b=daB8yncbnLBMB3Zi5gVDRNgqLQL5pz6rSfK42sfmpsiiwPl9Q2UHtWnkYtvVCN2DYD YWwUu7uaqcUMcuHoQgXxfmwPpsTN5KBkT27qCsbhcEeEAGHnH7dSnGmB2lxPL3sfl2n1 eGhIzuJ4JAmI+0JH6JUqgwZchsa5wIAVyI4HiIysTeTOSAyKDcqmY9P5zsALpKozkcSb Zc96bt0pYonFbFXk5XOkgMYlfPyINpyHb1T6e3kj1Qb/RQjmY3JXbWN2DEVz4xW/fC7G ZT3wHSLQ4nuRf1TQyP4HR6r8z7eIhmZU9e+10bIkvQSGhpPsomFqN0eF5fmYzSH35jVN E49g==; dara=google.com",
+            "arc-authentication-results": "i=1; mx.google.com; dkim=pass header.i=@onvio.com header.s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk header.b=C+ZxHCJr; dkim=pass header.i=@amazonses.com header.s=bm3ypaoivbtdzmy3b6w37fzb5voa2uru header.b=BBTKwVGS; spf=pass (google.com: domain of 010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com designates 23.249.215.58 as permitted sender) smtp.mailfrom=010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com; dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=onvio.com",
+            "return-path": "<010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com>",
+            "received-spf": "pass (google.com: domain of 010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com designates 23.249.215.58 as permitted sender) client-ip=23.249.215.58;",
+            "authentication-results": "mx.google.com; dkim=pass header.i=@onvio.com header.s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk header.b=C+ZxHCJr; dkim=pass header.i=@amazonses.com header.s=bm3ypaoivbtdzmy3b6w37fzb5voa2uru header.b=BBTKwVGS; spf=pass (google.com: domain of 010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com designates 23.249.215.58 as permitted sender) smtp.mailfrom=010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com; dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=onvio.com",
+            "dkim-signature": "v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=5ege2cb5xawlryw3tyxprqnwxhz7dfuk; d=onvio.com; t=1749715901; h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type; bh=7ABRLUp6SncloyTa3+hGO0tkBVIM6wqh+xHzpE92Og0=; b=C+ZxHCJrs5gBJWcg4vNDKfhwwocOpSXVANpkUm4fyiew8Ao9jYIrJT8Wr9EDOvBT PzkUqV7fkr55qMJmZxJysdUlaZX1k7yQJj0m94kTeIe3SH1t8m/trumcctfEDjhxqpb jXQzRH8MVEVe2QrCYYPxg7YgTzeJhE92PIlNtdCkYFFYAo2jk0ysNbGxFpOWv2Ry19X dowEXag6YAmeeLCDWDBE27VmvCXKU0RKPx2qFyFbhhHp4mRfu/IJv1Z5YJgiIWFvC8M 970mTuxkvxtLN7T2wOIoOGIRUlq1Xg9KMPtbn6klpvy/k0iVpGUL6VYJlD2rr7RQeZI Unb3/shk0w==",
             "reply-to": "nao-responda@onvio.com",
-            "message-id": "<010301975627f91d-ac3a9f45-c7a3-4a4a-a258-c9f3aa707ef7-000000@sa-east-1.amazonses.com>",
+            "message-id": "<010301976331dbc3-22b13120-8909-4312-83d2-633bc2f13261-000000@sa-east-1.amazonses.com>",
             "mime-version": "1.0",
-            "content-type": "multipart/alternative; boundary=\"----=_Part_5820_651838838.1749497149599\"",
-            "notification-id": "AADE6F07A3C84EA7AFB59A5A570316F7",
-            "send-date": "2025-06-09 19:25:49.598",
+            "content-type": "multipart/alternative; boundary=\"----=_Part_11212_2113116334.1749715901169\"",
+            "notification-id": "4619E7C914FF4AB98F8811D38AE363B7",
+            "send-date": "2025-06-12 08:11:41.169",
             "feedback-id": "::1.sa-east-1.HyzjJe5W3cI4NuPpS3IY2bdh7X+uAfDzKafqpSd/jWE=:AmazonSES",
-            "x-ses-outgoing": "2025.06.09-23.249.215.57"
+            "x-ses-outgoing": "2025.06.12-23.249.215.58"
           },
           "attributes": {
-            "uid": 237
+            "uid": 319
           },
-          "date": "Mon, 9 Jun 2025 19:25:49 +0000",
+          "date": "Thu, 12 Jun 2025 08:11:41 +0000",
           "from": "Onvio <brasil@onvio.com>",
           "to": "ti@h7contabil.com.br",
-          "subject": "Um novo arquivo está disponível de THAYNNARA CAMARGO"
+          "subject": "Onvio Portal do Cliente - Publicação não visualizada"
         }
       }
     ]
   },
-  "versionId": "80526cf3-75a5-467c-a3d2-944fe8764777",
+  "versionId": "727973be-6e56-4bb1-91f9-87361da98b53",
   "triggerCount": 1,
   "tags": [
     {
